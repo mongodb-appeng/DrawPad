@@ -87,6 +87,20 @@ class ViewController: UIViewController {
   func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
     lineCount += 1
     print ("Drawing line number \(lineCount)")
+    // TODO store a `Brush` object in Realm
+    let stroke = Stroke()
+    let startingPoint = Point(fromPoint.x, fromPoint.y)
+//    startingPoint.x = fromPoint.x
+//    startingPoint.y = fromPoint.y
+    let endPoint = Point(toPoint.x, toPoint.y)
+//    endPoint.x = toPoint.x
+//    endPoint.y = toPoint.y
+    stroke.fromPoint = startingPoint
+    stroke.toPoint = endPoint
+    stroke.color = color.toHex
+//    stroke.color = color.cgColor
+    stroke.brushWidth = brushWidth
+    
     UIGraphicsBeginImageContext(view.frame.size)
     guard let context = UIGraphicsGetCurrentContext() else {
       return
