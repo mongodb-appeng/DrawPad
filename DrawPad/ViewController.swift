@@ -29,7 +29,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-  
   @IBOutlet weak var mainImageView: UIImageView!
   @IBOutlet weak var tempImageView: UIImageView!
   
@@ -41,6 +40,7 @@ class ViewController: UIViewController {
   private var lineCount = 0
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    print("In ViewController")
     guard let navController = segue.destination as? UINavigationController,
       let settingsController = navController.topViewController as? SettingsViewController else {
         return
