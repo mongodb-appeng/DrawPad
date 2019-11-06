@@ -27,10 +27,16 @@
 /// THE SOFTWARE.
 
 import UIKit
+import RealmSwift
 
 class ViewController: UIViewController {
   @IBOutlet weak var mainImageView: UIImageView!
   @IBOutlet weak var tempImageView: UIImageView!
+  
+  let realm: Realm
+  let strokes: Results<Stroke> // `Results` is a Realm class, use like `List`
+  var notificationToken: NotificationToken? // Let's us know when something has changed in the Realm
+  var strokeStartingPoint = 0
   
   var lastPoint = CGPoint.zero
   var color = UIColor.black
@@ -38,6 +44,52 @@ class ViewController: UIViewController {
   var opacity: CGFloat = 1.0
   var swiped = false
   private var lineCount = 0
+  
+//  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+//      print("init1 called")
+//      let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL, fullSynchronization: true)
+//      self.realm = try! Realm(configuration: config!)
+//      self.strokes = realm.objects(Stroke.self).sorted(byKeyPath: "timestamp", ascending: false)
+//      super.init(nibName: nil, bundle: nil)
+//  }
+  
+  required init?(coder aDecoder: NSCoder) {
+      let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL, fullSynchronization: true)
+      self.realm = try! Realm(configuration: config!)
+      self.strokes = realm.objects(Stroke.self).sorted(byKeyPath: "timestamp", ascending: true)
+      super.init(coder: aDecoder)
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    notificationToken = strokes.observe { [weak self] (changes) in
+        switch changes {
+        case .initial:
+            // Results are now populated and can be accessed without blocking the UI
+            print("Can refresh the data here if needed")
+        case .update(_, let deletions, let insertions, _):
+          for _ in insertions {
+            print("Single insert; \(self!.strokes.count)")
+            self!.processChanges()
+//            self!.processLastChange()
+          }
+          for _ in deletions {
+            print("Single delete; \(self!.strokes.count)")
+            if self!.strokes.count == 0 {
+              self!.mainImageView.image = nil
+              self!.tempImageView.image = nil
+            }
+          }
+        case .error(let error):
+            // An error occurred while opening the Realm file on the background worker thread
+            fatalError("\(error)")
+        }
+    }
+  }
+  
+  deinit {
+      notificationToken?.invalidate()
+  }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     print("In ViewController")
@@ -62,6 +114,13 @@ class ViewController: UIViewController {
   
   @IBAction func resetPressed(_ sender: Any) {
     mainImageView.image = nil
+    try! realm.write {
+      realm.delete(realm.objects(Point.self))
+      for stroke in strokes {
+        realm.delete(stroke)
+      }
+    }
+    strokeStartingPoint = 0
   }
   
   @IBAction func sharePressed(_ sender: Any) {
@@ -84,43 +143,84 @@ class ViewController: UIViewController {
     }
   }
   
-  func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint) {
+//  func processLastChange () {
+//
+//    let stroke = strokes[0]
+//    if stroke.device != thisDevice {
+//      // This stroke is from another device and so we need to render it on this one.
+//      let startPoint = CGPoint(x: stroke.fromPoint!.x, y: stroke.fromPoint!.y)
+//      let endPoint = CGPoint(x: stroke.toPoint!.x, y: stroke.toPoint!.y)
+//      let color = UIColor(hex: stroke.color)
+//
+//      drawLine(from: startPoint, to: endPoint, remote: true, width: stroke.brushWidth, color: color!, opacity: stroke.opacity)
+//    }
+//  }
+  
+  func processChanges () {
+    let start = strokeStartingPoint
+    if start >= strokes.count {
+      print("Nothing to do")
+      return
+    }
+    for index in start ..< strokes.count {
+      strokeStartingPoint = index
+      let stroke = strokes[index]
+      if stroke.device != thisDevice {
+        // This stroke is from another device and so we need to render it on this one.
+        let startPoint = CGPoint(x: stroke.fromPoint!.x, y: stroke.fromPoint!.y)
+        let endPoint = CGPoint(x: stroke.toPoint!.x, y: stroke.toPoint!.y)
+        let color = UIColor(hex: stroke.color)
+        
+        drawLine(from: startPoint, to: endPoint, remote: true, width: stroke.brushWidth, color: color!, opacity: stroke.opacity)
+      }
+    }
+  }
+  
+  func mergeViews() {
+    // Merge tempImageView into mainImageView
+    UIGraphicsBeginImageContext(mainImageView.frame.size)
+    mainImageView.image?.draw(in: view.bounds, blendMode: .normal, alpha: 1.0)
+    tempImageView?.image?.draw(in: view.bounds, blendMode: .normal, alpha: opacity)
+    mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    tempImageView.image = nil
+  }
+  
+  func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint, remote noSync: Bool = false, width: CGFloat, color col: UIColor, opacity op: CGFloat) {
+    
     lineCount += 1
     print ("Drawing line number \(lineCount)")
-    // TODO store a `Brush` object in Realm
-    let stroke = Stroke()
-    let startingPoint = Point(fromPoint.x, fromPoint.y)
-//    startingPoint.x = fromPoint.x
-//    startingPoint.y = fromPoint.y
-    let endPoint = Point(toPoint.x, toPoint.y)
-//    endPoint.x = toPoint.x
-//    endPoint.y = toPoint.y
-    stroke.fromPoint = startingPoint
-    stroke.toPoint = endPoint
-    stroke.color = color.toHex
-//    stroke.color = color.cgColor
-    stroke.brushWidth = brushWidth
-    
+    if !noSync {
+      print("Creating a new stroke")
+      let stroke = Stroke()
+      let startingPoint = Point(fromPoint.x, fromPoint.y)
+      let endPoint = Point(toPoint.x, toPoint.y)
+      stroke.fromPoint = startingPoint
+      stroke.toPoint = endPoint
+      stroke.color = col.toHex
+      stroke.brushWidth = width
+      stroke.opacity = op
+      try! self.realm.write {
+          self.realm.add(stroke)
+      }
+    }
+    print ("Color: \(col.toHex)")
     UIGraphicsBeginImageContext(view.frame.size)
     guard let context = UIGraphicsGetCurrentContext() else {
       return
     }
-    
-    tempImageView.image?.draw(in: view.bounds)
-    
-    context.move(to: fromPoint)
-    context.addLine(to: toPoint)
-    
-    context.setLineCap(.round)
-    context.setBlendMode(.normal)
-    context.setLineWidth(brushWidth)
-    context.setStrokeColor(color.cgColor)
-    
-    context.strokePath()
-    
-    tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-    tempImageView.alpha = opacity
-    
+      tempImageView.image?.draw(in: view.bounds)
+      
+      context.move(to: fromPoint)
+      context.addLine(to: toPoint)
+      context.setLineCap(.round)
+      context.setBlendMode(.normal)
+      context.setLineWidth(width)
+      context.setStrokeColor(col.cgColor)
+      context.strokePath()
+      tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+      tempImageView.alpha = op
     UIGraphicsEndImageContext()
   }
   
@@ -138,7 +238,7 @@ class ViewController: UIViewController {
     }
     swiped = true
     let currentPoint = touch.location(in: view)
-    drawLine(from: lastPoint, to: currentPoint)
+    drawLine(from: lastPoint, to: currentPoint, remote: false, width: brushWidth, color: color, opacity: opacity)
     
     lastPoint = currentPoint
   }
@@ -146,19 +246,21 @@ class ViewController: UIViewController {
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     if !swiped {
       // draw a single point
-      drawLine(from: lastPoint, to: lastPoint)
+      drawLine(from: lastPoint, to: lastPoint, remote: false, width: brushWidth, color: color, opacity: opacity)
     }
-    
-    // Merge tempImageView into mainImageView
-    UIGraphicsBeginImageContext(mainImageView.frame.size)
-    mainImageView.image?.draw(in: view.bounds, blendMode: .normal, alpha: 1.0)
-    tempImageView?.image?.draw(in: view.bounds, blendMode: .normal, alpha: opacity)
-    mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-    
-    tempImageView.image = nil
+    mergeViews()
+//    // Merge tempImageView into mainImageView
+//    UIGraphicsBeginImageContext(mainImageView.frame.size)
+//    mainImageView.image?.draw(in: view.bounds, blendMode: .normal, alpha: 1.0)
+//    tempImageView?.image?.draw(in: view.bounds, blendMode: .normal, alpha: opacity)
+//    mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+//    UIGraphicsEndImageContext()
+//
+//    tempImageView.image = nil
   }
 }
+
+
 
 // MARK: - SettingsViewControllerDelegate
 

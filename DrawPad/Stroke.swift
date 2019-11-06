@@ -19,7 +19,8 @@
 import RealmSwift
 import UIKit
 
-// `Object` is a Realm class
+let thisDevice = UIDevice.current.identifierForVendor?.uuidString
+
 class Point: Object {
   @objc dynamic var x: CGFloat = 0.0
   @objc dynamic var y: CGFloat = 0.0
@@ -35,6 +36,7 @@ class Point: Object {
 class Stroke: Object {
     
     @objc dynamic var itemId: String = UUID().uuidString
+    @objc dynamic var device: String = thisDevice!
     @objc dynamic var fromPoint: Point?
     @objc dynamic var toPoint: Point?
     @objc dynamic var brushWidth: CGFloat = 10.0
