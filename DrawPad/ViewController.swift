@@ -124,13 +124,20 @@ class ViewController: UIViewController {
   }
   
   @IBAction func sharePressed(_ sender: Any) {
-    // TODO crashes app
-    guard let image = mainImageView.image else {
-      print ("Failed to get image")
-      return
+    let imageURL = AWS.uploadImage(view: mainImageView, email: "andrewjamesmorgan@gmail.com")
+    print("url: \(imageURL)")
+    if imageURL != "" {
+      let alertController = UIAlertController(title: "Uploaded Image", message:
+          imageURL, preferredStyle: .alert)
+      alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+      self.present(alertController, animated: true, completion: nil)
     }
-    let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-    present(activity, animated: true)
+//    guard let image = mainImageView.image else {
+//      print ("Failed to get image")
+//      return
+//    }
+//    let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+//    present(activity, animated: true)
   }
   
   @IBAction func pencilPressed(_ sender: UIButton) {
