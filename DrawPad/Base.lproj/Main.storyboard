@@ -232,7 +232,7 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                 </state>
                                 <connections>
-                                    <action selector="pencilRect:" destination="bnj-k7-SPu" eventType="touchUpInside" id="rIP-x8-vXP"/>
+                                    <action selector="rectangleButtonTouched:" destination="bnj-k7-SPu" eventType="touchUpInside" id="GhN-g1-y37"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RIx-ed-RFv">

@@ -21,8 +21,11 @@ import UIKit
 
 let thisDevice = UIDevice.current.identifierForVendor?.uuidString
 
+/// A singly linked list of points
 class LinkedPoint: Object {
+  /// The x coordinate of the point
   @objc dynamic var x: CGFloat = 0.0
+  /// The y coordinate of the point
   @objc dynamic var y: CGFloat = 0.0
   @objc dynamic var nextPoint: LinkedPoint?
 
@@ -31,11 +34,14 @@ class LinkedPoint: Object {
     self.x = point.x
     self.y = point.y
   }
-  
+
+  /// Convert LinkedPoint to native CGPoint type.
+  /// - returns: A CGPoint of the same x, y coordinates
   func asCGPoint() -> CGPoint {
     return CGPoint(x: x, y: y)
   }
 
+  /// Convert LinkedPoint as a linked list to a CGRect.
   func asCGRect() -> CGRect {
     guard let pointA = nextPoint else {
       fatalError("Trying to convert a a non-rect linked point to a rect")
@@ -52,19 +58,32 @@ class LinkedPoint: Object {
   }
 }
 
+/// ShapeType enumerates types of possible shapes
 @objc enum ShapeType: Int {
   case line, rect, ellipse, triangle
 }
 
+/// Shape is the all encompassing class for the various
+/// shape types
 class Shape: Object {
+  /// the deviceId that the shape was instantiated in
   @objc dynamic var deviceId: String = thisDevice!
 
+  /// the last point in the point list
   @objc dynamic var lastPoint: LinkedPoint?
 
+  /// the width of the brush the shape was painted with
   @objc dynamic var brushWidth: CGFloat = 10.0
+  /// the opacity the shape was painted with
   @objc dynamic var opacity: CGFloat = 1.0
+  /// the color the shape was painted with
   @objc dynamic var color: String = "666666"
+  /// whether or not this shape has been erased/undone
+  /// NOTE: using the "eraser" feature is semantically
+  /// different than whether or not it has been
+  /// entirely undone
   @objc dynamic var isErased = false
+  /// the type of shape this is
   @objc dynamic var shapeType: ShapeType = .line
 
   func append(point: LinkedPoint) {
@@ -135,6 +154,8 @@ class Shape: Object {
     context.strokePath()
   }
 
+  /// Draw the shape with the given context.
+  /// - parameter context: the current CGContext
   func draw(_ context: CGContext) {
     guard !isErased else {
       return
@@ -152,6 +173,10 @@ class Shape: Object {
     }
   }
 
+  /// Erase the shape with the given context.
+  /// Erasing SHOULD effectively paint over the shape
+  /// with white "paint". This is to maintain historical state.
+  /// - parameter context: the current CGContext
   func erase(_ context: CGContext) {
     switch shapeType {
     case .line:
@@ -163,21 +188,5 @@ class Shape: Object {
     case .triangle:
       drawTriangle(context, shouldErase: true)
     }
-  }
-}
-
-class Drawing: Object {
-  let shapes = List<Shape>()
-
-  func undoLast(_ context: CGContext, realm: Realm) {
-    guard let shape = shapes.last(where: { $0.deviceId == thisDevice && !$0.isErased }) else {
-      return
-    }
-
-    shape.erase(context)
-
-    try! realm.write { shape.isErased = true }
-
-    shapes.forEach { $0.draw(context) }
   }
 }

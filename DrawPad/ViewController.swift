@@ -35,9 +35,8 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   
   let realm: Realm
   var shapes: Results<Shape>
-  var notificationToken: NotificationToken?
-  var strokeStartingPoint = 0
-  
+  var notificationToken: NotificationToken!
+
   var lastPoint = CGPoint.zero
   var color = UIColor.black
   var brushWidth: CGFloat = 10.0
@@ -57,73 +56,48 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     super.init(coder: aDecoder)
   }
 
-  var n2: NotificationToken!
+  private func draw(_ block: (CGContext) -> Void) {
+    UIGraphicsBeginImageContext(self.view.frame.size)
+    guard let context = UIGraphicsGetCurrentContext() else {
+      return
+    }
+    self.tempImageView.image?.draw(in: self.view.bounds)
+
+    block(context)
+
+    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    n2 = shapes.observe { [weak self] changes in
-      guard let strong = self else {
+    notificationToken = shapes.observe { [weak self] changes in
+      guard let strongSelf = self else {
         return
       }
       switch changes {
       case .initial(let shapes):
-        UIGraphicsBeginImageContext(strong.view.frame.size)
-        guard let context = UIGraphicsGetCurrentContext() else {
-          return
+        strongSelf.draw { context in
+          shapes.forEach { $0.draw(context) }
         }
-        strong.tempImageView.image?.draw(in: strong.view.bounds)
-
-        shapes.forEach { $0.draw(context) }
-
-        strong.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-        strong.tempImageView.alpha = shapes.first?.opacity ?? 0.0
-        UIGraphicsEndImageContext()
         break
       case .update(let shapes, _, let insertions, let modifications):
-        insertions.forEach { index in
+        (insertions + modifications).forEach { index in
           if shapes[index].deviceId != thisDevice {
-            UIGraphicsBeginImageContext(strong.view.frame.size)
-            guard let context = UIGraphicsGetCurrentContext() else {
-              return
+            strongSelf.draw { context in
+              let shape = shapes[index]
+              if shape.isErased {
+                shape.erase(context)
+                shapes.forEach { $0.draw(context) }
+              } else {
+                shape.draw(context)
+              }
             }
-            strong.tempImageView.image?.draw(in: strong.view.bounds)
-
-            let shape = shapes[index]
-            if shape.isErased {
-              shape.erase(context)
-              shapes.forEach { $0.draw(context) }
-            } else {
-              shape.draw(context)
-            }
-            strong.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-            strong.tempImageView.alpha = shapes.first?.opacity ?? 0.0
-            UIGraphicsEndImageContext()
           }
         }
 
-        modifications.forEach { index in
-          if shapes[index].deviceId != thisDevice {
-            UIGraphicsBeginImageContext(strong.view.frame.size)
-            guard let context = UIGraphicsGetCurrentContext() else {
-              return
-            }
-            strong.tempImageView.image?.draw(in: strong.view.bounds)
-
-            let shape = shapes[index]
-            if shape.isErased {
-              shape.erase(context)
-              shapes.forEach { $0.draw(context) }
-            } else {
-              shape.draw(context)
-            }
-
-            strong.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-            strong.tempImageView.alpha = shapes.first?.opacity ?? 0.0
-            UIGraphicsEndImageContext()
-          }
-        }
-        strong.mergeViews()
+        strongSelf.mergeViews()
         break
       case .error(let error):
         fatalError(error.localizedDescription)
@@ -158,16 +132,11 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   
   @IBAction func resetPressed(_ sender: Any) {
     mainImageView.image = nil
-    UIGraphicsBeginImageContext(self.view.frame.size)
-    guard let context = UIGraphicsGetCurrentContext() else {
-      return
+
+    draw { context in
+      self.shapes.forEach { $0.erase(context) }
     }
-    self.tempImageView.image?.draw(in: self.view.bounds)
 
-    self.shapes.forEach { $0.erase(context) }
-
-    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
     try! realm.write {
       self.shapes.forEach { $0.isErased = true }
     }
@@ -219,6 +188,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         realm.add(currentShape!)
       }
     }
+
     swiped = false
 
     try! realm.write {
@@ -232,45 +202,53 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     }
 
     let currentPoint = touch.location(in: view)
-    UIGraphicsBeginImageContext(view.frame.size)
-    guard let context = UIGraphicsGetCurrentContext() else {
-      return
+
+    draw { context in
+      switch shapeType {
+        // if the shape is a line, simply append the current point to the head of the list
+      case .line:
+        try! realm.write {
+          currentShape!.append(point: LinkedPoint(currentPoint))
+        }
+        // if the shape is a rect or an ellipse, replace the head of the list
+        // with the dragged point. the LinkedPoint list should always contain
+        // (x₁, y₁) and (x₂, y₂), the top left and and bottom right corners
+        // of the rect
+      case .rect, .ellipse:
+        // if 'swiped' (a.k.a. not a single point), erase the current shape,
+        // which is effectively acting as a draft. then redraw the current
+        // state
+        if swiped {
+          currentShape!.erase(context)
+          self.shapes.forEach { $0.draw(context) }
+        }
+        try! realm.write {
+          currentShape!.replaceHead(point: LinkedPoint(currentPoint))
+        }
+        // if the shape is a triangle, have the original point be the tail
+        // of the list, the 2nd point being where the current touch is,
+        // and the 3rd point (x₁ - (x₂ - x₁), y₂)
+      case .triangle:
+        // if 'swiped' (a.k.a. not a single point), erase the current shape,
+        // which is effectively acting as a draft. then redraw the current
+        // state
+        if swiped {
+          currentShape!.erase(context)
+          self.shapes.forEach { $0.draw(context) }
+        }
+        try! realm.write {
+          let point2 = LinkedPoint(currentPoint)
+          currentShape!.lastPoint?.nextPoint = point2
+
+          let point3 = LinkedPoint()
+          point3.y = point2.y
+          point3.x = currentShape!.lastPoint!.x - (point2.x - currentShape!.lastPoint!.x)
+          point2.nextPoint = point3
+        }
+      }
+
+      currentShape!.draw(context)
     }
-    tempImageView.image?.draw(in: view.bounds)
-    
-    switch shapeType {
-    case .line:
-      try! realm.write {
-        currentShape!.append(point: LinkedPoint(currentPoint))
-      }
-    case .rect, .ellipse:
-      if swiped {
-        currentShape!.erase(context)
-        self.shapes.forEach { $0.draw(context) }
-      }
-      try! realm.write {
-        currentShape!.replaceHead(point: LinkedPoint(currentPoint))
-      }
-    case .triangle:
-      if swiped {
-        currentShape!.erase(context)
-        self.shapes.forEach { $0.draw(context) }
-      }
-      try! realm.write {
-        let point2 = LinkedPoint(currentPoint)
-        currentShape!.lastPoint?.nextPoint = point2
-
-        let point3 = LinkedPoint()
-        point3.y = point2.y
-        point3.x = currentShape!.lastPoint!.x - (point2.x - currentShape!.lastPoint!.x)
-        point2.nextPoint = point3
-      }
-    }
-
-    currentShape!.draw(context)
-
-    tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
 
     mergeViews()
 
@@ -281,18 +259,14 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     if !swiped {
       // draw a single point
-      UIGraphicsBeginImageContext(view.frame.size)
-      guard let context = UIGraphicsGetCurrentContext() else {
-        return
+      draw { context in
+        currentShape!.draw(context)
       }
-      tempImageView.image?.draw(in: view.bounds)
-
-      currentShape!.draw(context)
-
-      tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-      UIGraphicsEndImageContext()
     }
 
+    // if the shape is not a line, it exists in a draft state.
+    // add it to the realm now
+    // TODO: move the "draft" business logic out of the view
     if shapeType != .line {
       try! realm.write {
         realm.add(currentShape!)
@@ -312,32 +286,33 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   }
 
   @IBAction func undo(_ sender: Any) {
-    UIGraphicsBeginImageContext(view.frame.size)
-    guard shapes.count > 0,
-      let context = UIGraphicsGetCurrentContext() else {
+    guard shapes.count > 0 else {
         return
     }
 
-    tempImageView.image?.draw(in: view.bounds)
+    draw { context in
+      // find the last non-erased shape associated with this device Id.
+      // then erase it, mark it as erased, and redraw the history of the drawing
+      guard let shape = shapes.last(where: { $0.deviceId == thisDevice && !$0.isErased }) else {
+        return
+      }
 
-    guard let shape = shapes.last(where: { $0.deviceId == thisDevice && !$0.isErased }) else {
-      return
+      shape.erase(context)
+
+      try! realm.write { shape.isErased = true }
+
+      shapes.forEach { $0.draw(context) }
     }
 
-    shape.erase(context)
-
-    try! realm.write { shape.isErased = true }
-
-    shapes.forEach { $0.draw(context) }
-
     currentShape = nil
-
-    tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-    tempImageView.alpha = 1
-    UIGraphicsEndImageContext()
   }
-  
-  @IBAction func pencilRect(_ sender: UIButton) {
+
+  // MARK: - Shape UI controls
+
+  // TODO: These methods should all be expanded and work together
+  // relative to the UI.
+
+  @IBAction func rectangleButtonTouched(_ sender: UIButton) {
     if shapeType == .rect {
       sender.isSelected = false
       shapeType = .line
