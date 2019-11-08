@@ -21,24 +21,24 @@ import RealmSwift
 
 class WelcomeViewController: UIViewController {
 
-    let usernameField = UITextField()
-    let passwordField = UITextField()
-    let signInButton = UIButton(type: .roundedRect)
-    let signUpButton = UIButton(type: .roundedRect)
-    let errorLabel = UILabel()
-    let activityIndicator = UIActivityIndicatorView(style: .gray)
+  let usernameField = UITextField()
+  let passwordField = UITextField()
+  let signInButton = UIButton(type: .roundedRect)
+  let signUpButton = UIButton(type: .roundedRect)
+  let errorLabel = UILabel()
+  let activityIndicator = UIActivityIndicatorView(style: .medium)
 
-    var username: String? {
-        get {
-            return usernameField.text
-        }
-    }
+  var username: String? {
+      get {
+          return usernameField.text
+      }
+  }
 
-    var password: String? {
-        get {
-            return passwordField.text
-        }
-    }
+  var password: String? {
+      get {
+          return passwordField.text
+      }
+  }
 
     override func viewDidLoad() {
       super.viewDidLoad();
@@ -56,7 +56,6 @@ class WelcomeViewController: UIViewController {
       container.alignment = .fill
       container.spacing = 16.0;
       view.addSubview(container)
-
       // Configure the activity indicator.
       activityIndicator.translatesAutoresizingMaskIntoConstraints = false
       view.addSubview(activityIndicator)
@@ -79,7 +78,6 @@ class WelcomeViewController: UIViewController {
       infoLabel.numberOfLines = 0
       infoLabel.text = "Please enter a username and password."
       container.addArrangedSubview(infoLabel)
-
       // Configure the username and password text input fields.
       usernameField.placeholder = "Username"
       usernameField.borderStyle = .roundedRect
@@ -89,7 +87,6 @@ class WelcomeViewController: UIViewController {
       passwordField.isSecureTextEntry = true
       passwordField.borderStyle = .roundedRect
       container.addArrangedSubview(passwordField)
-
       // Configure the sign in and sign up buttons.
       signInButton.setTitle("Sign In", for: .normal);
       signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
@@ -105,13 +102,13 @@ class WelcomeViewController: UIViewController {
       container.addArrangedSubview(errorLabel)
     }
 
-    @objc func signIn() {
-        logIn(username: username!, password: password!, register: false)
-    }
+  @objc func signIn() {
+      logIn(username: username!, password: password!, register: false)
+  }
 
-    @objc func signUp() {
-        logIn(username: username!, password: password!, register: true)
-    }
+  @objc func signUp() {
+      logIn(username: username!, password: password!, register: true)
+  }
 
     // Log in with the username and password, optionally registering a user.
     func logIn(username: String, password: String, register: Bool) {

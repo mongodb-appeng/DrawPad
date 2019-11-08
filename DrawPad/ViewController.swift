@@ -35,6 +35,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   
   let realm: Realm
   var shapes: Results<Shape>
+  let storedImages: Results<StoredImage>
   var notificationToken: NotificationToken!
 
   var lastPoint = CGPoint.zero
@@ -52,6 +53,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
                                                  fullSynchronization: true)
     self.realm = try! Realm(configuration: config!)
     self.shapes = realm.objects(Shape.self)
+    self.storedImages = realm.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
 
     super.init(coder: aDecoder)
   }
@@ -143,13 +145,29 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   }
   
   @IBAction func sharePressed(_ sender: Any) {
-    // TODO crashes app
-    guard let image = mainImageView.image else {
-      print ("Failed to get image")
+    guard let image = extractPNG() else {
+      print("Failed to extract image")
       return
     }
-    let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-    present(activity, animated: true)
+    let storedImage = StoredImage(image: image, name: "andrewjamesmorgan@gmail.com")
+    try! self.realm.write {
+      self.realm.add(storedImage)
+      print("storedImage.email \(storedImage.email)")
+    }
+
+    let imageURL = AWS.uploadImage(image: image, email: "andrewjamesmorgan@gmail.com")
+    print("url: \(imageURL)")
+    if imageURL != "" {
+      try! self.realm.write {
+        storedImage.imageLink = imageURL
+      }
+      let alertController = UIAlertController(title: "Uploaded Image", message:
+          imageURL, preferredStyle: .alert)
+      alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+      self.present(alertController, animated: true, completion: nil)
+    } else {
+      print("Failed to upload the image to S3")
+    }
   }
   
   @IBAction func pencilPressed(_ sender: UIButton) {
@@ -160,6 +178,14 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     if pencil == .eraser {
       color = .white
     }
+  }
+  
+  func extractPNG() -> Data? {
+    guard let image = mainImageView.image!.pngData() else {
+      print("Failed to get to the image")
+      return nil
+    }
+    return image
   }
   
   func mergeViews() {

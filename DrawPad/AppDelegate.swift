@@ -1,4 +1,4 @@
-/// Copyright (c) 2018 MongoDB Inc
+/// Copyright (c) 2019 MongoDB Inc
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,9 @@
 /// THE SOFTWARE.
 
 import UIKit
+import StitchCore
+
+let stitch = try! Stitch.initializeAppClient(withClientAppID: Constants.STITCH_APP_ID)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -34,10 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: WelcomeViewController())
-        return true
+      // Override point for customization after application launch.
+      
+      stitch.auth.login(withCredential: AnonymousCredential()) { result in
+          switch result {
+          case .success(let user):
+            print("logged in anonymous as user \(user.id)")
+          case .failure(let error):
+            print("Failed to log in: \(error)")
+          }
+      }
+      
+      window = UIWindow(frame: UIScreen.main.bounds)
+      window?.makeKeyAndVisible()
+      window?.rootViewController = UINavigationController(rootViewController: WelcomeViewController())
+      return true
     }
 }
