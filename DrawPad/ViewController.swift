@@ -35,6 +35,7 @@ class ViewController: UIViewController {
   
   let realm: Realm
   let strokes: Results<Stroke> // `Results` is a Realm class, use like `List`
+  let storedImages: Results<StoredImage>
   var notificationToken: NotificationToken? // Let's us know when something has changed in the Realm
   var strokeStartingPoint = 0
   
@@ -54,10 +55,11 @@ class ViewController: UIViewController {
 //  }
   
   required init?(coder aDecoder: NSCoder) {
-      let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL, fullSynchronization: true)
-      self.realm = try! Realm(configuration: config!)
-      self.strokes = realm.objects(Stroke.self).sorted(byKeyPath: "timestamp", ascending: true)
-      super.init(coder: aDecoder)
+    let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL, fullSynchronization: true)
+    self.realm = try! Realm(configuration: config!)
+    self.strokes = realm.objects(Stroke.self).sorted(byKeyPath: "timestamp", ascending: true)
+    self.storedImages = realm.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
+    super.init(coder: aDecoder)
   }
   
   override func viewDidLoad() {
@@ -124,20 +126,29 @@ class ViewController: UIViewController {
   }
   
   @IBAction func sharePressed(_ sender: Any) {
-    let imageURL = AWS.uploadImage(view: mainImageView, email: "andrewjamesmorgan@gmail.com")
+    guard let image = extractPNG() else {
+      print("Failed to extract image")
+      return
+    }
+    let storedImage = StoredImage(image: image, name: "andrewjamesmorgan@gmail.com")
+    try! self.realm.write {
+      self.realm.add(storedImage)
+      print("storedImage.email \(storedImage.email)")
+    }
+
+    let imageURL = AWS.uploadImage(image: image, email: "andrewjamesmorgan@gmail.com")
     print("url: \(imageURL)")
     if imageURL != "" {
+      try! self.realm.write {
+        storedImage.imageLink = imageURL
+      }
       let alertController = UIAlertController(title: "Uploaded Image", message:
           imageURL, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
       self.present(alertController, animated: true, completion: nil)
+    } else {
+      print("Failed to upload the image to S3")
     }
-//    guard let image = mainImageView.image else {
-//      print ("Failed to get image")
-//      return
-//    }
-//    let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-//    present(activity, animated: true)
   }
   
   @IBAction func pencilPressed(_ sender: UIButton) {
@@ -181,6 +192,14 @@ class ViewController: UIViewController {
         drawLine(from: startPoint, to: endPoint, remote: true, width: stroke.brushWidth, color: color!, opacity: stroke.opacity)
       }
     }
+  }
+  
+  func extractPNG() -> Data? {
+    guard let image = mainImageView.image!.pngData() else {
+      print("Failed to get to the image")
+      return nil
+    }
+    return image
   }
   
   func mergeViews() {

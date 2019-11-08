@@ -57,7 +57,8 @@ extension UIColor {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
 
-        var rgb: UInt32 = 0
+//        var rgb: UInt32 = 0
+        var rgb: UInt64 = 0
 
         var r: CGFloat = 0.0
         var g: CGFloat = 0.0
@@ -66,7 +67,8 @@ extension UIColor {
 
         let length = hexSanitized.count
 
-        guard Scanner(string: hexSanitized).scanHexInt32(&rgb) else { return nil }
+//        guard Scanner(string: hexSanitized).scanHexInt32(&rgb) else { return nil }
+        guard Scanner(string: hexSanitized).scanHexInt64(&rgb) else { return nil }
 
         if length == 6 {
             r = CGFloat((rgb & 0xFF0000) >> 16) / 255.0

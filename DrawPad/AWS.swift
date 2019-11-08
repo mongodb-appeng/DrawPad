@@ -13,18 +13,13 @@ import StitchCoreAWSService
 import MongoSwift
 
 class AWS {
-  static func uploadImage(view: UIImageView, email imageName: String) -> String {
+  static func uploadImage(image: Data, email imageName: String) -> String {
     // MyAwsService is the name of the aws service you created in
     // the stitch UI, and it is configured with a rule
     // that allows the PutObject action on the s3 API
     let aws = stitch.serviceClient(fromFactory: awsServiceClientFactory, withName: "AWS")
     var url: String = ""
     var imageBSON: Binary
-        
-    guard let image = view.image!.pngData() else {
-      print("Failed to get to the image")
-      return url
-    }
     
     do {
       imageBSON = try Binary(data: image, subtype: .generic)
