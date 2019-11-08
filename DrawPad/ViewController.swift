@@ -29,13 +29,13 @@
 import UIKit
 import RealmSwift
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SettingsViewControllerDelegate {
   @IBOutlet weak var mainImageView: UIImageView!
   @IBOutlet weak var tempImageView: UIImageView!
   
   let realm: Realm
-  let strokes: Results<Stroke> // `Results` is a Realm class, use like `List`
-  var notificationToken: NotificationToken? // Let's us know when something has changed in the Realm
+  var shapes: Results<Shape>
+  var notificationToken: NotificationToken?
   var strokeStartingPoint = 0
   
   var lastPoint = CGPoint.zero
@@ -43,52 +43,96 @@ class ViewController: UIViewController {
   var brushWidth: CGFloat = 10.0
   var opacity: CGFloat = 1.0
   var swiped = false
+
+  private var shapeType: ShapeType = .line
+  private var currentShape: Shape?
   private var lineCount = 0
   
-//  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-//      print("init1 called")
-//      let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL, fullSynchronization: true)
-//      self.realm = try! Realm(configuration: config!)
-//      self.strokes = realm.objects(Stroke.self).sorted(byKeyPath: "timestamp", ascending: false)
-//      super.init(nibName: nil, bundle: nil)
-//  }
-  
   required init?(coder aDecoder: NSCoder) {
-      let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL, fullSynchronization: true)
-      self.realm = try! Realm(configuration: config!)
-      self.strokes = realm.objects(Stroke.self).sorted(byKeyPath: "timestamp", ascending: true)
-      super.init(coder: aDecoder)
+    let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL,
+                                                 fullSynchronization: true)
+    self.realm = try! Realm(configuration: config!)
+    self.shapes = realm.objects(Shape.self)
+
+    super.init(coder: aDecoder)
   }
-  
+
+  var n2: NotificationToken!
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    notificationToken = strokes.observe { [weak self] (changes) in
-        switch changes {
-        case .initial:
-            // Results are now populated and can be accessed without blocking the UI
-            print("Can refresh the data here if needed")
-        case .update(_, let deletions, let insertions, _):
-          for _ in insertions {
-            print("Single insert; \(self!.strokes.count)")
-            self!.processChanges()
-//            self!.processLastChange()
-          }
-          for _ in deletions {
-            print("Single delete; \(self!.strokes.count)")
-            if self!.strokes.count == 0 {
-              self!.mainImageView.image = nil
-              self!.tempImageView.image = nil
-            }
-          }
-        case .error(let error):
-            // An error occurred while opening the Realm file on the background worker thread
-            fatalError("\(error)")
+
+    n2 = shapes.observe { [weak self] changes in
+      guard let strong = self else {
+        return
+      }
+      switch changes {
+      case .initial(let shapes):
+        UIGraphicsBeginImageContext(strong.view.frame.size)
+        guard let context = UIGraphicsGetCurrentContext() else {
+          return
         }
+        strong.tempImageView.image?.draw(in: strong.view.bounds)
+
+        shapes.forEach { $0.draw(context) }
+
+        strong.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        strong.tempImageView.alpha = shapes.first?.opacity ?? 0.0
+        UIGraphicsEndImageContext()
+        break
+      case .update(let shapes, _, let insertions, let modifications):
+        insertions.forEach { index in
+          if shapes[index].deviceId != thisDevice {
+            UIGraphicsBeginImageContext(strong.view.frame.size)
+            guard let context = UIGraphicsGetCurrentContext() else {
+              return
+            }
+            strong.tempImageView.image?.draw(in: strong.view.bounds)
+
+            let shape = shapes[index]
+            if shape.isErased {
+              shape.erase(context)
+              shapes.forEach { $0.draw(context) }
+            } else {
+              shape.draw(context)
+            }
+            strong.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+            strong.tempImageView.alpha = shapes.first?.opacity ?? 0.0
+            UIGraphicsEndImageContext()
+          }
+        }
+
+        modifications.forEach { index in
+          if shapes[index].deviceId != thisDevice {
+            UIGraphicsBeginImageContext(strong.view.frame.size)
+            guard let context = UIGraphicsGetCurrentContext() else {
+              return
+            }
+            strong.tempImageView.image?.draw(in: strong.view.bounds)
+
+            let shape = shapes[index]
+            if shape.isErased {
+              shape.erase(context)
+              shapes.forEach { $0.draw(context) }
+            } else {
+              shape.draw(context)
+            }
+
+            strong.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+            strong.tempImageView.alpha = shapes.first?.opacity ?? 0.0
+            UIGraphicsEndImageContext()
+          }
+        }
+        strong.mergeViews()
+        break
+      case .error(let error):
+        fatalError(error.localizedDescription)
+      }
     }
   }
   
   deinit {
-      notificationToken?.invalidate()
+    notificationToken?.invalidate()
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -114,13 +158,19 @@ class ViewController: UIViewController {
   
   @IBAction func resetPressed(_ sender: Any) {
     mainImageView.image = nil
-    try! realm.write {
-      realm.delete(realm.objects(Point.self))
-      for stroke in strokes {
-        realm.delete(stroke)
-      }
+    UIGraphicsBeginImageContext(self.view.frame.size)
+    guard let context = UIGraphicsGetCurrentContext() else {
+      return
     }
-    strokeStartingPoint = 0
+    self.tempImageView.image?.draw(in: self.view.bounds)
+
+    self.shapes.forEach { $0.erase(context) }
+
+    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    try! realm.write {
+      self.shapes.forEach { $0.isErased = true }
+    }
   }
   
   @IBAction func sharePressed(_ sender: Any) {
@@ -139,40 +189,7 @@ class ViewController: UIViewController {
     }
     color = pencil.color
     if pencil == .eraser {
-      opacity = 1.0
-    }
-  }
-  
-//  func processLastChange () {
-//
-//    let stroke = strokes[0]
-//    if stroke.device != thisDevice {
-//      // This stroke is from another device and so we need to render it on this one.
-//      let startPoint = CGPoint(x: stroke.fromPoint!.x, y: stroke.fromPoint!.y)
-//      let endPoint = CGPoint(x: stroke.toPoint!.x, y: stroke.toPoint!.y)
-//      let color = UIColor(hex: stroke.color)
-//
-//      drawLine(from: startPoint, to: endPoint, remote: true, width: stroke.brushWidth, color: color!, opacity: stroke.opacity)
-//    }
-//  }
-  
-  func processChanges () {
-    let start = strokeStartingPoint
-    if start >= strokes.count {
-      print("Nothing to do")
-      return
-    }
-    for index in start ..< strokes.count {
-      strokeStartingPoint = index
-      let stroke = strokes[index]
-      if stroke.device != thisDevice {
-        // This stroke is from another device and so we need to render it on this one.
-        let startPoint = CGPoint(x: stroke.fromPoint!.x, y: stroke.fromPoint!.y)
-        let endPoint = CGPoint(x: stroke.toPoint!.x, y: stroke.toPoint!.y)
-        let color = UIColor(hex: stroke.color)
-        
-        drawLine(from: startPoint, to: endPoint, remote: true, width: stroke.brushWidth, color: color!, opacity: stroke.opacity)
-      }
+      color = .white
     }
   }
   
@@ -186,85 +203,104 @@ class ViewController: UIViewController {
     
     tempImageView.image = nil
   }
-  
-  func drawLine(from fromPoint: CGPoint, to toPoint: CGPoint, remote noSync: Bool = false, width: CGFloat, color col: UIColor, opacity op: CGFloat) {
-    
-    lineCount += 1
-    print ("Drawing line number \(lineCount)")
-    if !noSync {
-      print("Creating a new stroke")
-      let stroke = Stroke()
-      let startingPoint = Point(fromPoint.x, fromPoint.y)
-      let endPoint = Point(toPoint.x, toPoint.y)
-      stroke.fromPoint = startingPoint
-      stroke.toPoint = endPoint
-      stroke.color = col.toHex
-      stroke.brushWidth = width
-      stroke.opacity = op
-      try! self.realm.write {
-          self.realm.add(stroke)
-      }
-    }
-    print ("Color: \(col.toHex)")
-    UIGraphicsBeginImageContext(view.frame.size)
-    guard let context = UIGraphicsGetCurrentContext() else {
-      return
-    }
-      tempImageView.image?.draw(in: view.bounds)
-      
-      context.move(to: fromPoint)
-      context.addLine(to: toPoint)
-      context.setLineCap(.round)
-      context.setBlendMode(.normal)
-      context.setLineWidth(width)
-      context.setStrokeColor(col.cgColor)
-      context.strokePath()
-      tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-      tempImageView.alpha = op
-    UIGraphicsEndImageContext()
-  }
-  
+
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first else {
       return
     }
+
+    currentShape = Shape()
+    currentShape!.shapeType = shapeType
+    currentShape!.color = color.toHex
+    currentShape!.brushWidth = brushWidth
+
+    if shapeType == .line {
+      try! realm.write {
+        realm.add(currentShape!)
+      }
+    }
     swiped = false
-    lastPoint = touch.location(in: view)
+
+    try! realm.write {
+      currentShape!.append(point: LinkedPoint(touch.location(in: view)))
+    }
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first else {
       return
     }
-    swiped = true
+
     let currentPoint = touch.location(in: view)
-    drawLine(from: lastPoint, to: currentPoint, remote: false, width: brushWidth, color: color, opacity: opacity)
+    UIGraphicsBeginImageContext(view.frame.size)
+    guard let context = UIGraphicsGetCurrentContext() else {
+      return
+    }
+    tempImageView.image?.draw(in: view.bounds)
     
+    switch shapeType {
+    case .line:
+      try! realm.write {
+        currentShape!.append(point: LinkedPoint(currentPoint))
+      }
+    case .rect, .ellipse:
+      if swiped {
+        currentShape!.erase(context)
+        self.shapes.forEach { $0.draw(context) }
+      }
+      try! realm.write {
+        currentShape!.replaceHead(point: LinkedPoint(currentPoint))
+      }
+    case .triangle:
+      if swiped {
+        currentShape!.erase(context)
+        self.shapes.forEach { $0.draw(context) }
+      }
+      try! realm.write {
+        let point2 = LinkedPoint(currentPoint)
+        currentShape!.lastPoint?.nextPoint = point2
+
+        let point3 = LinkedPoint()
+        point3.y = point2.y
+        point3.x = currentShape!.lastPoint!.x - (point2.x - currentShape!.lastPoint!.x)
+        point2.nextPoint = point3
+      }
+    }
+
+    currentShape!.draw(context)
+
+    tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+
+    mergeViews()
+
+    swiped = true
     lastPoint = currentPoint
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     if !swiped {
       // draw a single point
-      drawLine(from: lastPoint, to: lastPoint, remote: false, width: brushWidth, color: color, opacity: opacity)
+      UIGraphicsBeginImageContext(view.frame.size)
+      guard let context = UIGraphicsGetCurrentContext() else {
+        return
+      }
+      tempImageView.image?.draw(in: view.bounds)
+
+      currentShape!.draw(context)
+
+      tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+      UIGraphicsEndImageContext()
+    }
+
+    if shapeType != .line {
+      try! realm.write {
+        realm.add(currentShape!)
+      }
     }
     mergeViews()
-//    // Merge tempImageView into mainImageView
-//    UIGraphicsBeginImageContext(mainImageView.frame.size)
-//    mainImageView.image?.draw(in: view.bounds, blendMode: .normal, alpha: 1.0)
-//    tempImageView?.image?.draw(in: view.bounds, blendMode: .normal, alpha: opacity)
-//    mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-//    UIGraphicsEndImageContext()
-//
-//    tempImageView.image = nil
   }
-}
 
-
-
-// MARK: - SettingsViewControllerDelegate
-
-extension ViewController: SettingsViewControllerDelegate {
   func settingsViewControllerFinished(_ settingsViewController: SettingsViewController) {
     brushWidth = settingsViewController.brush
     opacity = settingsViewController.opacity
@@ -274,5 +310,60 @@ extension ViewController: SettingsViewControllerDelegate {
                     alpha: opacity)
     dismiss(animated: true)
   }
-}
 
+  @IBAction func undo(_ sender: Any) {
+    UIGraphicsBeginImageContext(view.frame.size)
+    guard shapes.count > 0,
+      let context = UIGraphicsGetCurrentContext() else {
+        return
+    }
+
+    tempImageView.image?.draw(in: view.bounds)
+
+    guard let shape = shapes.last(where: { $0.deviceId == thisDevice && !$0.isErased }) else {
+      return
+    }
+
+    shape.erase(context)
+
+    try! realm.write { shape.isErased = true }
+
+    shapes.forEach { $0.draw(context) }
+
+    currentShape = nil
+
+    tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+    tempImageView.alpha = 1
+    UIGraphicsEndImageContext()
+  }
+  
+  @IBAction func pencilRect(_ sender: UIButton) {
+    if shapeType == .rect {
+      sender.isSelected = false
+      shapeType = .line
+    } else {
+      sender.isSelected = true
+      shapeType = .rect
+    }
+  }
+
+  @IBAction func ellipsisButtonTouched(_ sender: UIButton) {
+    if shapeType == .ellipse {
+      sender.isSelected = false
+      shapeType = .line
+    } else {
+      sender.isSelected = true
+      shapeType = .ellipse
+    }
+  }
+  
+  @IBAction func triangleButtonTouched(_ sender: UIButton) {
+    if shapeType == .triangle {
+      sender.isSelected = false
+      shapeType = .line
+    } else {
+      sender.isSelected = true
+      shapeType = .triangle
+    }
+  }
+}
