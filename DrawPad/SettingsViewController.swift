@@ -102,7 +102,7 @@ class SettingsViewController: UIViewController {
     
     drawPreview()
   }
-  
+
   func drawPreview() {
     UIGraphicsBeginImageContext(previewImageView.frame.size)
     guard let context = UIGraphicsGetCurrentContext() else {

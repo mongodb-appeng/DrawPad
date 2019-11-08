@@ -41,63 +41,68 @@ class WelcomeViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        super.viewDidLoad();
-        view.backgroundColor = .white
-    
-        // Create a view that will automatically lay out the other controls.
-        let container = UIStackView();
-        container.translatesAutoresizingMaskIntoConstraints = false
-        container.axis = .vertical
-        container.alignment = .fill
-        container.spacing = 16.0;
-        view.addSubview(container)
-        
-        // Configure the activity indicator.
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(activityIndicator)
+      super.viewDidLoad();
 
-        // Set the layout constraints of the container view and the activity indicator.
-        let guide = view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            // This pins the container view to the top and stretches it to fill the parent
-            // view horizontally.
-            container.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 16),
-            container.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16),
-            container.topAnchor.constraint(equalTo: guide.topAnchor, constant: 16),
-            // The activity indicator is centred over the rest of the view.
-            activityIndicator.centerYAnchor.constraint(equalTo: guide.centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: guide.centerXAnchor),
-        ])
+      if SyncUser.current != nil {
+        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ViewController") as? ViewController
+        self.navigationController!.pushViewController(vc!, animated: true)
+          view.backgroundColor = .white
+      }
+      
+      // Create a view that will automatically lay out the other controls.
+      let container = UIStackView();
+      container.translatesAutoresizingMaskIntoConstraints = false
+      container.axis = .vertical
+      container.alignment = .fill
+      container.spacing = 16.0;
+      view.addSubview(container)
 
-        // Add some text at the top of the view to explain what to do.
-        let infoLabel = UILabel()
-        infoLabel.numberOfLines = 0
-        infoLabel.text = "Please enter a username and password."
-        container.addArrangedSubview(infoLabel)
-        
-        // Configure the username and password text input fields. 
-        usernameField.placeholder = "Username"
-        usernameField.borderStyle = .roundedRect
-        container.addArrangedSubview(usernameField)
+      // Configure the activity indicator.
+      activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+      view.addSubview(activityIndicator)
 
-        passwordField.placeholder = "Password"
-        passwordField.isSecureTextEntry = true
-        passwordField.borderStyle = .roundedRect
-        container.addArrangedSubview(passwordField)
-        
-        // Configure the sign in and sign up buttons.
-        signInButton.setTitle("Sign In", for: .normal);
-        signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
-        container.addArrangedSubview(signInButton)
-        
-        signUpButton.setTitle("Sign Up", for: .normal);
-        signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
-        container.addArrangedSubview(signUpButton)
-        
-        // Error messages will be set on the errorLabel.
-        errorLabel.numberOfLines = 0
-        errorLabel.textColor = .red
-        container.addArrangedSubview(errorLabel)
+      // Set the layout constraints of the container view and the activity indicator.
+      let guide = view.safeAreaLayoutGuide
+      NSLayoutConstraint.activate([
+          // This pins the container view to the top and stretches it to fill the parent
+          // view horizontally.
+          container.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 16),
+          container.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16),
+          container.topAnchor.constraint(equalTo: guide.topAnchor, constant: 16),
+          // The activity indicator is centred over the rest of the view.
+          activityIndicator.centerYAnchor.constraint(equalTo: guide.centerYAnchor),
+          activityIndicator.centerXAnchor.constraint(equalTo: guide.centerXAnchor),
+      ])
+
+      // Add some text at the top of the view to explain what to do.
+      let infoLabel = UILabel()
+      infoLabel.numberOfLines = 0
+      infoLabel.text = "Please enter a username and password."
+      container.addArrangedSubview(infoLabel)
+
+      // Configure the username and password text input fields.
+      usernameField.placeholder = "Username"
+      usernameField.borderStyle = .roundedRect
+      container.addArrangedSubview(usernameField)
+
+      passwordField.placeholder = "Password"
+      passwordField.isSecureTextEntry = true
+      passwordField.borderStyle = .roundedRect
+      container.addArrangedSubview(passwordField)
+
+      // Configure the sign in and sign up buttons.
+      signInButton.setTitle("Sign In", for: .normal);
+      signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
+      container.addArrangedSubview(signInButton)
+
+      signUpButton.setTitle("Sign Up", for: .normal);
+      signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
+      container.addArrangedSubview(signUpButton)
+
+      // Error messages will be set on the errorLabel.
+      errorLabel.numberOfLines = 0
+      errorLabel.textColor = .red
+      container.addArrangedSubview(errorLabel)
     }
 
     @objc func signIn() {
@@ -113,6 +118,7 @@ class WelcomeViewController: UIViewController {
         print("Log in as user: \(username) with register: \(register)");
         setLoading(true);
         let creds = SyncCredentials.usernamePassword(username: username, password: password, register: register);
+
         SyncUser.logIn(with: creds, server: Constants.AUTH_URL, onCompletion: { [weak self](user, err) in
             self!.setLoading(false);
             if let error = err { 
