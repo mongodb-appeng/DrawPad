@@ -1,4 +1,4 @@
-/// Copyright (c) 2018 MongoDB Inc
+/// Copyright (c) 2019 MongoDB Inc
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -73,18 +73,19 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     notificationToken = shapes.observe { [weak self] changes in
       guard let strongSelf = self else {
         return
       }
+      print("changes: \(changes)")
       switch changes {
       case .initial(let shapes):
         strongSelf.draw { context in
           shapes.forEach { $0.draw(context) }
         }
         break
-      case .update(let shapes, _, let insertions, let modifications):
+      case .update(let shapes, let deletions, let insertions, let modifications):
+        
         (insertions + modifications).forEach { index in
           if shapes[index].deviceId != thisDevice {
             strongSelf.draw { context in
@@ -98,7 +99,16 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
             }
           }
         }
-
+        print("\(deletions.count) deletions")
+        if deletions.count > 0 {
+          strongSelf.mainImageView.image = nil
+          strongSelf.shapes.forEach { shape in
+            strongSelf.draw { context in
+              shape.draw(context)
+            }
+          }
+        }
+        
         strongSelf.mergeViews()
         break
       case .error(let error):
@@ -230,6 +240,8 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     guard let touch = touches.first else {
       return
     }
+    
+    print ("touchesMoved")
 
     let currentPoint = touch.location(in: view)
 
