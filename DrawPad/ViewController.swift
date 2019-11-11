@@ -135,13 +135,18 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   @IBAction func resetPressed(_ sender: Any) {
     mainImageView.image = nil
 
-    draw { context in
-      self.shapes.forEach { $0.erase(context) }
-    }
-
+    // TODO – delete from Realm Cloud? `realm.delete(realm.objects(LinkedPoint.self))`
     try! realm.write {
-      self.shapes.forEach { $0.isErased = true }
+      realm.delete(realm.objects(LinkedPoint.self))
+      realm.delete(realm.objects(Shape.self))
     }
+//    draw { context in
+//      self.shapes.forEach { $0.erase(context) }
+//    }
+//
+//    try! realm.write {
+//      self.shapes.forEach { $0.isErased = true }
+//    }
   }
   
   @IBAction func sharePressed(_ sender: Any) {
@@ -149,10 +154,9 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
       print("Failed to extract image")
       return
     }
-    let storedImage = StoredImage(image: image, name: "andrewjamesmorgan@gmail.com")
+    let storedImage = StoredImage(image: image)
     try! self.realm.write {
       self.realm.add(storedImage)
-      print("storedImage.email \(storedImage.email)")
     }
 
     let imageURL = AWS.uploadImage(image: image, email: "andrewjamesmorgan@gmail.com")
