@@ -1,4 +1,4 @@
-// 
+//
 //  AWS.swift
 //  DrawPad
 //
@@ -33,7 +33,7 @@ class AWS {
       "Bucket": Constants.S3_BUCKET_NAME,
        "Key": imageName,
        "ACL": "public-read",
-       "ContentType": "image/png",
+       "ContentType": "image/jpeg",
        "Body": imageBSON,
        // or "Body": Binary.init(...)
     ]
