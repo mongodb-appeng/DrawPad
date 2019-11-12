@@ -156,7 +156,8 @@ class Shape: Object {
     context.setBlendMode(.normal)
     context.setLineWidth(brushWidth + (shouldErase ? 2 : 0))
     context.setStrokeColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
-    context.strokePath()
+    context.setFillColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+    context.fillPath()
   }
 
   /// Draw the shape with the given context.
