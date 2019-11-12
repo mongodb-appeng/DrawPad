@@ -255,7 +255,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         // with the dragged point. the LinkedPoint list should always contain
         // (x₁, y₁) and (x₂, y₂), the top left and and bottom right corners
         // of the rect
-      case .rect, .ellipse:
+      case .rect, .ellipse, .stamp:
         // if 'swiped' (a.k.a. not a single point), erase the current shape,
         // which is effectively acting as a draft. then redraw the current
         // state
@@ -382,6 +382,16 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     } else {
       sender.isSelected = true
       shapeType = .triangle
+    }
+  }
+
+  @IBAction func stampButtonTouched(_ sender: UIButton) {
+    if shapeType == .stamp {
+      sender.isSelected = false
+      shapeType = .line
+    } else {
+      sender.isSelected = true
+      shapeType = .stamp
     }
   }
 }

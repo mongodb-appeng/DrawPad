@@ -60,7 +60,7 @@ class LinkedPoint: Object {
 
 /// ShapeType enumerates types of possible shapes
 @objc enum ShapeType: Int {
-  case line, rect, ellipse, triangle
+  case line, rect, ellipse, triangle, stamp
 }
 
 /// Shape is the all encompassing class for the various
@@ -160,6 +160,23 @@ class Shape: Object {
     context.fillPath()
   }
 
+  private func drawStamp(_ context: CGContext, shouldErase: Bool) {
+    context.move(to: lastPoint!.asCGPoint())
+
+    let image = UIImage(named: "grumpy_cat_stamp.png")!
+
+    if shouldErase {
+      context.addRect(lastPoint!.asCGRect())
+      context.setLineCap(.round)
+      context.setBlendMode(.normal)
+      context.setLineWidth(brushWidth + 2)
+      context.setFillColor(UIColor.white.cgColor)
+      context.fillPath()
+    } else {
+      image.draw(in: lastPoint!.asCGRect(), blendMode: .normal, alpha: 1.0)
+    }
+  }
+
   /// Draw the shape with the given context.
   /// - parameter context: the current CGContext
   func draw(_ context: CGContext) {
@@ -176,6 +193,8 @@ class Shape: Object {
       if (lastPoint!.nextPoint != nil) { drawEllipse(context, shouldErase: false) }
     case .triangle:
       if (lastPoint!.nextPoint != nil) { drawTriangle(context, shouldErase: false) }
+    case .stamp:
+      drawStamp(context, shouldErase: false)
     }
   }
 
@@ -193,6 +212,8 @@ class Shape: Object {
       if (lastPoint!.nextPoint != nil) { drawEllipse(context, shouldErase: true) }
     case .triangle:
       if (lastPoint!.nextPoint != nil) { drawTriangle(context, shouldErase: true) }
+    case .stamp:
+      drawStamp(context, shouldErase: true)
     }
   }
 }

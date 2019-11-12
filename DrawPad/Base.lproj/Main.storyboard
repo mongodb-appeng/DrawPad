@@ -257,6 +257,16 @@
                                     <action selector="triangleButtonTouched:" destination="bnj-k7-SPu" eventType="touchUpInside" id="l2h-3f-I2D"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5TO-bY-aKx">
+                                <rect key="frame" x="330" y="483" width="25" height="24"/>
+                                <state key="normal" image="smiley" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                </state>
+                                <state key="selected" image="smiley.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="stampButtonTouched:" destination="bnj-k7-SPu" eventType="touchUpInside" id="mF7-p8-lfr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -287,12 +297,14 @@
                             <constraint firstItem="Axz-FB-lma" firstAttribute="leading" secondItem="2Sa-Cf-1SP" secondAttribute="leading" id="Ynn-gD-iiU"/>
                             <constraint firstItem="dGR-wj-tgw" firstAttribute="leading" secondItem="u6b-9L-ok0" secondAttribute="trailing" constant="-46" id="Z93-0S-bXB"/>
                             <constraint firstItem="jRo-lx-Yhq" firstAttribute="bottom" secondItem="TuW-Qb-y5J" secondAttribute="bottom" id="bKi-MI-ozQ"/>
+                            <constraint firstItem="a1q-aP-V6o" firstAttribute="top" secondItem="5TO-bY-aKx" secondAttribute="bottom" constant="11" id="cNl-4g-zoJ"/>
                             <constraint firstItem="uaP-ea-iLa" firstAttribute="leading" secondItem="Fvb-QL-okM" secondAttribute="trailing" id="dNa-fZ-823"/>
                             <constraint firstAttribute="bottom" secondItem="L06-IZ-4jf" secondAttribute="bottom" id="eUi-ty-BPZ"/>
                             <constraint firstItem="a1q-aP-V6o" firstAttribute="leading" secondItem="u6b-9L-ok0" secondAttribute="trailing" constant="-46" id="f6U-rC-UIm"/>
                             <constraint firstItem="L06-IZ-4jf" firstAttribute="top" secondItem="2Sa-Cf-1SP" secondAttribute="top" id="hOc-AC-GYd"/>
                             <constraint firstAttribute="trailing" secondItem="ACQ-ij-JFt" secondAttribute="trailing" constant="32" id="i57-o5-p7L"/>
                             <constraint firstAttribute="centerX" secondItem="yrV-FE-fB0" secondAttribute="centerX" id="jqD-px-41R"/>
+                            <constraint firstItem="5TO-bY-aKx" firstAttribute="leading" secondItem="u6b-9L-ok0" secondAttribute="trailing" constant="-45" id="kl0-wv-mEg"/>
                             <constraint firstItem="bx1-Ym-8Q6" firstAttribute="leading" secondItem="nR7-fC-L0S" secondAttribute="trailing" id="lYc-1l-maQ"/>
                             <constraint firstItem="jRo-lx-Yhq" firstAttribute="bottom" secondItem="Fvb-QL-okM" secondAttribute="bottom" id="mTU-1D-96c"/>
                             <constraint firstItem="RIx-ed-RFv" firstAttribute="top" secondItem="a1q-aP-V6o" secondAttribute="bottom" constant="11" id="mev-kn-b0r"/>
@@ -532,6 +544,8 @@
         <image name="arrow.uturn.left.square.fill" catalog="system" width="64" height="56"/>
         <image name="circle" catalog="system" width="64" height="60"/>
         <image name="circle.fill" catalog="system" width="64" height="60"/>
+        <image name="smiley" catalog="system" width="64" height="60"/>
+        <image name="smiley.fill" catalog="system" width="64" height="60"/>
         <image name="square" catalog="system" width="64" height="56"/>
         <image name="square.fill" catalog="system" width="64" height="56"/>
         <image name="triangle" catalog="system" width="64" height="56"/>
