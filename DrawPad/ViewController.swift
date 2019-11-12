@@ -77,7 +77,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
       guard let strongSelf = self else {
         return
       }
-      print("changes: \(changes)")
+//      print("changes: \(changes)")
       switch changes {
       case .initial(let shapes):
         strongSelf.draw { context in
@@ -99,7 +99,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
             }
           }
         }
-        print("\(deletions.count) deletions")
+//        print("\(deletions.count) deletions")
         if deletions.count > 0 {
           strongSelf.mainImageView.image = nil
           strongSelf.shapes.forEach { shape in
@@ -122,7 +122,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    print("In ViewController")
+//    print("In ViewController")
     guard let navController = segue.destination as? UINavigationController,
       let settingsController = navController.topViewController as? SettingsViewController else {
         return
@@ -170,7 +170,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     }
 
     let imageURL = AWS.uploadImage(image: image, email: "andrewjamesmorgan@gmail.com")
-    print("url: \(imageURL)")
+//    print("url: \(imageURL)")
     if imageURL != "" {
       try! self.realm.write {
         storedImage.imageLink = imageURL
@@ -241,7 +241,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
       return
     }
     
-    print ("touchesMoved")
+//    print ("touchesMoved")
 
     let currentPoint = touch.location(in: view)
 

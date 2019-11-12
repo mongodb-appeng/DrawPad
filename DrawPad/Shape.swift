@@ -165,11 +165,11 @@ class Shape: Object {
     case .line:
       drawLine(context, shouldErase: false)
     case .rect:
-      drawRect(context, shouldErase: false)
+      if (lastPoint!.nextPoint != nil) { drawRect(context, shouldErase: false) }
     case .ellipse:
-      drawEllipse(context, shouldErase: false)
+      if (lastPoint!.nextPoint != nil) { drawEllipse(context, shouldErase: false) }
     case .triangle:
-      drawTriangle(context, shouldErase: false)
+      if (lastPoint!.nextPoint != nil) { drawTriangle(context, shouldErase: false) }
     }
   }
 
@@ -182,11 +182,11 @@ class Shape: Object {
     case .line:
       drawLine(context, shouldErase: true)
     case .rect:
-      drawRect(context, shouldErase: true)
+      if (lastPoint!.nextPoint != nil) { drawRect(context, shouldErase: true) }
     case .ellipse:
-      drawEllipse(context, shouldErase: true)
+      if (lastPoint!.nextPoint != nil) { drawEllipse(context, shouldErase: true) }
     case .triangle:
-      drawTriangle(context, shouldErase: true)
+      if (lastPoint!.nextPoint != nil) { drawTriangle(context, shouldErase: true) }
     }
   }
 }
