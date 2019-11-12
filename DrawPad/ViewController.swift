@@ -276,6 +276,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         // state
         if swiped {
           currentShape!.erase(context)
+          self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
         try! realm.write {
