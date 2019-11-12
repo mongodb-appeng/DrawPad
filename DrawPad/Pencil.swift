@@ -148,10 +148,10 @@ extension UIColor {
     func toHex(alpha: Bool = false) -> String {
         guard let components = cgColor.components, components.count >= 3 else {
           if cgColor.components![0] == 1.0 {
-            print ("White")
+            // White
             return "FFFFFF"
           }
-          print ("Black")
+          // Black
           return "000000"
         }
 
