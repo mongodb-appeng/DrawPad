@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bnj-k7-SPu">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -235,7 +234,7 @@
                                     <action selector="rectangleButtonTouched:" destination="bnj-k7-SPu" eventType="touchUpInside" id="GhN-g1-y37"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RIx-ed-RFv">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RIx-ed-RFv" userLabel="EllipseButton">
                                 <rect key="frame" x="329" y="552" width="25" height="24"/>
                                 <state key="normal" image="circle" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -247,7 +246,7 @@
                                     <action selector="ellipsisButtonTouched:" destination="bnj-k7-SPu" eventType="touchUpInside" id="MxU-gc-gaS"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1q-aP-V6o">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1q-aP-V6o" userLabel="TriangleButton">
                                 <rect key="frame" x="329" y="518" width="26" height="23"/>
                                 <state key="normal" image="triangle" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -257,7 +256,7 @@
                                     <action selector="triangleButtonTouched:" destination="bnj-k7-SPu" eventType="touchUpInside" id="l2h-3f-I2D"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5TO-bY-aKx">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5TO-bY-aKx" userLabel="StampButton">
                                 <rect key="frame" x="330" y="483" width="25" height="24"/>
                                 <state key="normal" image="smiley" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -265,6 +264,16 @@
                                 <state key="selected" image="smiley.fill" catalog="system"/>
                                 <connections>
                                     <action selector="stampButtonTouched:" destination="bnj-k7-SPu" eventType="touchUpInside" id="mF7-p8-lfr"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ydh-VW-7aK" userLabel="TextButton">
+                                <rect key="frame" x="330" y="448" width="27.5" height="24"/>
+                                <state key="normal" image="text.bubble" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                </state>
+                                <state key="selected" image="text.bubble.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="textButtonTouched:" destination="bnj-k7-SPu" eventType="touchUpInside" id="iYV-t9-Z4k"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -286,12 +295,14 @@
                             <constraint firstAttribute="trailing" secondItem="L06-IZ-4jf" secondAttribute="trailing" id="HlZ-j3-cp2"/>
                             <constraint firstItem="yrV-FE-fB0" firstAttribute="top" secondItem="jRo-lx-Yhq" secondAttribute="top" constant="10" id="IVs-ei-EPm"/>
                             <constraint firstItem="u6b-9L-ok0" firstAttribute="top" secondItem="2Sa-Cf-1SP" secondAttribute="top" id="IdQ-WT-Wa8"/>
+                            <constraint firstItem="ydh-VW-7aK" firstAttribute="leading" secondItem="u6b-9L-ok0" secondAttribute="trailing" constant="-45" id="Jua-ft-8gg"/>
                             <constraint firstItem="PZs-w4-yb1" firstAttribute="leading" secondItem="bx1-Ym-8Q6" secondAttribute="trailing" id="Mo7-r6-wel"/>
                             <constraint firstItem="sLj-R8-4CT" firstAttribute="leading" secondItem="Ssw-hd-Yjq" secondAttribute="trailing" id="OHz-pT-G4Y"/>
                             <constraint firstItem="Ssw-hd-Yjq" firstAttribute="leading" secondItem="tlx-zI-aQg" secondAttribute="trailing" id="QXz-Y3-1bK"/>
                             <constraint firstItem="6La-KP-Z4c" firstAttribute="leading" secondItem="PZs-w4-yb1" secondAttribute="trailing" id="RSA-Iq-J1W"/>
                             <constraint firstItem="jRo-lx-Yhq" firstAttribute="bottom" secondItem="bx1-Ym-8Q6" secondAttribute="bottom" id="SXi-vv-pV4"/>
                             <constraint firstItem="jRo-lx-Yhq" firstAttribute="bottom" secondItem="uaP-ea-iLa" secondAttribute="bottom" id="U4W-U9-kPF"/>
+                            <constraint firstItem="5TO-bY-aKx" firstAttribute="top" secondItem="ydh-VW-7aK" secondAttribute="bottom" constant="11" id="VEW-tK-ahg"/>
                             <constraint firstItem="d5J-cy-tJm" firstAttribute="top" secondItem="jRo-lx-Yhq" secondAttribute="top" constant="10" id="Vs0-w8-lGH"/>
                             <constraint firstItem="TuW-Qb-y5J" firstAttribute="leading" secondItem="sLj-R8-4CT" secondAttribute="trailing" id="Wgs-7H-4k2"/>
                             <constraint firstItem="Axz-FB-lma" firstAttribute="leading" secondItem="2Sa-Cf-1SP" secondAttribute="leading" id="Ynn-gD-iiU"/>
@@ -328,7 +339,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t94-Py-4nT" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-294" y="478"/>
+            <point key="canvasLocation" x="-295.19999999999999" y="477.21139430284859"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="iwz-55-rye">
@@ -548,6 +559,8 @@
         <image name="smiley.fill" catalog="system" width="64" height="60"/>
         <image name="square" catalog="system" width="64" height="56"/>
         <image name="square.fill" catalog="system" width="64" height="56"/>
+        <image name="text.bubble" catalog="system" width="64" height="54"/>
+        <image name="text.bubble.fill" catalog="system" width="64" height="54"/>
         <image name="triangle" catalog="system" width="64" height="56"/>
         <image name="triangle.fill" catalog="system" width="64" height="56"/>
     </resources>
