@@ -117,23 +117,28 @@ class Shape: Object {
 
   private func drawRect(_ context: CGContext, shouldErase: Bool) {
     context.move(to: lastPoint!.asCGPoint())
-
-    context.addRect(lastPoint!.asCGRect())
+    
+    let rectangle = lastPoint!.asCGRect()
+    context.addRect(rectangle)
     context.setLineCap(.round)
     context.setBlendMode(.normal)
     context.setLineWidth(brushWidth + (shouldErase ? 2 : 0))
     context.setStrokeColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+    context.setFillColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+    UIRectFill (rectangle)
     context.strokePath()
   }
 
   private func drawEllipse(_ context: CGContext, shouldErase: Bool) {
     context.move(to: lastPoint!.asCGPoint())
-
-    context.addEllipse(in: lastPoint!.asCGRect())
+    let rectangle = lastPoint!.asCGRect()
+//    context.addEllipse(in: rectangle)
     context.setLineCap(.round)
     context.setBlendMode(.normal)
     context.setLineWidth(brushWidth + (shouldErase ? 2 : 0))
     context.setStrokeColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+    context.setFillColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+    context.fillEllipse(in: rectangle)
     context.strokePath()
   }
 

@@ -54,7 +54,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     self.realm = try! Realm(configuration: config!)
     self.shapes = realm.objects(Shape.self)
     self.storedImages = realm.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
-
     super.init(coder: aDecoder)
   }
 
@@ -262,6 +261,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         // state
         if swiped {
           currentShape!.erase(context)
+          self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
         try! realm.write {
