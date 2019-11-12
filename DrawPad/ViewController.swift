@@ -159,7 +159,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
   }
   
   @IBAction func sharePressed(_ sender: Any) {
-    guard let image = extractPNG() else {
+    guard let image = extractImage() else {
       print("Failed to extract image")
       return
     }
@@ -193,8 +193,8 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     }
   }
   
-  func extractPNG() -> Data? {
-    guard let image = mainImageView.image!.pngData() else {
+  func extractImage() -> Data? {
+    guard let image = mainImageView.image!.jpegData(compressionQuality: 1) else {
       print("Failed to get to the image")
       return nil
     }
