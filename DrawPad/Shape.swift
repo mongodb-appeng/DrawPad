@@ -52,6 +52,14 @@ class LinkedPoint: Object {
                   width: self.x - pointA.x,
                   height: self.y - pointA.y)
   }
+  
+  func rectHeight() -> Int {
+    guard let pointA = nextPoint else {
+        fatalError("Trying to convert a a non-rect linked point to a rect")
+    }
+    
+    return abs(Int(y - pointA.y))
+  }
 
   static func ==(_ lhs: LinkedPoint, _ rhs: LinkedPoint) -> Bool {
     return lhs.x == rhs.x && lhs.y == rhs.y
@@ -60,7 +68,7 @@ class LinkedPoint: Object {
 
 /// ShapeType enumerates types of possible shapes
 @objc enum ShapeType: Int {
-  case line, rect, ellipse, triangle, stamp
+  case line, rect, ellipse, triangle, stamp, text
 }
 
 /// Shape is the all encompassing class for the various
@@ -78,6 +86,10 @@ class Shape: Object {
   @objc dynamic var opacity: CGFloat = 1.0
   /// the color the shape was painted with
   @objc dynamic var color: String = "666666"
+  
+  @objc dynamic var image: String = ""
+  @objc dynamic var text: String = "Placeholder"
+  
   /// whether or not this shape has been erased/undone
   /// NOTE: using the "eraser" feature is semantically
   /// different than whether or not it has been
@@ -176,6 +188,40 @@ class Shape: Object {
       image.draw(in: lastPoint!.asCGRect(), blendMode: .normal, alpha: 1.0)
     }
   }
+  
+  private func drawText(_ context: CGContext, shouldErase: Bool) {
+    context.move(to: lastPoint!.asCGPoint())
+
+    if shouldErase {
+      context.addRect(lastPoint!.asCGRect())
+      context.setLineCap(.round)
+      context.setBlendMode(.normal)
+      context.setLineWidth(brushWidth + 2)
+      context.setFillColor(UIColor.white.cgColor)
+      context.fillPath()
+    } else {
+      let height = lastPoint!.rectHeight()
+      let fontSize = abs(height/4)
+      let font = UIFont.systemFont(ofSize: CGFloat(fontSize))
+      let paragraphStyle = NSMutableParagraphStyle()
+      paragraphStyle.alignment = .left
+      guard let myColor = UIColor(hex: color) else {
+        print ("Could not calc color")
+        return
+      }
+      print ("Color: \(myColor)")
+      let attributes: [NSAttributedString.Key: Any] = [
+          .font: font,
+//          .foregroundColor: UIColor.black,
+          .foregroundColor: myColor,
+          .paragraphStyle: paragraphStyle
+      ]
+
+      let attributedString = NSAttributedString(string: "Height: \(height) – \(text)", attributes: attributes)
+
+      attributedString.draw(in: lastPoint!.asCGRect())
+    }
+  }
 
   /// Draw the shape with the given context.
   /// - parameter context: the current CGContext
@@ -194,7 +240,9 @@ class Shape: Object {
     case .triangle:
       if (lastPoint!.nextPoint != nil) { drawTriangle(context, shouldErase: false) }
     case .stamp:
-      drawStamp(context, shouldErase: false)
+      if (lastPoint!.nextPoint != nil) { drawStamp(context, shouldErase: false) }
+    case .text:
+      if (lastPoint!.nextPoint != nil) { drawText(context, shouldErase: false) }
     }
   }
 
@@ -213,7 +261,9 @@ class Shape: Object {
     case .triangle:
       if (lastPoint!.nextPoint != nil) { drawTriangle(context, shouldErase: true) }
     case .stamp:
-      drawStamp(context, shouldErase: true)
+      if (lastPoint!.nextPoint != nil) { drawStamp(context, shouldErase: true) }
+    case .text:
+        if (lastPoint!.nextPoint != nil) { drawText(context, shouldErase: true) }
     }
   }
 }
