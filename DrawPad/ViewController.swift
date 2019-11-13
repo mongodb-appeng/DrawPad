@@ -424,6 +424,9 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
         realm.add(currentShape!)
       }
       mergeViews()
+      draw { context in
+        shapes.forEach { $0.draw(context) }
+      }
       return false
     }
     var newText = textField.text ?? ""
