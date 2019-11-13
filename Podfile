@@ -6,7 +6,7 @@ target 'DrawPad' do
   use_frameworks!
 
   # Pods for DrawPad
-  pod 'RealmSwift'
+  pod 'RealmSwift', '= 3.21.0'
   pod 'StitchSDK', '= 6.1.0'
   pod 'StitchSDK/StitchAWSService', '= 6.1.0'
   pod 'MongoSwift'
