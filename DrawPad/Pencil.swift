@@ -76,7 +76,8 @@ enum Pencil {
     case .black:
       return .black
     case .grey:
-      return UIColor(white: 105/255.0, alpha: 1.0)
+      return UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+//      return UIColor(white: 105/255.0, alpha: 1.0)
     case .red:
       return UIColor(red: 1, green: 0, blue: 0, alpha: 1.0)
     case .darkblue:

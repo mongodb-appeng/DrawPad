@@ -90,16 +90,10 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
           if shapes[index].deviceId != thisDevice {
             strongSelf.draw { context in
               let shape = shapes[index]
-              if shape.isErased {
-                shape.erase(context)
-                shapes.forEach { $0.draw(context) }
-              } else {
-                shape.draw(context)
-              }
+              shape.draw(context)
             }
           }
         }
-//        print("\(deletions.count) deletions")
         if deletions.count > 0 {
           strongSelf.mainImageView.image = nil
           strongSelf.shapes.forEach { shape in
@@ -145,18 +139,10 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   @IBAction func resetPressed(_ sender: Any) {
     mainImageView.image = nil
 
-    // TODO – delete from Realm Cloud? `realm.delete(realm.objects(LinkedPoint.self))`
     try! realm.write {
       realm.delete(realm.objects(LinkedPoint.self))
       realm.delete(realm.objects(Shape.self))
     }
-//    draw { context in
-//      self.shapes.forEach { $0.erase(context) }
-//    }
-//
-//    try! realm.write {
-//      self.shapes.forEach { $0.isErased = true }
-//    }
   }
   
   @IBAction func sharePressed(_ sender: Any) {
@@ -261,7 +247,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
         // which is effectively acting as a draft. then redraw the current
         // state
         if swiped {
-          currentShape!.erase(context)
+//          currentShape!.erase(context) // TODO can this be deleted?
           self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
@@ -276,7 +262,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
         // which is effectively acting as a draft. then redraw the current
         // state
         if swiped {
-          currentShape!.erase(context)
+//          currentShape!.erase(context) // TODO can this be removed?
           self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
@@ -347,14 +333,10 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     draw { context in
       // find the last non-erased shape associated with this device Id.
       // then erase it, mark it as erased, and redraw the history of the drawing
-      guard let shape = shapes.last(where: { $0.deviceId == thisDevice && !$0.isErased }) else {
+      guard let shape = shapes.last(where: { $0.deviceId == thisDevice }) else {
         return
       }
-
-      shape.erase(context)
-
-      try! realm.write { shape.isErased = true }
-
+      try! realm.write { realm.delete(shape) }
       shapes.forEach { $0.draw(context) }
     }
 
@@ -362,9 +344,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   }
 
   // MARK: - Shape UI controls
-
-  // TODO: These methods should all be expanded and work together
-  // relative to the UI.
 
   @IBAction func rectangleButtonTouched(_ sender: UIButton) {
     if shapeType == .rect {
@@ -432,7 +411,9 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     var newText = textField.text ?? ""
     newText += string
     self.draw { context in
-      currentShape!.erase(context)
+//      currentShape!.erase(context)
+      mainImageView.image = nil
+      shapes.forEach { $0.draw(context) }
       currentShape!.text = newText
       currentShape!.draw(context)
     }
