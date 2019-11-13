@@ -29,9 +29,10 @@
 import UIKit
 import RealmSwift
 
-class ViewController: UIViewController, SettingsViewControllerDelegate {
+class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFieldDelegate {
   @IBOutlet weak var mainImageView: UIImageView!
   @IBOutlet weak var tempImageView: UIImageView!
+  @IBOutlet weak var hiddenTextField: UITextField!
   
   let realm: Realm
   var shapes: Results<Shape>
@@ -76,7 +77,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
       guard let strongSelf = self else {
         return
       }
-//      print("changes: \(changes)")
+      self!.hiddenTextField.delegate = self
       switch changes {
       case .initial(let shapes):
         strongSelf.draw { context in
@@ -216,7 +217,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     guard let touch = touches.first else {
       return
     }
-
+   
     currentShape = Shape()
     currentShape!.shapeType = shapeType
     currentShape!.color = color.toHex
@@ -229,7 +230,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
     }
 
     swiped = false
-
+    
     try! realm.write {
       currentShape!.append(point: LinkedPoint(touch.location(in: view)))
     }
@@ -306,16 +307,26 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
         currentShape!.draw(context)
       }
     }
-
-    // if the shape is not a line, it exists in a draft state.
-    // add it to the realm now
-    // TODO: move the "draft" business logic out of the view
-    if shapeType != .line {
-      try! realm.write {
-        realm.add(currentShape!)
+    
+    switch shapeType {
+    case .line:
+      mergeViews()
+    case .text:
+      // The bounding rectangle for the text has been created but the user
+      // must now type in their text
+      hiddenTextField.becomeFirstResponder()
+      // The text shape will be stored and merged after the user hits return
+    default:
+      // if the shape is not a line, it exists in a draft state.
+      // add it to the realm now
+      // TODO: move the "draft" business logic out of the view
+      if shapeType != .line {
+        try! realm.write {
+          realm.add(currentShape!)
+        }
       }
+      mergeViews()
     }
-    mergeViews()
   }
 
   func settingsViewControllerFinished(_ settingsViewController: SettingsViewController) {
@@ -403,4 +414,30 @@ class ViewController: UIViewController, SettingsViewControllerDelegate {
       shapeType = .text
     }
   }
+  
+  // Delegate methods
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    if string == "\n" {
+      hiddenTextField.text = ""
+      hiddenTextField.resignFirstResponder()
+      try! realm.write {
+        realm.add(currentShape!)
+      }
+      mergeViews()
+      return false
+    }
+    var newText = textField.text ?? ""
+    newText += string
+    self.draw { context in
+      currentShape!.erase(context)
+      currentShape!.text = newText
+      currentShape!.draw(context)
+    }
+    return true
+  }
+  
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    print("Started editing")
+  }
+
 }
