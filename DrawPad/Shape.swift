@@ -88,7 +88,7 @@ class Shape: Object {
   @objc dynamic var color: String = "666666"
   
   @objc dynamic var image: String = ""
-  @objc dynamic var text: String = "Placeholder"
+  @objc dynamic var text: String = "Your text goes here"
   
   /// whether or not this shape has been erased/undone
   /// NOTE: using the "eraser" feature is semantically
@@ -209,7 +209,6 @@ class Shape: Object {
         print ("Could not calc color")
         return
       }
-      print ("Color: \(myColor)")
       let attributes: [NSAttributedString.Key: Any] = [
           .font: font,
 //          .foregroundColor: UIColor.black,
@@ -217,7 +216,7 @@ class Shape: Object {
           .paragraphStyle: paragraphStyle
       ]
 
-      let attributedString = NSAttributedString(string: "Height: \(height) – \(text)", attributes: attributes)
+      let attributedString = NSAttributedString(string: text, attributes: attributes)
 
       attributedString.draw(in: lastPoint!.asCGRect())
     }
