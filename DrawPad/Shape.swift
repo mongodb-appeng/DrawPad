@@ -90,11 +90,6 @@ class Shape: Object {
   @objc dynamic var image: String = ""
   @objc dynamic var text: String = "Your text goes here"
   
-  /// whether or not this shape has been erased/undone
-  /// NOTE: using the "eraser" feature is semantically
-  /// different than whether or not it has been
-  /// entirely undone
-  @objc dynamic var isErased = false
   /// the type of shape this is
   @objc dynamic var shapeType: ShapeType = .line
 
@@ -113,48 +108,47 @@ class Shape: Object {
     self.lastPoint = point
   }
 
-  private func drawLine(_ context: CGContext, shouldErase: Bool) {
+  private func drawLine(_ context: CGContext) {
     var nextPoint = lastPoint
     while nextPoint != nil {
       context.move(to: nextPoint!.asCGPoint())
       context.addLine(to: nextPoint!.nextPoint?.asCGPoint() ?? nextPoint!.asCGPoint())
       context.setLineCap(.round)
       context.setBlendMode(.normal)
-      context.setLineWidth(brushWidth + (shouldErase ? 2 : 0))
-      context.setStrokeColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+      context.setLineWidth(brushWidth)
+      context.setStrokeColor(UIColor(hex: color)!.cgColor)
       context.strokePath()
       nextPoint = nextPoint!.nextPoint
     }
   }
 
-  private func drawRect(_ context: CGContext, shouldErase: Bool) {
+  private func drawRect(_ context: CGContext) {
     context.move(to: lastPoint!.asCGPoint())
     
     let rectangle = lastPoint!.asCGRect()
     context.addRect(rectangle)
     context.setLineCap(.round)
     context.setBlendMode(.normal)
-    context.setLineWidth(brushWidth + (shouldErase ? 2 : 0))
-    context.setStrokeColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
-    context.setFillColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+    context.setLineWidth(brushWidth)
+    context.setStrokeColor(UIColor(hex: color)!.cgColor)
+    context.setFillColor(UIColor(hex: color)!.cgColor)
     UIRectFill (rectangle)
     context.strokePath()
   }
 
-  private func drawEllipse(_ context: CGContext, shouldErase: Bool) {
+  private func drawEllipse(_ context: CGContext) {
     context.move(to: lastPoint!.asCGPoint())
     let rectangle = lastPoint!.asCGRect()
-//    context.addEllipse(in: rectangle)
     context.setLineCap(.round)
     context.setBlendMode(.normal)
-    context.setLineWidth(brushWidth + (shouldErase ? 2 : 0))
-    context.setStrokeColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
-    context.setFillColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+    context.setLineWidth(brushWidth)
+    context.setStrokeColor(UIColor(hex: color)!.cgColor)
+    context.setFillColor(UIColor(hex: color)!.cgColor)
     context.fillEllipse(in: rectangle)
     context.strokePath()
   }
 
-  private func drawTriangle(_ context: CGContext, shouldErase: Bool) {
+  private func drawTriangle(_ context: CGContext) {
     context.move(to: lastPoint!.asCGPoint())
 
     context.addLines(between: [
@@ -166,103 +160,55 @@ class Shape: Object {
 
     context.setLineCap(.round)
     context.setBlendMode(.normal)
-    context.setLineWidth(brushWidth + (shouldErase ? 2 : 0))
-    context.setStrokeColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
-    context.setFillColor(shouldErase ? UIColor.white.cgColor : UIColor(hex: color)!.cgColor)
+    context.setLineWidth(brushWidth)
+    context.setStrokeColor(UIColor(hex: color)!.cgColor)
+    context.setFillColor(UIColor(hex: color)!.cgColor)
     context.fillPath()
   }
 
-  private func drawStamp(_ context: CGContext, shouldErase: Bool) {
+  private func drawStamp(_ context: CGContext) {
     context.move(to: lastPoint!.asCGPoint())
-
     let image = UIImage(named: "grumpy_cat_stamp.png")!
-
-    if shouldErase {
-      context.addRect(lastPoint!.asCGRect())
-      context.setLineCap(.round)
-      context.setBlendMode(.normal)
-      context.setLineWidth(brushWidth + 2)
-      context.setFillColor(UIColor.white.cgColor)
-      context.fillPath()
-    } else {
-      image.draw(in: lastPoint!.asCGRect(), blendMode: .normal, alpha: 1.0)
-    }
+    image.draw(in: lastPoint!.asCGRect(), blendMode: .normal, alpha: 1.0)
   }
   
-  private func drawText(_ context: CGContext, shouldErase: Bool) {
+  private func drawText(_ context: CGContext) {
     context.move(to: lastPoint!.asCGPoint())
-
-    if shouldErase {
-      context.addRect(lastPoint!.asCGRect())
-      context.setLineCap(.round)
-      context.setBlendMode(.normal)
-      context.setLineWidth(brushWidth + 2)
-      context.setFillColor(UIColor.white.cgColor)
-      context.fillPath()
-    } else {
-      let height = lastPoint!.rectHeight()
-      let fontSize = abs(height/4)
-      let font = UIFont.systemFont(ofSize: CGFloat(fontSize))
-      let paragraphStyle = NSMutableParagraphStyle()
-      paragraphStyle.alignment = .left
-      guard let myColor = UIColor(hex: color) else {
-        print ("Could not calc color")
-        return
-      }
-      let attributes: [NSAttributedString.Key: Any] = [
-          .font: font,
-//          .foregroundColor: UIColor.black,
-          .foregroundColor: myColor,
-          .paragraphStyle: paragraphStyle
-      ]
-
-      let attributedString = NSAttributedString(string: text, attributes: attributes)
-
-      attributedString.draw(in: lastPoint!.asCGRect())
+    let height = lastPoint!.rectHeight()
+    let fontSize = abs(height/4)
+    let font = UIFont.systemFont(ofSize: CGFloat(fontSize))
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.alignment = .left
+    guard let myColor = UIColor(hex: color) else {
+      print ("Could not calc color")
+      return
     }
-  }
+    let attributes: [NSAttributedString.Key: Any] = [
+        .font: font,
+        .foregroundColor: myColor,
+        .paragraphStyle: paragraphStyle
+    ]
+
+    let attributedString = NSAttributedString(string: text, attributes: attributes)
+    attributedString.draw(in: lastPoint!.asCGRect())
+}
 
   /// Draw the shape with the given context.
   /// - parameter context: the current CGContext
   func draw(_ context: CGContext) {
-    guard !isErased else {
-      return
-    }
-
     switch shapeType {
     case .line:
-      drawLine(context, shouldErase: false)
+      drawLine(context)
     case .rect:
-      if (lastPoint!.nextPoint != nil) { drawRect(context, shouldErase: false) }
+      if (lastPoint!.nextPoint != nil) { drawRect(context) }
     case .ellipse:
-      if (lastPoint!.nextPoint != nil) { drawEllipse(context, shouldErase: false) }
+      if (lastPoint!.nextPoint != nil) { drawEllipse(context) }
     case .triangle:
-      if (lastPoint!.nextPoint != nil) { drawTriangle(context, shouldErase: false) }
+      if (lastPoint!.nextPoint != nil) { drawTriangle(context) }
     case .stamp:
-      if (lastPoint!.nextPoint != nil) { drawStamp(context, shouldErase: false) }
+      if (lastPoint!.nextPoint != nil) { drawStamp(context) }
     case .text:
-      if (lastPoint!.nextPoint != nil) { drawText(context, shouldErase: false) }
-    }
-  }
-
-  /// Erase the shape with the given context.
-  /// Erasing SHOULD effectively paint over the shape
-  /// with white "paint". This is to maintain historical state.
-  /// - parameter context: the current CGContext
-  func erase(_ context: CGContext) {
-    switch shapeType {
-    case .line:
-      drawLine(context, shouldErase: true)
-    case .rect:
-      if (lastPoint!.nextPoint != nil) { drawRect(context, shouldErase: true) }
-    case .ellipse:
-      if (lastPoint!.nextPoint != nil) { drawEllipse(context, shouldErase: true) }
-    case .triangle:
-      if (lastPoint!.nextPoint != nil) { drawTriangle(context, shouldErase: true) }
-    case .stamp:
-      if (lastPoint!.nextPoint != nil) { drawStamp(context, shouldErase: true) }
-    case .text:
-        if (lastPoint!.nextPoint != nil) { drawText(context, shouldErase: true) }
+      if (lastPoint!.nextPoint != nil) { drawText(context) }
     }
   }
 }
