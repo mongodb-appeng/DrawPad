@@ -54,7 +54,7 @@ class UserContact: Object {
 }
 
 class StoredImage: Object {
-  @objc dynamic var itemId: String = UUID().uuidString
+  @objc dynamic var _id: String = UUID().uuidString
   @objc dynamic var userContact: UserContact? = UserContact()
   @objc dynamic var image: Data? = nil
   @objc dynamic var imageLink: String? = nil
@@ -68,6 +68,6 @@ class StoredImage: Object {
   }
   
   override static func primaryKey() -> String? {
-      return "itemId"
+      return "_id"
   }
 }
