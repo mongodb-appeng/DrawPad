@@ -19,6 +19,7 @@
 import UIKit
 import RealmSwift
 
+
 class WelcomeViewController: UIViewController {
 
   let usernameField = UITextField()
@@ -42,6 +43,7 @@ class WelcomeViewController: UIViewController {
 
     override func viewDidLoad() {
       super.viewDidLoad();
+      navigationController?.setNavigationBarHidden(true, animated: false)
 
       if SyncUser.current != nil {
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ViewController") as? ViewController
@@ -118,7 +120,7 @@ class WelcomeViewController: UIViewController {
 
         SyncUser.logIn(with: creds, server: Constants.AUTH_URL, onCompletion: { [weak self](user, err) in
             self!.setLoading(false);
-            if let error = err { 
+            if let error = err {
                 // Auth error: user already exists? Try logging in as that user.
                 print("Login failed: \(error)");
                 self!.errorLabel.text = "Login failed: \(error.localizedDescription)"

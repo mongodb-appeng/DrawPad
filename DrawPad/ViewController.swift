@@ -59,11 +59,13 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   }
 
   private func draw(_ block: (CGContext) -> Void) {
-    UIGraphicsBeginImageContext(self.view.frame.size)
+//    UIGraphicsBeginImageContext(self.view.frame.size)
+    UIGraphicsBeginImageContext(self.tempImageView.frame.size)
     guard let context = UIGraphicsGetCurrentContext() else {
       return
     }
-    self.tempImageView.image?.draw(in: self.view.bounds)
+//    self.tempImageView.image?.draw(in: self.view.bounds)
+    self.tempImageView.image?.draw(in: tempImageView.bounds)
 
     block(context)
 
@@ -191,8 +193,8 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   func mergeViews() {
     // Merge tempImageView into mainImageView
     UIGraphicsBeginImageContext(mainImageView.frame.size)
-    mainImageView.image?.draw(in: view.bounds, blendMode: .normal, alpha: 1.0)
-    tempImageView?.image?.draw(in: view.bounds, blendMode: .normal, alpha: opacity)
+    mainImageView.image?.draw(in: mainImageView.bounds, blendMode: .normal, alpha: 1.0)
+    tempImageView?.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: opacity)
     mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     
@@ -218,7 +220,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     swiped = false
     
     try! realm.write {
-      currentShape!.append(point: LinkedPoint(touch.location(in: view)))
+      currentShape!.append(point: LinkedPoint(touch.location(in: tempImageView)))
     }
   }
   
@@ -229,7 +231,8 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     
 //    print ("touchesMoved")
 
-    let currentPoint = touch.location(in: view)
+    // TODO use imageview
+    let currentPoint = touch.location(in: tempImageView)
 
     draw { context in
       switch shapeType {
