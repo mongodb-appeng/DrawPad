@@ -229,9 +229,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
       return
     }
     
-//    print ("touchesMoved")
-
-    // TODO use imageview
     let currentPoint = touch.location(in: tempImageView)
 
     draw { context in
@@ -250,7 +247,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
         // which is effectively acting as a draft. then redraw the current
         // state
         if swiped {
-//          currentShape!.erase(context) // TODO can this be deleted?
           self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
@@ -265,7 +261,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
         // which is effectively acting as a draft. then redraw the current
         // state
         if swiped {
-//          currentShape!.erase(context) // TODO can this be removed?
           self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
@@ -396,6 +391,13 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
       shapeType = .text
     }
   }
+  
+  @IBAction func logoutButtonTouched(_ sender: Any) {
+    let user = SyncUser.current!
+    user.logOut()
+    self.navigationController!.popViewController(animated: true)
+  }
+  
   
   // Delegate methods
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
