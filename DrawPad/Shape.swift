@@ -24,15 +24,30 @@ let thisDevice = UIDevice.current.identifierForVendor?.uuidString
 /// A singly linked list of points
 class LinkedPoint: Object {
   /// The x coordinate of the point
-  @objc dynamic var x: CGFloat = 0.0
+  @objc dynamic var xf: Float = 0.0
   /// The y coordinate of the point
-  @objc dynamic var y: CGFloat = 0.0
+  @objc dynamic var yf: Float = 0.0
   @objc dynamic var nextPoint: LinkedPoint?
-
+  var x: CGFloat {
+    get {
+      return CGFloat(xf)
+    }
+    set (xcg) {
+      xf = Float(xcg)
+    }
+  }
+  var y: CGFloat {
+    get {
+      return CGFloat(yf)
+    }
+    set (xcg) {
+      yf = Float(xcg)
+    }
+  }
   convenience init(_ point: CGPoint) {
     self.init()
-    self.x = point.x
-    self.y = point.y
+    self.xf = Float(point.x)
+    self.yf = Float(point.y)
   }
 
   /// Convert LinkedPoint to native CGPoint type.
@@ -74,6 +89,8 @@ class LinkedPoint: Object {
 /// Shape is the all encompassing class for the various
 /// shape types
 class Shape: Object {
+  @objc dynamic var _id: String = UUID().uuidString
+
   /// the deviceId that the shape was instantiated in
   @objc dynamic var deviceId: String = thisDevice!
 
@@ -81,9 +98,17 @@ class Shape: Object {
   @objc dynamic var lastPoint: LinkedPoint?
 
   /// the width of the brush the shape was painted with
-  @objc dynamic var brushWidth: CGFloat = 10.0
-  /// the opacity the shape was painted with
-  @objc dynamic var opacity: CGFloat = 1.0
+  @objc dynamic var brushWidthFloat: Float = 10.0
+  
+  var brushWidth: CGFloat {
+    get {
+      return CGFloat(brushWidthFloat)
+    }
+    set (width) {
+      brushWidthFloat = Float(width)
+    }
+  }
+  
   /// the color the shape was painted with
   @objc dynamic var color: String = "666666"
   
@@ -93,6 +118,10 @@ class Shape: Object {
   /// the type of shape this is
   @objc dynamic var shapeType: ShapeType = .line
 
+  override static func primaryKey() -> String? {
+      return "_id"
+  }
+  
   func append(point: LinkedPoint) {
     point.nextPoint = self.lastPoint
     self.lastPoint = point
