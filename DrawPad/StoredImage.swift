@@ -53,16 +53,25 @@ class UserContact: Object {
   }
 }
 
+class _BsonBinary: Object {
+  let subtype = RealmOptional<Int>(0)
+  @objc dynamic var payload: Data = Data()
+  convenience init(image: Data?) {
+    self.init()
+    payload = image!
+  }
+}
+
 class StoredImage: Object {
   @objc dynamic var _id: String = UUID().uuidString
   @objc dynamic var userContact: UserContact? = UserContact()
-  @objc dynamic var image: Data? = nil
+  @objc dynamic var image: _BsonBinary? = nil
   @objc dynamic var imageLink: String? = nil
   @objc dynamic var timestamp = Date()
   
   convenience init(image: Data?) {
     self.init()
-    self.image = image
+    self.image = _BsonBinary(image: image)
     // TODO replace with form data
     self.userContact = UserContact(firstName: "Andrew", lastName: "Morgan", email: "andrew.morgan@mongodb.com", street1: "16 Hatfields", street2: "", city: "London", state: "", postalCode: "SE1 8DJ", country: "UK")
   }
