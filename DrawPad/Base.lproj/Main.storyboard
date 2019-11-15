@@ -21,9 +21,10 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L06-IZ-4jf" userLabel="MainImageView">
                                 <rect key="frame" x="300" y="60" width="700" height="700"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u6b-9L-ok0" userLabel="TempImageView">
-                                <rect key="frame" x="300" y="60" width="700" height="700"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="700" id="3vg-5h-Ey2"/>
+                                    <constraint firstAttribute="width" secondItem="L06-IZ-4jf" secondAttribute="height" multiplier="1:1" id="8uA-ZA-7tF"/>
+                                </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ACQ-ij-JFt">
                                 <rect key="frame" x="1008" y="10" width="40" height="30"/>
@@ -282,13 +283,19 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u6b-9L-ok0" userLabel="TempImageView">
+                                <rect key="frame" x="300" y="60" width="700" height="700"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="u6b-9L-ok0" secondAttribute="height" multiplier="1:1" id="3Yn-gw-kId"/>
+                                    <constraint firstAttribute="height" constant="700" id="CxY-eG-qvB"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="jRo-lx-Yhq" firstAttribute="bottom" secondItem="Ssw-hd-Yjq" secondAttribute="bottom" id="08l-DT-UB2"/>
                             <constraint firstItem="zgD-nJ-9z8" firstAttribute="top" secondItem="RIx-ed-RFv" secondAttribute="bottom" constant="11" id="0Vp-kE-abo"/>
                             <constraint firstItem="ACQ-ij-JFt" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2Sa-Cf-1SP" secondAttribute="leading" constant="20" symbolic="YES" id="31T-TL-57Y"/>
-                            <constraint firstItem="L06-IZ-4jf" firstAttribute="leading" secondItem="2Sa-Cf-1SP" secondAttribute="leading" constant="300" id="3A4-Us-EU2"/>
                             <constraint firstItem="jRo-lx-Yhq" firstAttribute="trailing" secondItem="RIx-ed-RFv" secondAttribute="trailing" constant="21" id="5Zh-wS-qPd"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="d5J-cy-tJm" secondAttribute="trailing" constant="20" symbolic="YES" id="5sH-Da-mho"/>
                             <constraint firstItem="Fvb-QL-okM" firstAttribute="leading" secondItem="6La-KP-Z4c" secondAttribute="trailing" id="5uk-Zw-VFw"/>
@@ -334,7 +341,6 @@
                             <constraint firstItem="dGR-wj-tgw" firstAttribute="top" secondItem="zgD-nJ-9z8" secondAttribute="bottom" constant="12" id="wOI-Q9-HIy"/>
                             <constraint firstItem="jRo-lx-Yhq" firstAttribute="trailing" secondItem="ydh-VW-7aK" secondAttribute="trailing" constant="17.5" id="xVH-VZ-toz"/>
                             <constraint firstItem="jRo-lx-Yhq" firstAttribute="bottom" secondItem="dGR-wj-tgw" secondAttribute="bottom" constant="24" id="zf1-oN-eeh"/>
-                            <constraint firstItem="u6b-9L-ok0" firstAttribute="leading" secondItem="2Sa-Cf-1SP" secondAttribute="leading" constant="300" id="ztJ-O2-UK4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jRo-lx-Yhq"/>
                     </view>
@@ -351,7 +357,6 @@
         <!--Navigation Controller-->
         <scene sceneID="iwz-55-rye">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2my-dw-rKy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hh0-U9-Nyw" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fs2-Bf-PCt">
@@ -363,13 +368,13 @@
                         <segue destination="7kX-xX-lij" kind="relationship" relationship="rootViewController" id="xB2-mx-doT"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2my-dw-rKy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="423" y="478"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="rY2-jC-bxF">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ewa-cs-zdK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="7kX-xX-lij" customClass="SettingsViewController" customModule="DrawPad" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Q4c-Dt-xem"/>
@@ -543,6 +548,7 @@
                         <outlet property="sliderRed" destination="Tgx-W9-4UC" id="Ain-bM-wGB"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ewa-cs-zdK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1165.5999999999999" y="476.60098522167488"/>
         </scene>
