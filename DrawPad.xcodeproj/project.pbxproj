@@ -10,12 +10,9 @@
 		49394E182371A668006136B3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E172371A668006136B3 /* Constants.swift */; };
 		49394E1A2371AAF4006136B3 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E192371AAF4006136B3 /* Shape.swift */; };
 		49394E1C2371AB12006136B3 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E1B2371AB12006136B3 /* WelcomeViewController.swift */; };
-
 		494F624923742E9B00F0C7F6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494F624823742E9B00F0C7F6 /* AWS.swift */; };
 		49E3600F2375854F00FC52B8 /* StoredImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E3600E2375854F00FC52B8 /* StoredImage.swift */; };
-
 		49ECB9E02375DC9C003102AD /* grumpy_cat_stamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */; };
-
 		7800221824890A137A866BA3 /* Pods_DrawPad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E1A5D24BCE0B1C88D4CD0E /* Pods_DrawPad.framework */; };
 		E1941C5720B53CB4004A2217 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C5620B53CB4004A2217 /* AppDelegate.swift */; };
 		E1941C5920B53CB4004A2217 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C5820B53CB4004A2217 /* ViewController.swift */; };
@@ -31,12 +28,9 @@
 		49394E172371A668006136B3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		49394E192371AAF4006136B3 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		49394E1B2371AB12006136B3 /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
-
 		494F624823742E9B00F0C7F6 /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49E3600E2375854F00FC52B8 /* StoredImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredImage.swift; sourceTree = "<group>"; };
-
 		49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grumpy_cat_stamp.png; sourceTree = "<group>"; };
-
 		699E5BBD41FBE963D779C01F /* Pods-DrawPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrawPad.release.xcconfig"; path = "Target Support Files/Pods-DrawPad/Pods-DrawPad.release.xcconfig"; sourceTree = "<group>"; };
 		E1941C5320B53CB4004A2217 /* DrawPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1941C5620B53CB4004A2217 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -108,8 +102,8 @@
 				49E3600E2375854F00FC52B8 /* StoredImage.swift */,
 				E1941C6820B544E8004A2217 /* SettingsViewController.swift */,
 				E1941C6A20B54914004A2217 /* Pencil.swift */,
-				E1941C5A20B53CB4004A2217 /* Main.storyboard */,
 				49394E192371AAF4006136B3 /* Shape.swift */,
+				E1941C5A20B53CB4004A2217 /* Main.storyboard */,
 				E1941C5D20B53CB5004A2217 /* Assets.xcassets */,
 				E1941C5F20B53CB5004A2217 /* LaunchScreen.storyboard */,
 				E1941C6220B53CB5004A2217 /* Info.plist */,
