@@ -40,7 +40,8 @@ class UserAddress: Object {
 
 class UserContact: Object {
   @objc dynamic var email: String = ""
-  @objc dynamic var address: UserAddress? = UserAddress()
+//  @objc dynamic var address: UserAddress? = UserAddress()
+  @objc dynamic var address: UserAddress? = nil
   @objc dynamic var firstName: String = ""
   @objc dynamic var lastName: String = ""
   
@@ -73,7 +74,8 @@ class StoredImage: Object {
     self.init()
     self.image = _BsonBinary(image: image)
     // TODO replace with form data
-    self.userContact = UserContact(firstName: "Andrew", lastName: "Morgan", email: "andrew.morgan@mongodb.com", street1: "16 Hatfields", street2: "", city: "London", state: "", postalCode: "SE1 8DJ", country: "UK")
+//    self.userContact = UserContact(firstName: "Andrew", lastName: "Morgan", email: "andrew.morgan@mongodb.com", street1: "16 Hatfields", street2: "", city: "London", state: "", postalCode: "SE1 8DJ", country: "UK")
+    self.userContact = UserContact()
   }
   
   override static func primaryKey() -> String? {
