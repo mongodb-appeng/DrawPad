@@ -80,6 +80,52 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		49C8097223835F5E0061D4C1 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				49C809332382FE630061D4C1 /* DrawMenuViewController.swift */,
+				49EE44A92382AD9F00621659 /* IntroViewController.swift */,
+				49C8092B2382D2240061D4C1 /* RealmConfigViewController.swift */,
+				E1941C6820B544E8004A2217 /* SettingsViewController.swift */,
+				49C809312382FC9D0061D4C1 /* SubmitFormViewController.swift */,
+				49C809372383276E0061D4C1 /* ThanksViewController.swift */,
+				E1941C5820B53CB4004A2217 /* ViewController.swift */,
+				49394E1B2371AB12006136B3 /* WelcomeViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		49C8097323835F7A0061D4C1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				49394E192371AAF4006136B3 /* Shape.swift */,
+				49E3600E2375854F00FC52B8 /* StoredImage.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		49C8097423835F8B0061D4C1 /* Helpers & State */ = {
+			isa = PBXGroup;
+			children = (
+				494F624823742E9B00F0C7F6 /* AWS.swift */,
+				49394E172371A668006136B3 /* Constants.swift */,
+				E1941C6A20B54914004A2217 /* Pencil.swift */,
+				49C80939238335BB0061D4C1 /* RealmConnection.swift */,
+				49C8093523831D400061D4C1 /* User.swift */,
+				49C8092F2382F63A0061D4C1 /* UIViewExtension.swift */,
+			);
+			name = "Helpers & State";
+			sourceTree = "<group>";
+		};
+		49C8097523835FD10061D4C1 /* Story Boards */ = {
+			isa = PBXGroup;
+			children = (
+				E1941C5F20B53CB5004A2217 /* LaunchScreen.storyboard */,
+				E1941C5A20B53CB4004A2217 /* Main.storyboard */,
+			);
+			name = "Story Boards";
+			sourceTree = "<group>";
+		};
 		B02CE082AF652BCC07FF8CFE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,28 +158,14 @@
 		E1941C5520B53CB4004A2217 /* DrawPad */ = {
 			isa = PBXGroup;
 			children = (
+				49C8097523835FD10061D4C1 /* Story Boards */,
+				49C8097423835F8B0061D4C1 /* Helpers & State */,
+				49C8097323835F7A0061D4C1 /* Model */,
+				49C8097223835F5E0061D4C1 /* View Controllers */,
 				49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */,
-				49C809332382FE630061D4C1 /* DrawMenuViewController.swift */,
 				E1941C5620B53CB4004A2217 /* AppDelegate.swift */,
-				E1941C5820B53CB4004A2217 /* ViewController.swift */,
-				49E3600E2375854F00FC52B8 /* StoredImage.swift */,
-				E1941C6820B544E8004A2217 /* SettingsViewController.swift */,
-				E1941C6A20B54914004A2217 /* Pencil.swift */,
-				49394E192371AAF4006136B3 /* Shape.swift */,
-				E1941C5A20B53CB4004A2217 /* Main.storyboard */,
 				E1941C5D20B53CB5004A2217 /* Assets.xcassets */,
-				E1941C5F20B53CB5004A2217 /* LaunchScreen.storyboard */,
 				E1941C6220B53CB5004A2217 /* Info.plist */,
-				49394E172371A668006136B3 /* Constants.swift */,
-				49394E1B2371AB12006136B3 /* WelcomeViewController.swift */,
-				494F624823742E9B00F0C7F6 /* AWS.swift */,
-				49EE44A92382AD9F00621659 /* IntroViewController.swift */,
-				49C8092B2382D2240061D4C1 /* RealmConfigViewController.swift */,
-				49C809312382FC9D0061D4C1 /* SubmitFormViewController.swift */,
-				49C8092F2382F63A0061D4C1 /* UIViewExtension.swift */,
-				49C8093523831D400061D4C1 /* User.swift */,
-				49C809372383276E0061D4C1 /* ThanksViewController.swift */,
-				49C80939238335BB0061D4C1 /* RealmConnection.swift */,
 			);
 			path = DrawPad;
 			sourceTree = "<group>";
