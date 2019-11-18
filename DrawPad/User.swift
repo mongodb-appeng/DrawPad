@@ -13,8 +13,4 @@ class User {
   static var email: String = ""
   static var userName: String = ""
   
-//  convenience init (storedImage: StoredImage) {
-//    self.init()
-//    User.user = storedImage
-//  }
 }
