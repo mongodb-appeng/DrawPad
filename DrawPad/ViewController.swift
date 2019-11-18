@@ -34,7 +34,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   @IBOutlet weak var tempImageView: UIImageView!
   @IBOutlet weak var hiddenTextField: UITextField!
   
-  let realm: Realm
+//  let realm: Realm // TODO Remove
   var shapes: Results<Shape>
   let storedImages: Results<StoredImage>
   var notificationToken: NotificationToken!
@@ -50,11 +50,12 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   private var lineCount = 0
   
   required init?(coder aDecoder: NSCoder) {
-    let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL,
-       fullSynchronization: true)
-    self.realm = try! Realm(configuration: config!)
-    self.shapes = realm.objects(Shape.self)
-    self.storedImages = realm.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
+    RealmConnection.connect()
+//    let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL,
+//       fullSynchronization: true)
+//    self.realm = try! Realm(configuration: config!)
+    self.shapes = RealmConnection.realm!.objects(Shape.self)
+    self.storedImages = RealmConnection.realm!.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
     super.init(coder: aDecoder)
   }
 
@@ -141,26 +142,27 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   @IBAction func resetPressed(_ sender: Any) {
     mainImageView.image = nil
 
-    try! realm.write {
-      realm.delete(realm.objects(LinkedPoint.self))
-      realm.delete(realm.objects(Shape.self))
+    try! RealmConnection.realm!.write {
+      RealmConnection.realm!.delete(RealmConnection.realm!.objects(LinkedPoint.self))
+      RealmConnection.realm!.delete(RealmConnection.realm!.objects(Shape.self))
     }
   }
   
+  // TODO remove
   @IBAction func sharePressed(_ sender: Any) {
     guard let image = extractImage() else {
       print("Failed to extract image")
       return
     }
     let storedImage = StoredImage(image: image)
-    try! self.realm.write {
-      self.realm.add(storedImage)
+    try! RealmConnection.realm!.write {
+      RealmConnection.realm!.add(storedImage)
     }
 
     let imageURL = AWS.uploadImage(image: image, email: "andrewjamesmorgan@gmail.com")
 //    print("url: \(imageURL)")
     if imageURL != "" {
-      try! self.realm.write {
+      try! RealmConnection.realm!.write {
         storedImage.imageLink = imageURL
       }
       let alertController = UIAlertController(title: "Uploaded Image", message:
@@ -212,14 +214,14 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     currentShape!.brushWidth = brushWidth
 
     if shapeType == .line {
-      try! realm.write {
-        realm.add(currentShape!)
+      try! RealmConnection.realm!.write {
+        RealmConnection.realm!.add(currentShape!)
       }
     }
 
     swiped = false
     
-    try! realm.write {
+    try! RealmConnection.realm!.write {
       currentShape!.append(point: LinkedPoint(touch.location(in: tempImageView)))
     }
   }
@@ -235,7 +237,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
       switch shapeType {
         // if the shape is a line, simply append the current point to the head of the list
       case .line:
-        try! realm.write {
+        try! RealmConnection.realm!.write {
           currentShape!.append(point: LinkedPoint(currentPoint))
         }
         // if the shape is a rect or an ellipse, replace the head of the list
@@ -250,7 +252,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
           self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
-        try! realm.write {
+        try! RealmConnection.realm!.write {
           currentShape!.replaceHead(point: LinkedPoint(currentPoint))
         }
         // if the shape is a triangle, have the original point be the tail
@@ -264,7 +266,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
           self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
-        try! realm.write {
+        try! RealmConnection.realm!.write {
           let point2 = LinkedPoint(currentPoint)
           currentShape!.lastPoint?.nextPoint = point2
 
@@ -305,8 +307,8 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
       // add it to the realm now
       // TODO: move the "draft" business logic out of the view
       if shapeType != .line {
-        try! realm.write {
-          realm.add(currentShape!)
+        try! RealmConnection.realm!.write {
+          RealmConnection.realm!.add(currentShape!)
         }
       }
       mergeViews()
@@ -334,7 +336,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
       guard let shape = shapes.last(where: { $0.deviceId == thisDevice }) else {
         return
       }
-      try! realm.write { realm.delete(shape) }
+      try! RealmConnection.realm!.write { RealmConnection.realm!.delete(shape) }
       shapes.forEach { $0.draw(context) }
     }
 
@@ -404,8 +406,8 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     if string == "\n" {
       hiddenTextField.text = ""
       hiddenTextField.resignFirstResponder()
-      try! realm.write {
-        realm.add(currentShape!)
+      try! RealmConnection.realm!.write {
+        RealmConnection.realm!.add(currentShape!)
       }
       mergeViews()
       draw { context in
@@ -416,7 +418,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     var newText = textField.text ?? ""
     newText += string
     self.draw { context in
-//      currentShape!.erase(context)
       mainImageView.image = nil
       shapes.forEach { $0.draw(context) }
       currentShape!.text = newText

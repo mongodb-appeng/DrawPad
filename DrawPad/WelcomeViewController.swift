@@ -42,21 +42,24 @@ class WelcomeViewController: UIViewController {
   }
 
     override func viewDidLoad() {
-      super.viewDidLoad();
+      super.viewDidLoad()
       navigationController?.setNavigationBarHidden(true, animated: false)
 
       if SyncUser.current != nil {
-        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ViewController") as? ViewController
+//        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ViewController") as? ViewController
+        
+//        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawingViewController") as? DrawingViewController
+        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "IntroViewController") as? IntroViewController
         self.navigationController!.pushViewController(vc!, animated: true)
           view.backgroundColor = .white
       }
       
       // Create a view that will automatically lay out the other controls.
-      let container = UIStackView();
+      let container = UIStackView()
       container.translatesAutoresizingMaskIntoConstraints = false
       container.axis = .vertical
       container.alignment = .fill
-      container.spacing = 16.0;
+      container.spacing = 16.0
       view.addSubview(container)
       // Configure the activity indicator.
       activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -90,11 +93,11 @@ class WelcomeViewController: UIViewController {
       passwordField.borderStyle = .roundedRect
       container.addArrangedSubview(passwordField)
       // Configure the sign in and sign up buttons.
-      signInButton.setTitle("Sign In", for: .normal);
+      signInButton.setTitle("Sign In", for: .normal)
       signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
       container.addArrangedSubview(signInButton)
 
-      signUpButton.setTitle("Sign Up", for: .normal);
+      signUpButton.setTitle("Sign Up", for: .normal)
       signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
       container.addArrangedSubview(signUpButton)
 
@@ -114,33 +117,32 @@ class WelcomeViewController: UIViewController {
 
     // Log in with the username and password, optionally registering a user.
     func logIn(username: String, password: String, register: Bool) {
-        print("Log in as user: \(username) with register: \(register)");
-        setLoading(true);
-        let creds = SyncCredentials.usernamePassword(username: username, password: password, register: register);
+        print("Log in as user: \(username) with register: \(register)")
+        setLoading(true)
+        let creds = SyncCredentials.usernamePassword(username: username, password: password, register: register)
 
         SyncUser.logIn(with: creds, server: Constants.AUTH_URL, onCompletion: { [weak self](user, err) in
-            self!.setLoading(false);
+            self!.setLoading(false)
             if let error = err {
                 // Auth error: user already exists? Try logging in as that user.
-                print("Login failed: \(error)");
+                print("Login failed: \(error)")
                 self!.errorLabel.text = "Login failed: \(error.localizedDescription)"
-                return;
+                return
             }
-            print("Login succeeded!");
-            // Go to the main drawing view
-            
-            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ViewController") as? ViewController
+            print("Login succeeded!")
+          User.userName = username
+            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "IntroViewController") as? IntroViewController
             self!.navigationController!.pushViewController(vc!, animated: true)
-        });
+        })
     }
     
     // Turn on or off the activity indicator.
     func setLoading(_ loading: Bool) {
         if loading {
-            activityIndicator.startAnimating();
-            errorLabel.text = "";
+            activityIndicator.startAnimating()
+            errorLabel.text = ""
         } else {
-            activityIndicator.stopAnimating();
+            activityIndicator.stopAnimating()
         }
         usernameField.isEnabled = !loading
         passwordField.isEnabled = !loading

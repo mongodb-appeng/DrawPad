@@ -24,36 +24,36 @@ let thisDevice = UIDevice.current.identifierForVendor?.uuidString
 /// A singly linked list of points
 class LinkedPoint: Object {
   /// The x coordinate of the point
-  @objc dynamic var xf: Float = 0.0
+  @objc dynamic var x: Float = 0.0
   /// The y coordinate of the point
-  @objc dynamic var yf: Float = 0.0
+  @objc dynamic var y: Float = 0.0
   @objc dynamic var nextPoint: LinkedPoint?
-  var x: CGFloat {
+  var X: CGFloat {
     get {
-      return CGFloat(xf)
+      return CGFloat(x)
     }
-    set (xcg) {
-      xf = Float(xcg)
+    set (X) {
+      x = Float(X)
     }
   }
-  var y: CGFloat {
+  var Y: CGFloat {
     get {
-      return CGFloat(yf)
+      return CGFloat(y)
     }
-    set (xcg) {
-      yf = Float(xcg)
+    set (Y) {
+      y = Float(Y)
     }
   }
   convenience init(_ point: CGPoint) {
     self.init()
-    self.xf = Float(point.x)
-    self.yf = Float(point.y)
+    self.X = point.x
+    self.Y = point.y
   }
 
   /// Convert LinkedPoint to native CGPoint type.
   /// - returns: A CGPoint of the same x, y coordinates
   func asCGPoint() -> CGPoint {
-    return CGPoint(x: x, y: y)
+    return CGPoint(x: X, y: Y)
   }
 
   /// Convert LinkedPoint as a linked list to a CGRect.
@@ -62,10 +62,10 @@ class LinkedPoint: Object {
       fatalError("Trying to convert a a non-rect linked point to a rect")
     }
 
-    return CGRect(x: pointA.x,
-                  y: pointA.y,
-                  width: self.x - pointA.x,
-                  height: self.y - pointA.y)
+    return CGRect(x: pointA.X,
+                  y: pointA.Y,
+                  width: self.X - pointA.X,
+                  height: self.Y - pointA.Y)
   }
   
   func rectHeight() -> Int {
