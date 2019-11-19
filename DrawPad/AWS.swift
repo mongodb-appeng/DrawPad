@@ -13,7 +13,14 @@ import StitchCoreAWSService
 import MongoSwift
 
 class AWS {
+  static var uploadToS3: Bool = true
+  
   static func uploadImage(image: Data, email imageName: String) -> String {
+    if !uploadToS3 {
+      print("Skip S3")
+      return ""
+    }
+    
     // MyAwsService is the name of the aws service you created in
     // the stitch UI, and it is configured with a rule
     // that allows the PutObject action on the s3 API

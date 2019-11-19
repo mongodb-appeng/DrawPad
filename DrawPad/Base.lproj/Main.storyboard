@@ -995,7 +995,6 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="heavy"/>
                                 </state>
                                 <connections>
-                                    <action selector="drawingDonePressed:" destination="y9w-GQ-JzG" eventType="touchUpInside" id="97v-P4-QkO"/>
                                     <action selector="textPressed:" destination="y9w-GQ-JzG" eventType="touchUpInside" id="ulm-XW-ow4"/>
                                 </connections>
                             </button>
@@ -1249,7 +1248,7 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
                         <outlet property="address1" destination="Vqc-Td-Wcq" id="R7n-rG-XEI"/>
                         <outlet property="address2" destination="N7r-mw-H3R" id="9NX-Kx-07u"/>
                         <outlet property="city" destination="d39-gq-C7f" id="HJC-ur-CAA"/>
-                        <outlet property="country" destination="vzz-EL-t6C" id="1ed-kF-1S9"/>
+                        <outlet property="country" destination="zRS-2d-aep" id="We3-it-11q"/>
                         <outlet property="firstName" destination="slo-k7-PXo" id="xLN-tc-7Gh"/>
                         <outlet property="lastName" destination="66N-7Y-7kd" id="OYh-dp-vZA"/>
                         <outlet property="postalCode" destination="vzz-EL-t6C" id="NAi-Mt-1Ct"/>

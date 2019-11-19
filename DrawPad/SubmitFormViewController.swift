@@ -19,8 +19,7 @@ class SubmitFormViewController: UIViewController {
     @IBOutlet weak var state: UITextField!
     @IBOutlet weak var postalCode: UITextField!
     @IBOutlet weak var country: UITextField!
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         print("SubmitFormViewController.viewDidLoad")

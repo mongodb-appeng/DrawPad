@@ -23,6 +23,7 @@ class WelcomeViewController: UIViewController {
 
   let usernameField = UITextField()
   let passwordField = UITextField()
+  let s3Field = UISwitch()
   let signInButton = UIButton(type: .roundedRect)
   let signUpButton = UIButton(type: .roundedRect)
   let errorLabel = UILabel()
@@ -88,6 +89,15 @@ class WelcomeViewController: UIViewController {
       passwordField.isSecureTextEntry = true
       passwordField.borderStyle = .roundedRect
       container.addArrangedSubview(passwordField)
+      
+      let s3Label = UILabel()
+      s3Label.numberOfLines = 1
+      s3Label.text="Upload images to S3 from client app?"
+      container.addArrangedSubview(s3Label)
+      
+      s3Field.setOn(true, animated: true)
+      container.addArrangedSubview(s3Field)
+      
       // Configure the sign in and sign up buttons.
       signInButton.setTitle("Sign In", for: .normal)
       signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
@@ -113,6 +123,7 @@ class WelcomeViewController: UIViewController {
 
     // Log in with the username and password, optionally registering a user.
     func logIn(username: String, password: String, register: Bool) {
+        AWS.uploadToS3 = s3Field.isOn
         print("Log in as user: \(username) with register: \(register)")
         setLoading(true)
         let creds = SyncCredentials.usernamePassword(username: username, password: password, register: register)
