@@ -709,7 +709,7 @@
         <!--Realm Config View Controller-->
         <scene sceneID="Mkv-VD-E5a">
             <objects>
-                <viewController storyboardIdentifier="RealmConfigViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pPh-h4-PaR" customClass="RealmConfigViewController" customModule="DrawPad_III" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RealmConfigViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pPh-h4-PaR" customClass="RealmConfigViewController" customModule="DrawPad" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DKo-fH-iyU">
                         <rect key="frame" x="0.0" y="0.0" width="712" height="770"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -770,15 +770,15 @@
             </objects>
             <point key="canvasLocation" x="-1117" y="-247"/>
         </scene>
-        <!--Pop Over Line Thickness View Controller-->
+        <!--Line Thickness Controller-->
         <scene sceneID="3bp-Qw-JPc">
             <objects>
-                <viewController storyboardIdentifier="PopOverLineThicknessViewController" autoresizesArchivedViewToFullSize="NO" modalTransitionStyle="flipHorizontal" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WDF-XC-Dhv" customClass="PopOverLineThicknessViewController" customModule="DrawPad_III" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PopOverLineThicknessViewController" autoresizesArchivedViewToFullSize="NO" modalTransitionStyle="flipHorizontal" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WDF-XC-Dhv" customClass="LineThicknessController" customModule="DrawPad" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" id="wdI-Gp-4vF">
                         <rect key="frame" x="0.0" y="0.0" width="90" height="270"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9U-QJ-IxB">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9U-QJ-IxB" userLabel="ThinWidthButton">
                                 <rect key="frame" x="0.0" y="-20" width="90" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -786,8 +786,11 @@
                                 <state key="normal" image="scribble" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="ultraLight"/>
                                 </state>
+                                <connections>
+                                    <action selector="thinWidthButtonPressed:" destination="WDF-XC-Dhv" eventType="touchUpInside" id="GhG-aW-hkR"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9rj-2E-XpO">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9rj-2E-XpO" userLabel="MediumWidthButton">
                                 <rect key="frame" x="0.0" y="78" width="90" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -795,8 +798,11 @@
                                 <state key="normal" image="scribble" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                 </state>
+                                <connections>
+                                    <action selector="nediumWidthButtonPressed:" destination="WDF-XC-Dhv" eventType="touchUpInside" id="TRc-gY-IAQ"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4iM-QO-M5R">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4iM-QO-M5R" userLabel="WideWidthButton">
                                 <rect key="frame" x="0.0" y="170" width="90" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -804,6 +810,9 @@
                                 <state key="normal" image="scribble" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="black"/>
                                 </state>
+                                <connections>
+                                    <action selector="wideWidthButtonPressed:" destination="WDF-XC-Dhv" eventType="touchUpInside" id="Ex3-0q-yzy"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -816,6 +825,11 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="90" height="290"/>
+                    <connections>
+                        <outlet property="mediumWidthButton" destination="9rj-2E-XpO" id="Ckl-VO-Rod"/>
+                        <outlet property="thinWidthButton" destination="s9U-QJ-IxB" id="yWm-JS-xPW"/>
+                        <outlet property="wideWidthButton" destination="4iM-QO-M5R" id="rkb-iO-dON"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5j-ic-jT2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -824,7 +838,7 @@
         <!--Pop Over Shapes View Controller-->
         <scene sceneID="b0M-s0-CGh">
             <objects>
-                <viewController storyboardIdentifier="OverShapesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CxN-I1-Rxc" customClass="PopOverShapesViewController" customModule="DrawPad_III" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OverShapesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CxN-I1-Rxc" customClass="PopOverShapesViewController" customModule="DrawPad" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rP7-kf-eCu">
                         <rect key="frame" x="0.0" y="0.0" width="90" height="250"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1009,7 +1023,7 @@
         <!--Submit Form View Controller-->
         <scene sceneID="wnw-B3-bGs">
             <objects>
-                <viewController storyboardIdentifier="SubmitFormViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tho-hh-xWr" customClass="SubmitFormViewController" customModule="DrawPad_III" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SubmitFormViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tho-hh-xWr" customClass="SubmitFormViewController" customModule="DrawPad" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ifZ-fB-ZCK">
                         <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1228,7 +1242,7 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
         <!--Thanks View Controller-->
         <scene sceneID="LLE-Zi-lhX">
             <objects>
-                <viewController storyboardIdentifier="ThanksViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DIE-kz-i5y" customClass="ThanksViewController" customModule="DrawPad_III" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ThanksViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DIE-kz-i5y" customClass="ThanksViewController" customModule="DrawPad" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Gl-9O-0te">
                         <rect key="frame" x="0.0" y="0.0" width="1080" height="810"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
