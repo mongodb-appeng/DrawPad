@@ -43,9 +43,10 @@ class SubmitFormViewController: UIViewController {
     
     func clearAndGo() {
         try! RealmConnection.realm!.write {
-            // Delete all of the Realm drawing objects
-            RealmConnection.realm!.delete(RealmConnection.realm!.objects(LinkedPoint.self))
-            RealmConnection.realm!.delete(RealmConnection.realm!.objects(Shape.self))
+          CurrentTool.reset()
+          // Delete all of the Realm drawing objects
+          RealmConnection.realm!.delete(RealmConnection.realm!.objects(LinkedPoint.self))
+          RealmConnection.realm!.delete(RealmConnection.realm!.objects(Shape.self))
         }
         
         // Move to the Thank You view

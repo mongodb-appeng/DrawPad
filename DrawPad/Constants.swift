@@ -37,5 +37,8 @@ struct Constants {
   static let AWS_SERVICE_NAME = "AWS"
   static let ATLAS_SERVICE_NAME = "mongodb-atlas"
   static let REALM_CONFIG_PIN = "27017" // No more tha 5 digits
+  static let DRAW_PEN_WIDTH_THIN: Float = 5.0
+  static let DRAW_PEN_WIDTH_MEDIUM: Float = 10.0
+  static let DRAW_PEN_WIDTH_WIDE: Float = 20.0
 }
 

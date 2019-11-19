@@ -41,7 +41,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
 
   var lastPoint = CGPoint.zero
   var color = UIColor.black
-  var brushWidth: CGFloat = 10.0
+//  var brushWidth: CGFloat = 10.0
   var opacity: CGFloat = 1.0
   var swiped = false
 
@@ -125,7 +125,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
         return
     }
     settingsController.delegate = self
-    settingsController.brush = brushWidth
+    settingsController.brush = CurrentTool.brushWidth
     settingsController.opacity = opacity
     
     var red: CGFloat = 0
@@ -211,7 +211,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     currentShape = Shape()
     currentShape!.shapeType = shapeType
     currentShape!.color = color.toHex
-    currentShape!.brushWidth = brushWidth
+    currentShape!.brushWidth = CurrentTool.brushWidth
 
     if shapeType == .line {
       try! RealmConnection.realm!.write {
@@ -316,7 +316,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   }
 
   func settingsViewControllerFinished(_ settingsViewController: SettingsViewController) {
-    brushWidth = settingsViewController.brush
+    CurrentTool.brushWidth = settingsViewController.brush
     opacity = settingsViewController.opacity
     color = UIColor(red: settingsViewController.red,
                     green: settingsViewController.green,
