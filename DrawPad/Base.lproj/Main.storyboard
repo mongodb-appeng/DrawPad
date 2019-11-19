@@ -835,10 +835,10 @@
             </objects>
             <point key="canvasLocation" x="-277" y="-484"/>
         </scene>
-        <!--Pop Over Shapes View Controller-->
+        <!--Shape Selector View Controller-->
         <scene sceneID="b0M-s0-CGh">
             <objects>
-                <viewController storyboardIdentifier="OverShapesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CxN-I1-Rxc" customClass="PopOverShapesViewController" customModule="DrawPad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OverShapesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CxN-I1-Rxc" customClass="ShapeSelectorViewController" customModule="DrawPad" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rP7-kf-eCu">
                         <rect key="frame" x="0.0" y="0.0" width="90" height="250"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -858,6 +858,9 @@
                                 <state key="normal" image="square" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="semibold"/>
                                 </state>
+                                <connections>
+                                    <action selector="squarePressed:" destination="CxN-I1-Rxc" eventType="touchUpInside" id="HdJ-ei-3H4"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xqh-4a-pfV">
                                 <rect key="frame" x="0.0" y="90" width="90" height="90"/>
@@ -873,6 +876,9 @@
                                 <state key="normal" image="circle" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="semibold"/>
                                 </state>
+                                <connections>
+                                    <action selector="elipsePressed:" destination="CxN-I1-Rxc" eventType="touchUpInside" id="fgp-6x-z3o"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SIG-dm-fEh">
                                 <rect key="frame" x="0.0" y="180" width="90" height="90"/>
@@ -888,6 +894,9 @@
                                 <state key="normal" image="triangle" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="semibold"/>
                                 </state>
+                                <connections>
+                                    <action selector="trianglePressed:" destination="CxN-I1-Rxc" eventType="touchUpInside" id="kHU-vf-cJU"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -909,6 +918,11 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="90" height="270"/>
+                    <connections>
+                        <outlet property="elipse" destination="xqh-4a-pfV" id="bFb-9j-01I"/>
+                        <outlet property="square" destination="tLt-sC-ZXa" id="Xrj-Kb-Leh"/>
+                        <outlet property="triangle" destination="SIG-dm-fEh" id="NMW-fE-pNH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D1d-Wf-0uc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -980,6 +994,10 @@
                                 <state key="normal" title="Aa">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="heavy"/>
                                 </state>
+                                <connections>
+                                    <action selector="drawingDonePressed:" destination="y9w-GQ-JzG" eventType="touchUpInside" id="97v-P4-QkO"/>
+                                    <action selector="textPressed:" destination="y9w-GQ-JzG" eventType="touchUpInside" id="ulm-XW-ow4"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z2V-n3-rtt">
                                 <rect key="frame" x="0.0" y="360" width="90" height="90"/>
@@ -1015,6 +1033,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="TyC-Og-zhr"/>
                     </view>
+                    <connections>
+                        <outlet property="textButton" destination="bxg-CD-Ot2" id="UIn-Ju-Ik1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2qZ-QL-Tvd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

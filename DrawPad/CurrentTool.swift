@@ -10,6 +10,8 @@ import UIKit
 
 class CurrentTool {
   static var brushWidth: CGFloat = CGFloat(Constants.DRAW_PEN_WIDTH_MEDIUM)
+  static var shapeType: ShapeType = .line
+  static var color = UIColor.black
   // TODO add other brush attributes
   
   static func reset() {

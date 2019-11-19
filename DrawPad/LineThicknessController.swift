@@ -15,6 +15,7 @@ class LineThicknessController: UIViewController {
     
     func setWidth (width: Float) {
       CurrentTool.brushWidth = CGFloat(width)
+      CurrentTool.shapeType = .line
       self.dismiss(animated: true)
     }
     
