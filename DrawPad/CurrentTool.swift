@@ -16,5 +16,7 @@ class CurrentTool {
   
   static func reset() {
     brushWidth = CGFloat(Constants.DRAW_PEN_WIDTH_MEDIUM)
+    shapeType = .line
+    color = UIColor.black
   }
 }

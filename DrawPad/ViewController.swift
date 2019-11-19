@@ -169,8 +169,6 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
           imageURL, preferredStyle: .alert)
       alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
       self.present(alertController, animated: true, completion: nil)
-    } else {
-      print("Failed to upload the image to S3")
     }
   }
   
