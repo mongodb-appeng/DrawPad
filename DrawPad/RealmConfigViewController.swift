@@ -37,8 +37,9 @@ class RealmConfigViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func submitRealmCredsButton(_ sender: Any) {
       if (pinTextField.text == Constants.REALM_CONFIG_PIN ){
-        let user = SyncUser.current!
-        user.logOut()
+        if let user = SyncUser.current {
+          user.logOut()
+        }
         if presentingViewController != nil {
           let navigationController = self.presentingViewController as? UINavigationController
           self.dismiss(animated: false, completion: {

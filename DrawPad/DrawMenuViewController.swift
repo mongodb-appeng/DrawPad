@@ -9,6 +9,7 @@
 import UIKit
 
 class DrawMenuViewController: UIViewController {
+    @IBOutlet weak var textButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -23,6 +24,10 @@ class DrawMenuViewController: UIViewController {
       return image
     }
 
+    @IBAction func textPressed(_ sender: Any) {
+        CurrentTool.shapeType = .text
+    }
+    
     @IBAction func drawingDonePressed(_ sender: Any) {
       print("drawingDonePressed")
       let vc = self.parent as! ViewController

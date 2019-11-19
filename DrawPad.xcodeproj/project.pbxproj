@@ -20,6 +20,7 @@
 		49C8093A238335BB0061D4C1 /* RealmConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C80939238335BB0061D4C1 /* RealmConnection.swift */; };
 		49C80977238366CA0061D4C1 /* LineThicknessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C80976238366CA0061D4C1 /* LineThicknessController.swift */; };
 		49C80979238374370061D4C1 /* CurrentTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C80978238374370061D4C1 /* CurrentTool.swift */; };
+		49C8097B2383FAF80061D4C1 /* ShapeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C8097A2383FAF80061D4C1 /* ShapeSelectorViewController.swift */; };
 		49E3600F2375854F00FC52B8 /* StoredImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E3600E2375854F00FC52B8 /* StoredImage.swift */; };
 		49ECB9E02375DC9C003102AD /* grumpy_cat_stamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */; };
 		49EE44AA2382AD9F00621659 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EE44A92382AD9F00621659 /* IntroViewController.swift */; };
@@ -48,6 +49,7 @@
 		49C80939238335BB0061D4C1 /* RealmConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConnection.swift; sourceTree = "<group>"; };
 		49C80976238366CA0061D4C1 /* LineThicknessController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineThicknessController.swift; sourceTree = "<group>"; };
 		49C80978238374370061D4C1 /* CurrentTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTool.swift; sourceTree = "<group>"; };
+		49C8097A2383FAF80061D4C1 /* ShapeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeSelectorViewController.swift; sourceTree = "<group>"; };
 		49E3600E2375854F00FC52B8 /* StoredImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredImage.swift; sourceTree = "<group>"; };
 		49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grumpy_cat_stamp.png; sourceTree = "<group>"; };
 		49EE44A92382AD9F00621659 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				49C809372383276E0061D4C1 /* ThanksViewController.swift */,
 				E1941C5820B53CB4004A2217 /* ViewController.swift */,
 				49394E1B2371AB12006136B3 /* WelcomeViewController.swift */,
+				49C8097A2383FAF80061D4C1 /* ShapeSelectorViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				49C80977238366CA0061D4C1 /* LineThicknessController.swift in Sources */,
 				49C809302382F63A0061D4C1 /* UIViewExtension.swift in Sources */,
 				E1941C6920B544E8004A2217 /* SettingsViewController.swift in Sources */,
+				49C8097B2383FAF80061D4C1 /* ShapeSelectorViewController.swift in Sources */,
 				49C809382383276E0061D4C1 /* ThanksViewController.swift in Sources */,
 				49394E1C2371AB12006136B3 /* WelcomeViewController.swift in Sources */,
 				49C80979238374370061D4C1 /* CurrentTool.swift in Sources */,

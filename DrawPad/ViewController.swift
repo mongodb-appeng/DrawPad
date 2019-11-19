@@ -40,12 +40,12 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   var notificationToken: NotificationToken!
 
   var lastPoint = CGPoint.zero
-  var color = UIColor.black
+//  var color = UIColor.black
 //  var brushWidth: CGFloat = 10.0
   var opacity: CGFloat = 1.0
   var swiped = false
 
-  private var shapeType: ShapeType = .line
+//  private var shapeType: ShapeType = .line
   private var currentShape: Shape?
   private var lineCount = 0
   
@@ -131,7 +131,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     var red: CGFloat = 0
     var green: CGFloat = 0
     var blue: CGFloat = 0
-    color.getRed(&red, green: &green, blue: &blue, alpha: nil)
+    CurrentTool.color.getRed(&red, green: &green, blue: &blue, alpha: nil)
     settingsController.red = red
     settingsController.green = green
     settingsController.blue = blue
@@ -178,9 +178,9 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     guard let pencil = Pencil(tag: sender.tag) else {
       return
     }
-    color = pencil.color
+    CurrentTool.color = pencil.color
     if pencil == .eraser {
-      color = .white
+      CurrentTool.color = .white
     }
   }
   
@@ -209,11 +209,11 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     }
    
     currentShape = Shape()
-    currentShape!.shapeType = shapeType
-    currentShape!.color = color.toHex
+    currentShape!.shapeType = CurrentTool.shapeType
+    currentShape!.color = CurrentTool.color.toHex
     currentShape!.brushWidth = CurrentTool.brushWidth
 
-    if shapeType == .line {
+    if CurrentTool.shapeType == .line {
       try! RealmConnection.realm!.write {
         RealmConnection.realm!.add(currentShape!)
       }
@@ -234,7 +234,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     let currentPoint = touch.location(in: tempImageView)
 
     draw { context in
-      switch shapeType {
+      switch CurrentTool.shapeType {
         // if the shape is a line, simply append the current point to the head of the list
       case .line:
         try! RealmConnection.realm!.write {
@@ -294,7 +294,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
       }
     }
     
-    switch shapeType {
+    switch CurrentTool.shapeType {
     case .line:
       mergeViews()
     case .text:
@@ -306,7 +306,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
       // if the shape is not a line, it exists in a draft state.
       // add it to the realm now
       // TODO: move the "draft" business logic out of the view
-      if shapeType != .line {
+      if CurrentTool.shapeType != .line {
         try! RealmConnection.realm!.write {
           RealmConnection.realm!.add(currentShape!)
         }
@@ -318,7 +318,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   func settingsViewControllerFinished(_ settingsViewController: SettingsViewController) {
     CurrentTool.brushWidth = settingsViewController.brush
     opacity = settingsViewController.opacity
-    color = UIColor(red: settingsViewController.red,
+    CurrentTool.color = UIColor(red: settingsViewController.red,
                     green: settingsViewController.green,
                     blue: settingsViewController.blue,
                     alpha: opacity)
@@ -346,51 +346,51 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   // MARK: - Shape UI controls
 
   @IBAction func rectangleButtonTouched(_ sender: UIButton) {
-    if shapeType == .rect {
+    if CurrentTool.shapeType == .rect {
       sender.isSelected = false
-      shapeType = .line
+      CurrentTool.shapeType = .line
     } else {
       sender.isSelected = true
-      shapeType = .rect
+      CurrentTool.shapeType = .rect
     }
   }
 
   @IBAction func ellipsisButtonTouched(_ sender: UIButton) {
-    if shapeType == .ellipse {
+    if CurrentTool.shapeType == .ellipse {
       sender.isSelected = false
-      shapeType = .line
+      CurrentTool.shapeType = .line
     } else {
       sender.isSelected = true
-      shapeType = .ellipse
+      CurrentTool.shapeType = .ellipse
     }
   }
   
   @IBAction func triangleButtonTouched(_ sender: UIButton) {
-    if shapeType == .triangle {
+    if CurrentTool.shapeType == .triangle {
       sender.isSelected = false
-      shapeType = .line
+      CurrentTool.shapeType = .line
     } else {
       sender.isSelected = true
-      shapeType = .triangle
+      CurrentTool.shapeType = .triangle
     }
   }
 
   @IBAction func stampButtonTouched(_ sender: UIButton) {
-    if shapeType == .stamp {
+    if CurrentTool.shapeType == .stamp {
       sender.isSelected = false
-      shapeType = .line
+      CurrentTool.shapeType = .line
     } else {
       sender.isSelected = true
-      shapeType = .stamp
+      CurrentTool.shapeType = .stamp
     }
   }
   @IBAction func textButtonTouched(_ sender: UIButton) {
-    if shapeType == .text {
+    if CurrentTool.shapeType == .text {
       sender.isSelected = false
-      shapeType = .line
+      CurrentTool.shapeType = .line
     } else {
       sender.isSelected = true
-      shapeType = .text
+      CurrentTool.shapeType = .text
     }
   }
   

@@ -19,7 +19,6 @@
 import UIKit
 import RealmSwift
 
-
 class WelcomeViewController: UIViewController {
 
   let usernameField = UITextField()
@@ -46,9 +45,6 @@ class WelcomeViewController: UIViewController {
       navigationController?.setNavigationBarHidden(true, animated: false)
 
       if SyncUser.current != nil {
-//        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ViewController") as? ViewController
-        
-//        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawingViewController") as? DrawingViewController
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "IntroViewController") as? IntroViewController
         self.navigationController!.pushViewController(vc!, animated: true)
           view.backgroundColor = .white
