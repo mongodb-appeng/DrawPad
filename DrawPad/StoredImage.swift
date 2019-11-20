@@ -52,6 +52,13 @@ class UserContact: Object {
     self.email = email
     self.address = UserAddress(street1: street1, street2: street2, city: city, state: state, postalCode: postalCode, country: country)
   }
+  
+  func setUser (firstName: String, lastName: String, email: String, street1: String, street2: String, city: String, state: String, postalCode: String, country: String) {
+    self.firstName = firstName
+    self.lastName = lastName
+    self.email = email
+    self.address = UserAddress(street1: street1, street2: street2, city: city, state: state, postalCode: postalCode, country: country)
+  }
 }
 
 class _BsonBinary: Object {

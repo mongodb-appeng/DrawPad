@@ -34,38 +34,27 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
   @IBOutlet weak var tempImageView: UIImageView!
   @IBOutlet weak var hiddenTextField: UITextField!
   
-//  let realm: Realm // TODO Remove
   var shapes: Results<Shape>
   let storedImages: Results<StoredImage>
   var notificationToken: NotificationToken!
-
   var lastPoint = CGPoint.zero
-//  var color = UIColor.black
-//  var brushWidth: CGFloat = 10.0
   var opacity: CGFloat = 1.0
   var swiped = false
-
-//  private var shapeType: ShapeType = .line
   private var currentShape: Shape?
   private var lineCount = 0
   
   required init?(coder aDecoder: NSCoder) {
     RealmConnection.connect()
-//    let config = SyncUser.current?.configuration(realmURL: Constants.REALM_URL,
-//       fullSynchronization: true)
-//    self.realm = try! Realm(configuration: config!)
     self.shapes = RealmConnection.realm!.objects(Shape.self)
-    self.storedImages = RealmConnection.realm!.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
+    self.storedImages = RealmConnection.realmAtlas!.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
     super.init(coder: aDecoder)
   }
 
   private func draw(_ block: (CGContext) -> Void) {
-//    UIGraphicsBeginImageContext(self.view.frame.size)
     UIGraphicsBeginImageContext(self.tempImageView.frame.size)
     guard let context = UIGraphicsGetCurrentContext() else {
       return
     }
-//    self.tempImageView.image?.draw(in: self.view.bounds)
     self.tempImageView.image?.draw(in: tempImageView.bounds)
 
     block(context)
@@ -148,29 +137,29 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
     }
   }
   
-  // TODO remove
-  @IBAction func sharePressed(_ sender: Any) {
-    guard let image = extractImage() else {
-      print("Failed to extract image")
-      return
-    }
-    let storedImage = StoredImage(image: image)
-    try! RealmConnection.realm!.write {
-      RealmConnection.realm!.add(storedImage)
-    }
-
-    let imageURL = AWS.uploadImage(image: image, email: "andrewjamesmorgan@gmail.com")
-//    print("url: \(imageURL)")
-    if imageURL != "" {
-      try! RealmConnection.realm!.write {
-        storedImage.imageLink = imageURL
-      }
-      let alertController = UIAlertController(title: "Uploaded Image", message:
-          imageURL, preferredStyle: .alert)
-      alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-      self.present(alertController, animated: true, completion: nil)
-    }
-  }
+//  // TODO remove
+//  @IBAction func sharePressed(_ sender: Any) {
+//    guard let image = extractImage() else {
+//      print("Failed to extract image")
+//      return
+//    }
+//    let storedImage = StoredImage(image: image)
+//    try! RealmConnection.realm!.write {
+//      RealmConnection.realm!.add(storedImage)
+//    }
+//
+//    let imageURL = AWS.uploadImage(image: image, email: "andrewjamesmorgan@gmail.com")
+////    print("url: \(imageURL)")
+//    if imageURL != "" {
+//      try! RealmConnection.realm!.write {
+//        storedImage.imageLink = imageURL
+//      }
+//      let alertController = UIAlertController(title: "Uploaded Image", message:
+//          imageURL, preferredStyle: .alert)
+//      alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+//      self.present(alertController, animated: true, completion: nil)
+//    }
+//  }
   
   @IBAction func pencilPressed(_ sender: UIButton) {
     guard let pencil = Pencil(tag: sender.tag) else {

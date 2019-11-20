@@ -26,15 +26,15 @@ class SubmitFormViewController: UIViewController {
     }
     
     @IBAction func submitPressed(_ sender: Any) {
-        let userContact: UserContact = UserContact(firstName: firstName.text!, lastName: lastName.text!, email: User.email, street1: address1.text!, street2: address2.text!, city: city.text!, state: state.text!, postalCode: postalCode.text!, country: country.text!)
-        try! RealmConnection.realm!.write {
-            User.imageToSend!.userContact = userContact
+//        let userContact: UserContact = UserContact(firstName: firstName.text!, lastName: lastName.text!, email: User.email, street1: address1.text!, street2: address2.text!, city: city.text!, state: state.text!, postalCode: postalCode.text!, country: country.text!)
+        try! RealmConnection.realmAtlas!.write {
+          User.imageToSend!.userContact!.setUser(firstName: firstName.text!, lastName: lastName.text!, email: User.email, street1: address1.text!, street2: address2.text!, city: city.text!, state: state.text!, postalCode: postalCode.text!, country: country.text!)
         }
         clearAndGo()
     }
     
     @IBAction func skipPressed(_ sender: Any) {
-        try! RealmConnection.realm!.write {
+        try! RealmConnection.realmAtlas!.write {
             User.imageToSend!.userContact?.firstName = "Skippy"
         }
       clearAndGo()
@@ -52,8 +52,6 @@ class SubmitFormViewController: UIViewController {
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ThanksViewController") as? ThanksViewController
         self.navigationController!.pushViewController(vc!, animated: true)
     }
-    
-    
 }
 
 
