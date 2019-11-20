@@ -31,7 +31,8 @@ struct Constants {
   
   static let AUTH_URL  = URL(string: "https://\(MY_INSTANCE_ADDRESS)")!
 //  static let REALM_URL = URL(string: "realms://\(MY_INSTANCE_ADDRESS)/~/DrawPad")!
-  static let REALM_URL = "realms://\(MY_INSTANCE_ADDRESS)/drawings/"
+  static let REALM_URL_ATLAS = "realms://\(MY_INSTANCE_ADDRESS)/drawings/"
+  static let REALM_URL = "realms://\(MY_INSTANCE_ADDRESS)/shapes/"
   static let STITCH_APP_ID = "drawpad-owcmq"
   static let S3_BUCKET_NAME = "drawpad-mongodb"
   static let AWS_SERVICE_NAME = "AWS"

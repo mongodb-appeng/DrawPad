@@ -46,10 +46,10 @@ class DrawMenuViewController: UIViewController {
               print("Failed to upload the image to S3")
       }
       
-      try! RealmConnection.realm!.write {
-        RealmConnection.realm!.add(storedImage)
+      try! RealmConnection.realmAtlas!.write {
+        RealmConnection.realmAtlas!.add(storedImage)
+        User.imageToSend = storedImage
       }
-      User.imageToSend = storedImage
 
       let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
       self.navigationController!.pushViewController(submitVC!, animated: true)
