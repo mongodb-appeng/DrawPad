@@ -7,7 +7,7 @@ Assumes that you have XCode and `pod` installed.
 ```
 git clone https://github.com/mongodb-appeng/DrawPad.git
 cd DrawPad
-git install
+pod install
 open DrawPad.xcworkspace
 ```
 And then build in Xcode. 
