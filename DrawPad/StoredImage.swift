@@ -71,6 +71,7 @@ class _BsonBinary: Object {
 }
 
 class StoredImage: Object {
+  @objc dynamic var creator: String = User.userName
   @objc dynamic var _id: String = UUID().uuidString
   @objc dynamic var userContact: UserContact? = UserContact()
   @objc dynamic var image: _BsonBinary? = nil
@@ -80,8 +81,6 @@ class StoredImage: Object {
   convenience init(image: Data?) {
     self.init()
     self.image = _BsonBinary(image: image)
-    // TODO replace with form data
-//    self.userContact = UserContact(firstName: "Andrew", lastName: "Morgan", email: "andrew.morgan@mongodb.com", street1: "16 Hatfields", street2: "", city: "London", state: "", postalCode: "SE1 8DJ", country: "UK")
     self.userContact = UserContact()
   }
   
