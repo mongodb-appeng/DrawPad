@@ -33,9 +33,10 @@ struct Constants {
 //  static let REALM_URL = URL(string: "realms://\(MY_INSTANCE_ADDRESS)/~/DrawPad")!
   static let REALM_URL_ATLAS = "realms://\(MY_INSTANCE_ADDRESS)/drawings/"
   static let REALM_URL = "realms://\(MY_INSTANCE_ADDRESS)/shapes/"
-  static let STITCH_APP_ID = "drawpad-owcmq"
-  static let S3_BUCKET_NAME = "drawpad-mongodb"
+  static let STITCH_APP_ID = "drawpad-qawcs"
+  static let S3_BUCKET_NAME = "drawpad-images-mongodb"
   static let AWS_SERVICE_NAME = "AWS"
+  static let AWS_REGION = "us-west-2"
   static let ATLAS_SERVICE_NAME = "mongodb-atlas"
   static let REALM_CONFIG_PIN = "27017" // No more tha 5 digits
   static let DRAW_PEN_WIDTH_THIN: Float = 5.0
