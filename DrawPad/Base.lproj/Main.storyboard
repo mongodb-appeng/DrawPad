@@ -1029,54 +1029,69 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ThankYou" translatesAutoresizingMaskIntoConstraints="NO" id="ekC-Df-2J2">
-                                <rect key="frame" x="139" y="20" width="802" height="426"/>
+                                <rect key="frame" x="-837.5" y="40" width="2875" height="375"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="426" id="opD-fv-gBH"/>
+                                    <constraint firstAttribute="height" constant="375" id="opD-fv-gBH"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7J8-Wx-Ig5">
-                                <rect key="frame" x="447" y="665" width="183" height="63"/>
-                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thank You!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Mf-H2-RUB">
+                                <rect key="frame" x="462" y="475" width="156" height="36"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DIG-LD-PXS">
+                                <rect key="frame" x="250" y="511" width="580" height="70"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="63" id="aJg-BD-o2p"/>
+                                    <constraint firstAttribute="width" constant="580" id="HkJ-kR-TRA"/>
+                                    <constraint firstAttribute="height" constant="70" id="u1P-dh-lPN"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="   Restart  ">
+                                <string key="text">Getting your design shipped to you? Inkbox is on it.
+Want to learn more about the Realm database and our real-time data sync? 
+Talk to our booth staff or head to mongodb.com/realm</string>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7J8-Wx-Ig5">
+                                <rect key="frame" x="430" y="596" width="220" height="50"/>
+                                <color key="backgroundColor" red="0.074509803921568626" green="0.64313725490196072" blue="0.2457989949335439" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="aJg-BD-o2p"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="220" id="hf5-eC-Pjw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <state key="normal" title="Restart">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="restartPressed:" destination="DIE-kz-i5y" eventType="touchUpInside" id="FuT-Hh-Hit"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DIG-LD-PXS">
-                                <rect key="frame" x="340" y="529" width="400" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </string>
-                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thank You!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Mf-H2-RUB">
-                                <rect key="frame" x="465" y="473" width="149" height="36"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="30"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="ekC-Df-2J2" firstAttribute="leading" secondItem="PmW-SI-HoD" secondAttribute="leading" constant="139" id="8xe-nx-P57"/>
-                            <constraint firstItem="ekC-Df-2J2" firstAttribute="centerX" secondItem="7J8-Wx-Ig5" secondAttribute="centerX" id="OH2-w4-gOx"/>
-                            <constraint firstItem="PmW-SI-HoD" firstAttribute="bottom" secondItem="7J8-Wx-Ig5" secondAttribute="bottom" constant="82" id="OO1-H0-OKX"/>
-                            <constraint firstItem="ekC-Df-2J2" firstAttribute="top" secondItem="PmW-SI-HoD" secondAttribute="top" constant="20" id="RVp-4H-cQ7"/>
+                            <constraint firstItem="DIG-LD-PXS" firstAttribute="top" secondItem="2Mf-H2-RUB" secondAttribute="bottom" id="2VA-tj-o3z"/>
+                            <constraint firstItem="ekC-Df-2J2" firstAttribute="top" secondItem="PmW-SI-HoD" secondAttribute="top" constant="40" id="RVp-4H-cQ7"/>
+                            <constraint firstItem="ekC-Df-2J2" firstAttribute="centerX" secondItem="PmW-SI-HoD" secondAttribute="centerX" constant="60" id="UgV-Ri-wl7"/>
                             <constraint firstItem="7J8-Wx-Ig5" firstAttribute="centerX" secondItem="6Gl-9O-0te" secondAttribute="centerX" id="UuL-MS-bqH"/>
-                            <constraint firstItem="ekC-Df-2J2" firstAttribute="top" secondItem="PmW-SI-HoD" secondAttribute="top" constant="20" id="wef-vX-5J4"/>
+                            <constraint firstItem="2Mf-H2-RUB" firstAttribute="centerX" secondItem="PmW-SI-HoD" secondAttribute="centerX" id="XDb-DX-jGR"/>
+                            <constraint firstItem="2Mf-H2-RUB" firstAttribute="top" secondItem="ekC-Df-2J2" secondAttribute="bottom" constant="60" id="iPh-Qr-c2w"/>
+                            <constraint firstItem="DIG-LD-PXS" firstAttribute="centerX" secondItem="PmW-SI-HoD" secondAttribute="centerX" id="o2H-md-oit"/>
+                            <constraint firstItem="7J8-Wx-Ig5" firstAttribute="top" secondItem="DIG-LD-PXS" secondAttribute="bottom" constant="15" id="qXo-5B-eOP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PmW-SI-HoD"/>
                     </view>
                     <navigationItem key="navigationItem" id="sCX-Oq-ack"/>
+                    <connections>
+                        <outlet property="textView" destination="DIG-LD-PXS" id="OaC-xm-iJk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rdG-5W-5d8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
