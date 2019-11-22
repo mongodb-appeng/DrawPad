@@ -13,6 +13,11 @@ class CurrentTool {
   static var shapeType: ShapeType = .line
   static var color = UIColor.black
   
+  static func setWidth (width: Float) {
+    CurrentTool.brushWidth = CGFloat(width)
+    CurrentTool.shapeType = .line
+  }
+  
   static func reset() {
     brushWidth = CGFloat(Constants.DRAW_PEN_WIDTH_MEDIUM)
     shapeType = .line

@@ -17,12 +17,16 @@
 ////////////////////////////////////////////////////////////////////////////
 
 import UIKit
+import RealmSwift
 
-class DrawViewController: BaseViewController {
+class DrawViewController: BaseViewController, UITextFieldDelegate {
 
+  // MARK: - OUTLETS
+  
   @IBOutlet weak var mainImageView: UIImageView!
   @IBOutlet weak var tempImageView: UIImageView!
   @IBOutlet weak var hiddenTextField: UITextField!
+  
   @IBOutlet weak var leftToolbarParent: UIView!
   @IBOutlet weak var drawToolbar: DrawToolbarStackView!
   @IBOutlet weak var parentGridHorizontalStackView: UIStackView!
@@ -30,6 +34,8 @@ class DrawViewController: BaseViewController {
   @IBOutlet weak var sansSerifButton: DrawToolbarPopoverButton!
   @IBOutlet weak var opacityButton: DrawToolbarPopoverButton!
 
+  // MARK: - INIT
+  
   let scribblePopoverParent = UIView()
   let scribblePopoverToolbar = DrawToolbarStackView()
   let sansSerifPopoverParent = UIView()
@@ -39,11 +45,242 @@ class DrawViewController: BaseViewController {
   let opacityPopoverParent = UIView()
   let opacityPopoverToolbar = DrawToolbarStackView()
   var popoverParents: [UIView] = []
+  
+  var shapes: Results<Shape>
+  let storedImages: Results<StoredImage>
+  var notificationToken: NotificationToken!
+  var lastPoint = CGPoint.zero
+  var swiped = false
+  private var currentShape: Shape?
+  private var lineCount = 0
 
+  required init?(coder aDecoder: NSCoder) {
+    RealmConnection.connect()
+    self.shapes = RealmConnection.realm!.objects(Shape.self)
+    self.storedImages = RealmConnection.realmAtlas!.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
+    super.init(coder: aDecoder)
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent]
+    notificationToken = shapes.observe { [weak self] changes in
+      guard let strongSelf = self else {
+        return
+      }
+      self!.hiddenTextField.delegate = self
+      switch changes {
+      case .initial(let shapes):
+        strongSelf.draw { context in
+          shapes.forEach { $0.draw(context) }
+        }
+        break
+      case .update(let shapes, let deletions, let insertions, let modifications):
+        
+        (insertions + modifications).forEach { index in
+          if shapes[index].deviceId != thisDevice {
+            strongSelf.draw { context in
+              let shape = shapes[index]
+              shape.draw(context)
+            }
+          }
+        }
+        if deletions.count > 0 {
+          strongSelf.mainImageView.image = nil
+          strongSelf.shapes.forEach { shape in
+            strongSelf.draw { context in
+              shape.draw(context)
+            }
+          }
+        }
+        
+        strongSelf.mergeViews()
+        break
+      case .error(let error):
+        fatalError(error.localizedDescription)
+      }
+    }
   }
+  
+  deinit {
+    notificationToken?.invalidate()
+  }
+  // MARK: - BUSINESS LOGIC
+  func mergeViews() {
+    // Merge tempImageView into mainImageView
+    UIGraphicsBeginImageContext(mainImageView.frame.size)
+    mainImageView.image?.draw(in: mainImageView.bounds, blendMode: .normal, alpha: 1.0)
+    tempImageView?.image?.draw(in: tempImageView.bounds, blendMode: .normal, alpha: 1.0)
+    mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    tempImageView.image = nil
+  }
+  
+  private func draw(_ block: (CGContext) -> Void) {
+    UIGraphicsBeginImageContext(self.tempImageView.frame.size)
+    guard let context = UIGraphicsGetCurrentContext() else {
+      return
+    }
+    self.tempImageView.image?.draw(in: tempImageView.bounds)
+
+    block(context)
+
+    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+  }
+  
+  func extractImage() -> Data? {
+    guard let image = mainImageView.image!.jpegData(compressionQuality: 1) else {
+      print("Failed to get to the image")
+      return nil
+    }
+    return image
+  }
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first else {
+      return
+    }
+   
+    currentShape = Shape()
+    currentShape!.shapeType = CurrentTool.shapeType
+    currentShape!.color = CurrentTool.color.toHex
+    currentShape!.brushWidth = CurrentTool.brushWidth
+
+    if CurrentTool.shapeType == .line {
+      try! RealmConnection.realm!.write {
+        RealmConnection.realm!.add(currentShape!)
+      }
+    }
+
+    swiped = false
+    
+    try! RealmConnection.realm!.write {
+      currentShape!.append(point: LinkedPoint(touch.location(in: tempImageView)))
+    }
+  }
+  
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first else {
+      return
+    }
+    
+    let currentPoint = touch.location(in: tempImageView)
+
+    draw { context in
+      switch CurrentTool.shapeType {
+        // if the shape is a line, simply append the current point to the head of the list
+      case .line:
+        try! RealmConnection.realm!.write {
+          currentShape!.append(point: LinkedPoint(currentPoint))
+        }
+        // if the shape is a rect or an ellipse, replace the head of the list
+        // with the dragged point. the LinkedPoint list should always contain
+        // (x₁, y₁) and (x₂, y₂), the top left and and bottom right corners
+        // of the rect
+      case .rect, .ellipse, .stamp, .text:
+        // if 'swiped' (a.k.a. not a single point), erase the current shape,
+        // which is effectively acting as a draft. then redraw the current
+        // state
+        if swiped {
+          self.mainImageView.image = nil
+          self.shapes.forEach { $0.draw(context) }
+        }
+        try! RealmConnection.realm!.write {
+          currentShape!.replaceHead(point: LinkedPoint(currentPoint))
+        }
+        // if the shape is a triangle, have the original point be the tail
+        // of the list, the 2nd point being where the current touch is,
+        // and the 3rd point (x₁ - (x₂ - x₁), y₂)
+      case .triangle:
+        // if 'swiped' (a.k.a. not a single point), erase the current shape,
+        // which is effectively acting as a draft. then redraw the current
+        // state
+        if swiped {
+          self.mainImageView.image = nil
+          self.shapes.forEach { $0.draw(context) }
+        }
+        try! RealmConnection.realm!.write {
+          let point2 = LinkedPoint(currentPoint)
+          currentShape!.lastPoint?.nextPoint = point2
+
+          let point3 = LinkedPoint()
+          point3.y = point2.y
+          point3.x = currentShape!.lastPoint!.x - (point2.x - currentShape!.lastPoint!.x)
+          point2.nextPoint = point3
+        }
+      }
+
+      currentShape!.draw(context)
+    }
+
+    mergeViews()
+
+    swiped = true
+    lastPoint = currentPoint
+  }
+  
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if !swiped {
+      // draw a single point
+      draw { context in
+        currentShape!.draw(context)
+      }
+    }
+    
+    switch CurrentTool.shapeType {
+    case .line:
+      mergeViews()
+    case .text:
+      // The bounding rectangle for the text has been created but the user
+      // must now type in their text
+      hiddenTextField.becomeFirstResponder()
+      // The text shape will be stored and merged after the user hits return
+    default:
+      // if the shape is not a line, it exists in a draft state.
+      // add it to the realm now
+      // TODO: move the "draft" business logic out of the view
+      if CurrentTool.shapeType != .line {
+        try! RealmConnection.realm!.write {
+          RealmConnection.realm!.add(currentShape!)
+        }
+      }
+      mergeViews()
+    }
+  }
+
+  // MARK: - DELEGATES
+  
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    if string == "\n" {
+      hiddenTextField.text = ""
+      hiddenTextField.resignFirstResponder()
+      try! RealmConnection.realm!.write {
+        RealmConnection.realm!.add(currentShape!)
+      }
+      mergeViews()
+      draw { context in
+        shapes.forEach { $0.draw(context) }
+      }
+      return false
+    }
+    var newText = textField.text ?? ""
+    newText += string
+    self.draw { context in
+      mainImageView.image = nil
+      shapes.forEach { $0.draw(context) }
+      currentShape!.text = newText
+      currentShape!.draw(context)
+    }
+    return true
+  }
+  
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    print("Started editing")
+  }
+  
+  // MARK: - ACTIONS
 
   @IBAction func toolbarButtonTapped(_ sender: UIButton) {
     print("Main toolbar button tapped")
@@ -52,7 +289,7 @@ class DrawViewController: BaseViewController {
       button.select()
     }
   }
-
+  // TODO - Implement fonts
   @objc func scribblePopoverTapHandler(gesture: UITapGestureRecognizer) {
     print("Secondary scribble toolbar tap")
     scribblePopoverToolbar.clearCurrentButtonSelection()
@@ -63,11 +300,14 @@ class DrawViewController: BaseViewController {
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
   }
 
+  // TODO - Add stamps
   @objc func stampsPopoverTapHandler(gesture: UITapGestureRecognizer) {
     print("Secondary stamps toolbar tap")
     stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.shapeType = .stamp
   }
-
+  
+  // TODO - Add shades of grey
   @objc func opacityPopoverTapHandler(gesture: UITapGestureRecognizer) {
     print("Secondary opacity toolbar tap")
     opacityPopoverToolbar.clearCurrentButtonSelection()
@@ -82,15 +322,49 @@ class DrawViewController: BaseViewController {
 
   @IBAction func finishButtonTapped(_ sender: UIButton) {
     print("Finish button tapped")
+    guard let image = extractImage() else {
+      print("Failed to extract image")
+      return
+    }
+    let storedImage = StoredImage(image: image)
+    storedImage.userContact?.email = User.email
+    let imageURL = AWS.uploadImage(image: image, email: User.email)
+    if imageURL != "" {
+      storedImage.imageLink = imageURL
+    } else {
+            print("Failed to upload the image to S3")
+    }
+    
+    try! RealmConnection.realmAtlas!.write {
+      RealmConnection.realmAtlas!.add(storedImage)
+      User.imageToSend = storedImage
+    }
+
+    let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
+    self.navigationController!.pushViewController(submitVC!, animated: true)
   }
 
   @IBAction func undoButtonTapped(_ sender: UIButton) {
     print("Undo button tapped")
+    guard shapes.count > 0 else {
+        return
+    }
+    draw { context in
+      // find the last non-erased shape associated with this device Id.
+      // then erase it, mark it as erased, and redraw the history of the drawing
+      guard let shape = shapes.last(where: { $0.deviceId == thisDevice }) else {
+        return
+      }
+      try! RealmConnection.realm!.write { RealmConnection.realm!.delete(shape) }
+      shapes.forEach { $0.draw(context) }
+    }
+    currentShape = nil
   }
 
   @IBAction func pencilButtonTapped(_ sender: UIButton) {
     print("Pencil button tapped")
     clearSecondaryPopovers(except: nil)
+    CurrentTool.shapeType = .line
   }
 
   @IBAction func scribbleButtonTapped(_ sender: UIButton) {
@@ -157,10 +431,12 @@ class DrawViewController: BaseViewController {
   @IBAction func eraserButtonTapped(_ sender: UIButton) {
     print("Eraser button tapped")
     clearSecondaryPopovers(except: nil)
+    CurrentTool.color = .white
   }
 
   @IBAction func textboxButtonTapped(_ sender: UIButton) {
     print("Textbox button tapped")
+    CurrentTool.shapeType = .text
   }
 
   @IBAction func sansSerifButtonTapped(_ sender: UIButton) {
@@ -406,34 +682,39 @@ class DrawViewController: BaseViewController {
   @IBAction func squareButtonTapped(_ sender: UIButton) {
     print("Square button tapped")
     clearSecondaryPopovers(except: nil)
+    CurrentTool.shapeType = .rect
   }
 
   @IBAction func circleButtonTapped(_ sender: UIButton) {
     print("Circle button tapped")
     clearSecondaryPopovers(except: nil)
+    CurrentTool.shapeType = .ellipse
   }
 
   @IBAction func triangleButtonTapped(_ sender: UIButton) {
     print("Triangle button tapped")
     clearSecondaryPopovers(except: nil)
+    CurrentTool.shapeType = .triangle
   }
-
 
   // MARK: - SECONDARY TOOLBAR TAP HANDLDERS
 
   @objc func scribbleLightTapped(sender: UIButton) {
     print("Scribble light tapped")
     scribblePopoverToolbar.savedSelection = 0
+    CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_THIN)
   }
 
   @objc func scribbleMediumTapped(sender: UIButton) {
     print("Scribble medium tapped")
     scribblePopoverToolbar.savedSelection = 1
+    CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_MEDIUM)
   }
 
   @objc func scribbleHeavyTapped(sender: UIButton) {
     print("Scribble heavy tapped")
     scribblePopoverToolbar.savedSelection = 2
+    CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_WIDE)
   }
 
   // TODO: ADD THE REST OF THE TAP HANDLERS THE SAME WAY THESE WERE ADDED
