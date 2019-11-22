@@ -25,12 +25,6 @@ class IntroViewController: BaseViewController {
 //        super.viewDidLoad()
 //        agreedToTerms = false
 //    }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawViewController") as? DrawViewController
-    self.navigationController!.pushViewController(vc!, animated: true)
-  }
     
     @IBAction func showTermsAndConditionsButton() {
         let alert = UIAlertController(title: "Terms & Conditions", message: "TODO", preferredStyle: UIAlertController.Style.alert)
@@ -74,7 +68,7 @@ class IntroViewController: BaseViewController {
         agreedToTerms = false
         agreedToTermsButton.isSelected = false
         
-        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ViewController") as? ViewController
+        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawViewController") as? DrawViewController
         self.navigationController!.pushViewController(vc!, animated: true)
 
     }
