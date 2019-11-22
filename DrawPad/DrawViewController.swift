@@ -20,6 +20,9 @@ import UIKit
 
 class DrawViewController: BaseViewController {
 
+  @IBOutlet weak var mainImageView: UIImageView!
+  @IBOutlet weak var tempImageView: UIImageView!
+  @IBOutlet weak var hiddenTextField: UITextField!
   @IBOutlet weak var leftToolbarParent: UIView!
   @IBOutlet weak var drawToolbar: DrawToolbarStackView!
   @IBOutlet weak var parentGridHorizontalStackView: UIStackView!
