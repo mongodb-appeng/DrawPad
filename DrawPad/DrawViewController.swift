@@ -147,6 +147,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     currentShape!.shapeType = CurrentTool.shapeType
     currentShape!.color = CurrentTool.color.toHex
     currentShape!.brushWidth = CurrentTool.brushWidth
+    currentShape!.fontStyle = CurrentTool.fontStyle
 
     if CurrentTool.shapeType == .line {
       try! RealmConnection.realm!.write {

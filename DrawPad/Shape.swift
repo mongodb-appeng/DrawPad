@@ -210,7 +210,19 @@ class Shape: Object {
     context.move(to: lastPoint!.asCGPoint())
     let height = lastPoint!.rectHeight()
     let fontSize = abs(height/4)
-    let font = UIFont.systemFont(ofSize: CGFloat(fontSize))
+//    let font = UIFont.systemFont(ofSize: CGFloat(fontSize))
+    
+    var fontName = ""
+    switch fontStyle {
+    case .normal:
+      fontName = "TrebuchetMS-Bold"
+    case .serif:
+      fontName = "AmericanTypewriter-Bold"
+    case .monospace:
+      fontName = "Menlo-Bold"
+    }
+    
+    let font = UIFont(name: fontName, size: CGFloat(fontSize))
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .left
     guard let myColor = UIColor(hex: color) else {
@@ -218,9 +230,9 @@ class Shape: Object {
       return
     }
     let attributes: [NSAttributedString.Key: Any] = [
-        .font: font,
-        .foregroundColor: myColor,
-        .paragraphStyle: paragraphStyle
+      .font: font!,
+      .foregroundColor: myColor,
+      .paragraphStyle: paragraphStyle
     ]
 
     let attributedString = NSAttributedString(string: text, attributes: attributes)
