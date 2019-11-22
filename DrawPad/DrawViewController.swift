@@ -308,14 +308,52 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   
   // TODO - Add shades of grey
+  
   @objc func opacityPopoverTapHandler(gesture: UITapGestureRecognizer) {
     print("Secondary opacity toolbar tap")
     opacityPopoverToolbar.clearCurrentButtonSelection()
   }
+  
+  @objc func opacityBlackTapped(sender: UIButton) {
+    print("Secondary Black opacity toolbar tap")
+    opacityPopoverToolbar.clearCurrentButtonSelection()
+    guard let pencil = Pencil(tag: 1) else {
+      return
+    }
+    CurrentTool.color = pencil.color
+  }
 
+  @objc func opacityDarkestTapped(sender: UIButton) {
+    print("Secondary Darkest Grey opacity toolbar tap")
+    opacityPopoverToolbar.clearCurrentButtonSelection()
+    guard let pencil = Pencil(tag: 2) else {
+      return
+    }
+    CurrentTool.color = pencil.color
+  }
+
+  @objc func opacityMidTapped(sender: UIButton) {
+    print("Secondary Mid Grey opacity toolbar tap")
+    opacityPopoverToolbar.clearCurrentButtonSelection()
+    guard let pencil = Pencil(tag: 3) else {
+      return
+    }
+    CurrentTool.color = pencil.color
+  }
+  
+  @objc func opacityLightestTapped(sender: UIButton) {
+    print("Secondary Lightest Grey opacity toolbar tap")
+    opacityPopoverToolbar.clearCurrentButtonSelection()
+    guard let pencil = Pencil(tag: 4) else {
+      return
+    }
+    CurrentTool.color = pencil.color
+  }
+ 
   @objc func secondaryToolbarButtonTapped(sender: DrawToolbarPersistedButton) {
     print("Secondary button tap")
     sender.select()
+    clearSecondaryPopovers(except: nil)
   }
 
   // MARK: - PRIMARY TOOLBAR TAP HANDLDERS
@@ -639,32 +677,36 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     tapGesture.cancelsTouchesInView = false
     opacityPopoverToolbar.addGestureRecognizer(tapGesture)
 
-    // TODO: UPDATE VARIABLE NAMES AND IMAGES
+    // TODO: UPDATE IMAGES
 
-    let scribbleLightImage = UIImage(systemName: "eyedropper")
-    let scribbleLightButton = DrawToolbarPersistedButton(image: scribbleLightImage!)
-    scribbleLightButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    scribbleLightButton.tintColor = .white
+    let blackShadeImage = UIImage(systemName: "eyedropper")
+    let blackShadeButton = DrawToolbarPersistedButton(image: blackShadeImage!)
+    blackShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    blackShadeButton.addTarget(self, action: #selector(opacityBlackTapped(sender:)), for: .touchUpInside)
+    blackShadeButton.tintColor = .white
 
-    let textboxImage = UIImage(systemName: "eyedropper")
-    let textBoxButton = DrawToolbarPersistedButton(image: textboxImage!)
-    textBoxButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    textBoxButton.tintColor = .white
+    let darkestShadeImage = UIImage(systemName: "eyedropper")
+    let darkestShadeButton = DrawToolbarPersistedButton(image: darkestShadeImage!)
+    darkestShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    darkestShadeButton.addTarget(self, action: #selector(opacityDarkestTapped(sender:)), for: .touchUpInside)
+    darkestShadeButton.tintColor = .white
 
-    let squareImage = UIImage(systemName: "eyedropper")
-    let squareButton = DrawToolbarPersistedButton(image: squareImage!)
-    squareButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    squareButton.tintColor = .white
+    let midShadeImage = UIImage(systemName: "eyedropper")
+    let midShadeButton = DrawToolbarPersistedButton(image: midShadeImage!)
+    midShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    midShadeButton.addTarget(self, action: #selector(opacityMidTapped(sender:)), for: .touchUpInside)
+    midShadeButton.tintColor = .white
 
-    let squareImage2 = UIImage(systemName: "eyedropper")
-    let squareButton2 = DrawToolbarPersistedButton(image: squareImage2!)
-    squareButton2.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    squareButton2.tintColor = .white
+    let lightestShadeImage = UIImage(systemName: "eyedropper")
+    let lightestShadeButton = DrawToolbarPersistedButton(image: lightestShadeImage!)
+    lightestShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    lightestShadeButton.addTarget(self, action: #selector(opacityLightestTapped(sender:)), for: .touchUpInside)
+    lightestShadeButton.tintColor = .white
 
-    opacityPopoverToolbar.addArrangedSubview(scribbleLightButton)
-    opacityPopoverToolbar.addArrangedSubview(textBoxButton)
-    opacityPopoverToolbar.addArrangedSubview(squareButton)
-    opacityPopoverToolbar.addArrangedSubview(squareButton2)
+    opacityPopoverToolbar.addArrangedSubview(blackShadeButton)
+    opacityPopoverToolbar.addArrangedSubview(darkestShadeButton)
+    opacityPopoverToolbar.addArrangedSubview(midShadeButton)
+    opacityPopoverToolbar.addArrangedSubview(lightestShadeButton)
     opacityPopoverParent.addSubview(opacityPopoverToolbar)
     opacityPopoverToolbar.translatesAutoresizingMaskIntoConstraints = false
 
@@ -703,18 +745,21 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Scribble light tapped")
     scribblePopoverToolbar.savedSelection = 0
     CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_THIN)
+    clearSecondaryPopovers(except: nil)
   }
 
   @objc func scribbleMediumTapped(sender: UIButton) {
     print("Scribble medium tapped")
     scribblePopoverToolbar.savedSelection = 1
     CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_MEDIUM)
+    clearSecondaryPopovers(except: nil)
   }
 
   @objc func scribbleHeavyTapped(sender: UIButton) {
     print("Scribble heavy tapped")
     scribblePopoverToolbar.savedSelection = 2
     CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_WIDE)
+    clearSecondaryPopovers(except: nil)
   }
 
   // TODO: ADD THE REST OF THE TAP HANDLERS THE SAME WAY THESE WERE ADDED
