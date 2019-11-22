@@ -49,7 +49,7 @@ class AWS {
       let request = try AWSRequestBuilder()
          .with(service: "s3")
          .with(action: "PutObject")
-         // .with(region: "us-east-1") // this is optional
+        .with(region: Constants.AWS_REGION) // this is optional
          .with(arguments: args) // depending on the service and action, this may be optional as well
         .build()
 
