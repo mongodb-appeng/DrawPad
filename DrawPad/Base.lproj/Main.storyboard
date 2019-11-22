@@ -836,7 +836,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K0m-xQ-2jq" userLabel="Button - Undo" customClass="DrawToolbarEphemeralButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="66.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="arrow.uturn.left" catalog="system"/>
+                                                <state key="normal" image="Redo"/>
                                                 <connections>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="uRt-J2-u8T"/>
                                                     <action selector="undoButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="vu5-An-tML"/>
@@ -845,7 +845,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KFa-st-ai3" userLabel="Button - Pencil" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="66.5" width="80" height="66"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="pencil" catalog="system">
+                                                <state key="normal" image="Edit">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="black"/>
                                                 </state>
                                                 <connections>
@@ -856,7 +856,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B1Z-Qq-ier" userLabel="Button - Scribble" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="132.5" width="80" height="66.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="scribble" catalog="system"/>
+                                                <state key="normal" image="Path10"/>
                                                 <connections>
                                                     <action selector="scribbleButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="a42-O8-1aB"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="O8m-WG-M2S"/>
@@ -865,7 +865,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jq2-Co-a5V" userLabel="Button - Eraser" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="199" width="80" height="66"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="bandage" catalog="system"/>
+                                                <state key="normal" image="eraser"/>
                                                 <connections>
                                                     <action selector="eraserButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="4j8-V4-PGT"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="HPn-ta-Yoc"/>
@@ -903,7 +903,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJC-hG-xQa" userLabel="Button - Opacity" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="464" width="80" height="66"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="eyedropper" catalog="system"/>
+                                                <state key="normal" image="Shade"/>
                                                 <connections>
                                                     <action selector="opacityButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="pLN-Ja-uzt"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="8nf-lU-D6j"/>
@@ -939,7 +939,7 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.086274509803921567" green="0.10196078431372549" blue="0.10196078431372549" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.18823529411764706" green="0.20392156862745098" blue="0.20392156862745098" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="Y1v-oK-3T3" firstAttribute="top" secondItem="V5t-f9-4Au" secondAttribute="bottom" id="15J-fJ-ngg"/>
                                     <constraint firstItem="1hJ-Um-YXa" firstAttribute="top" secondItem="Y1v-oK-3T3" secondAttribute="bottom" id="3Qv-bd-GNF"/>
@@ -2084,22 +2084,23 @@ Talk to our booth staff or head to mongodb.com/realm</string>
         <image name="Brown" width="53" height="332"/>
         <image name="DarkGreen" width="53" height="332"/>
         <image name="DarkOrange" width="53" height="332"/>
+        <image name="Edit" width="21" height="21"/>
         <image name="Eraser" width="55" height="167"/>
         <image name="Grey" width="53" height="332"/>
         <image name="Image" width="375" height="122"/>
         <image name="LightBlue" width="53" height="332"/>
         <image name="LightGreen" width="53" height="332"/>
+        <image name="Path10" width="17" height="19"/>
         <image name="Red" width="53" height="332"/>
+        <image name="Redo" width="21" height="19"/>
+        <image name="Shade" width="100" height="99"/>
         <image name="ThankYou" width="2875" height="1228"/>
         <image name="Yellow" width="53" height="332"/>
-        <image name="arrow.uturn.left" catalog="system" width="64" height="56"/>
         <image name="arrow.uturn.left.square.fill" catalog="system" width="64" height="56"/>
-        <image name="bandage" catalog="system" width="64" height="58"/>
         <image name="checkmark.square" catalog="system" width="64" height="56"/>
         <image name="circle" catalog="system" width="64" height="60"/>
         <image name="circle.fill" catalog="system" width="64" height="60"/>
-        <image name="eyedropper" catalog="system" width="64" height="58"/>
-        <image name="pencil" catalog="system" width="64" height="56"/>
+        <image name="eraser" width="30" height="27"/>
         <image name="pencil.tip" catalog="system" width="48" height="64"/>
         <image name="person.icloud" catalog="system" width="64" height="44"/>
         <image name="scribble" catalog="system" width="64" height="54"/>
