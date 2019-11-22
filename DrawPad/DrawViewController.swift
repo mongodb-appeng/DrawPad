@@ -114,6 +114,8 @@ class DrawViewController: BaseViewController {
     tapGesture.cancelsTouchesInView = false
     scribblePopoverToolbar.addGestureRecognizer(tapGesture)
 
+    // TODO: UPDATE IMAGES TO SHOW DIFFERENT WIDTHS
+
     let scribbleLightImage = UIImage(systemName: "scribble")
     let scribbleLightButton = DrawToolbarPersistedButton(image: scribbleLightImage!)
     scribbleLightButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
