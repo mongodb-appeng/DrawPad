@@ -12,6 +12,7 @@ class CurrentTool {
   static var brushWidth: CGFloat = CGFloat(Constants.DRAW_PEN_WIDTH_MEDIUM)
   static var shapeType: ShapeType = .line
   static var color = UIColor.black
+  static var fontStyle: FontStyle = .normal
   
   static func setWidth (width: Float) {
     CurrentTool.brushWidth = CGFloat(width)
@@ -22,5 +23,6 @@ class CurrentTool {
     brushWidth = CGFloat(Constants.DRAW_PEN_WIDTH_MEDIUM)
     shapeType = .line
     color = UIColor.black
+    fontStyle = .normal
   }
 }

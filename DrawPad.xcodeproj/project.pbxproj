@@ -107,6 +107,7 @@
 			children = (
 				DC2FF6EC2387189B0046FAD6 /* BaseViewController.swift */,
 				49C809332382FE630061D4C1 /* DrawMenuViewController.swift */,
+				DC2FF6EA238707E50046FAD6 /* DrawViewController.swift */,
 				49EE44A92382AD9F00621659 /* IntroViewController.swift */,
 				49C80976238366CA0061D4C1 /* LineThicknessController.swift */,
 				49C8092B2382D2240061D4C1 /* RealmConfigViewController.swift */,
@@ -116,7 +117,6 @@
 				E1941C5820B53CB4004A2217 /* ViewController.swift */,
 				49394E1B2371AB12006136B3 /* WelcomeViewController.swift */,
 				49C8097A2383FAF80061D4C1 /* ShapeSelectorViewController.swift */,
-				DC2FF6EA238707E50046FAD6 /* DrawViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";

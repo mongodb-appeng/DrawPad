@@ -86,6 +86,10 @@ class LinkedPoint: Object {
   case line, rect, ellipse, triangle, stamp, text
 }
 
+@objc enum FontStyle: Int {
+  case normal, serif, monospace
+}
+
 /// Shape is the all encompassing class for the various
 /// shape types
 class Shape: Object {
@@ -114,6 +118,7 @@ class Shape: Object {
   
   @objc dynamic var image: String = ""
   @objc dynamic var text: String = "Your text goes here"
+  @objc dynamic var fontStyle: FontStyle = .normal
   
   /// the type of shape this is
   @objc dynamic var shapeType: ShapeType = .line
