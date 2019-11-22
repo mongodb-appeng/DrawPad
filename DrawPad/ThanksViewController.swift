@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThanksViewController: UIViewController {
+class ThanksViewController: BaseViewController {
 
   @IBOutlet weak var textView: UITextView!
 

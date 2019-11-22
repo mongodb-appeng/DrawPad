@@ -12,7 +12,7 @@ import SwiftUI
 //var agreedToTerms = false  // TODO replace with an IBOutlet
 
 // This is the introducion view
-class IntroViewController: UIViewController {
+class IntroViewController: BaseViewController {
   
     var agreedToTerms = false
     
@@ -68,7 +68,7 @@ class IntroViewController: UIViewController {
         agreedToTerms = false
         agreedToTermsButton.isSelected = false
         
-        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ViewController") as? ViewController
+        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawViewController") as? DrawViewController
         self.navigationController!.pushViewController(vc!, animated: true)
 
     }
