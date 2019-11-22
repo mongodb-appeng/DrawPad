@@ -131,7 +131,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   
   func extractImage() -> Data? {
-    guard let image = mainImageView.image!.jpegData(compressionQuality: 1) else {
+    guard let image = mainImageView.image?.jpegData(compressionQuality: 1) else {
       print("Failed to get to the image")
       return nil
     }
