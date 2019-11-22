@@ -28,4 +28,10 @@ class DrawToolbarButton: UIButton {
     self.originalBackgroundColor = self.backgroundColor
   }
 
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    self.originalBackgroundColor = .clear
+    self.backgroundColor = self.originalBackgroundColor
+  }
+
 }

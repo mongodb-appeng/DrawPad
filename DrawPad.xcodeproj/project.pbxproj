@@ -32,6 +32,9 @@
 		DC2FF6F4238767D00046FAD6 /* DrawToolbarStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6F3238767D00046FAD6 /* DrawToolbarStackView.swift */; };
 		DC2FF6F9238778B90046FAD6 /* DrawToolbarEphemeralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6F8238778B90046FAD6 /* DrawToolbarEphemeralButton.swift */; };
 		DC2FF6FB2387793B0046FAD6 /* DrawToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6FA2387793B0046FAD6 /* DrawToolbarButton.swift */; };
+		DC2FF6FD2387857C0046FAD6 /* SecondaryToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6FC2387857C0046FAD6 /* SecondaryToolbarButton.swift */; };
+		DC2FF6FF23878AE70046FAD6 /* SecondaryStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6FE23878AE70046FAD6 /* SecondaryStackView.swift */; };
+		DC2FF70223879A0F0046FAD6 /* UIStackView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF70123879A0F0046FAD6 /* UIStackView+Utils.swift */; };
 		E1941C5720B53CB4004A2217 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C5620B53CB4004A2217 /* AppDelegate.swift */; };
 		E1941C5920B53CB4004A2217 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C5820B53CB4004A2217 /* ViewController.swift */; };
 		E1941C5C20B53CB4004A2217 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1941C5A20B53CB4004A2217 /* Main.storyboard */; };
@@ -68,6 +71,9 @@
 		DC2FF6F3238767D00046FAD6 /* DrawToolbarStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawToolbarStackView.swift; sourceTree = "<group>"; };
 		DC2FF6F8238778B90046FAD6 /* DrawToolbarEphemeralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawToolbarEphemeralButton.swift; sourceTree = "<group>"; };
 		DC2FF6FA2387793B0046FAD6 /* DrawToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawToolbarButton.swift; sourceTree = "<group>"; };
+		DC2FF6FC2387857C0046FAD6 /* SecondaryToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryToolbarButton.swift; sourceTree = "<group>"; };
+		DC2FF6FE23878AE70046FAD6 /* SecondaryStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryStackView.swift; sourceTree = "<group>"; };
+		DC2FF70123879A0F0046FAD6 /* UIStackView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Utils.swift"; sourceTree = "<group>"; };
 		E1941C5320B53CB4004A2217 /* DrawPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1941C5620B53CB4004A2217 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1941C5820B53CB4004A2217 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -168,8 +174,18 @@
 				DC2FF6F8238778B90046FAD6 /* DrawToolbarEphemeralButton.swift */,
 				DC2FF6EF238728460046FAD6 /* DrawToolbarPopoverButton.swift */,
 				DC2FF6F3238767D00046FAD6 /* DrawToolbarStackView.swift */,
+				DC2FF6FC2387857C0046FAD6 /* SecondaryToolbarButton.swift */,
+				DC2FF6FE23878AE70046FAD6 /* SecondaryStackView.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		DC2FF700238799F70046FAD6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DC2FF70123879A0F0046FAD6 /* UIStackView+Utils.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		E1941C4A20B53CB4004A2217 = {
@@ -200,6 +216,7 @@
 				49C8097323835F7A0061D4C1 /* Model */,
 				49C8097223835F5E0061D4C1 /* View Controllers */,
 				DC2FF6EE2387282F0046FAD6 /* Views */,
+				DC2FF700238799F70046FAD6 /* Extensions */,
 				49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */,
 				E1941C5620B53CB4004A2217 /* AppDelegate.swift */,
 				E1941C5D20B53CB5004A2217 /* Assets.xcassets */,
@@ -327,6 +344,8 @@
 			files = (
 				DC2FF6F0238728460046FAD6 /* DrawToolbarPopoverButton.swift in Sources */,
 				49C8093A238335BB0061D4C1 /* RealmConnection.swift in Sources */,
+				DC2FF6FD2387857C0046FAD6 /* SecondaryToolbarButton.swift in Sources */,
+				DC2FF6FF23878AE70046FAD6 /* SecondaryStackView.swift in Sources */,
 				49394E182371A668006136B3 /* Constants.swift in Sources */,
 				49C809342382FE630061D4C1 /* DrawMenuViewController.swift in Sources */,
 				E1941C5920B53CB4004A2217 /* ViewController.swift in Sources */,
@@ -346,6 +365,7 @@
 				49C809302382F63A0061D4C1 /* UIViewExtension.swift in Sources */,
 				E1941C6920B544E8004A2217 /* SettingsViewController.swift in Sources */,
 				49C8097B2383FAF80061D4C1 /* ShapeSelectorViewController.swift in Sources */,
+				DC2FF70223879A0F0046FAD6 /* UIStackView+Utils.swift in Sources */,
 				49C809382383276E0061D4C1 /* ThanksViewController.swift in Sources */,
 				49394E1C2371AB12006136B3 /* WelcomeViewController.swift in Sources */,
 				DC2FF6EB238707E50046FAD6 /* DrawViewController.swift in Sources */,

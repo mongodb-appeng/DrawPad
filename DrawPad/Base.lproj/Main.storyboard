@@ -819,6 +819,9 @@
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="square.and.arrow.up" catalog="system"/>
+                                        <connections>
+                                            <action selector="finishButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="OfA-9Z-RnW"/>
+                                        </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y1v-oK-3T3" userLabel="View - Horizontal Line">
                                         <rect key="frame" x="0.0" y="80" width="80" height="1"/>
@@ -846,6 +849,7 @@
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="black"/>
                                                 </state>
                                                 <connections>
+                                                    <action selector="pencilButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="mBk-Mf-ZAN"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="rcx-bm-oaM"/>
                                                 </connections>
                                             </button>
@@ -854,6 +858,7 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="scribble" catalog="system"/>
                                                 <connections>
+                                                    <action selector="scribbleButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="a42-O8-1aB"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="O8m-WG-M2S"/>
                                                 </connections>
                                             </button>
@@ -862,6 +867,7 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="bandage" catalog="system"/>
                                                 <connections>
+                                                    <action selector="eraserButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="4j8-V4-PGT"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="HPn-ta-Yoc"/>
                                                 </connections>
                                             </button>
@@ -870,6 +876,7 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="textbox" catalog="system"/>
                                                 <connections>
+                                                    <action selector="textboxButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="bxb-UI-hpW"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="UCF-Qo-8KD"/>
                                                 </connections>
                                             </button>
@@ -879,6 +886,7 @@
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
+                                                    <action selector="sansSerifButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="9MF-Q6-cFl"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="Y96-PB-Fkw"/>
                                                 </connections>
                                             </button>
@@ -888,14 +896,16 @@
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
+                                                    <action selector="stampsButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="aWM-CF-8tL"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="cnd-7p-5qS"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJC-hG-xQa" userLabel="Button - Drop" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJC-hG-xQa" userLabel="Button - Opacity" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="464" width="80" height="66"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="eyedropper" catalog="system"/>
                                                 <connections>
+                                                    <action selector="opacityButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="pLN-Ja-uzt"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="8nf-lU-D6j"/>
                                                 </connections>
                                             </button>
@@ -904,6 +914,7 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="square" catalog="system"/>
                                                 <connections>
+                                                    <action selector="squareButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="ufs-z6-GZ8"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="mob-6M-JwD"/>
                                                 </connections>
                                             </button>
@@ -912,6 +923,7 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="circle" catalog="system"/>
                                                 <connections>
+                                                    <action selector="circleButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="F7Q-nc-Bkj"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="obn-tm-NG8"/>
                                                 </connections>
                                             </button>
@@ -921,6 +933,7 @@
                                                 <state key="normal" image="triangle" catalog="system"/>
                                                 <connections>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="xMe-Zh-tQW"/>
+                                                    <action selector="triangleButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="ks1-Yh-mT6"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -1722,7 +1735,11 @@
                     </view>
                     <connections>
                         <outlet property="drawToolbar" destination="1hJ-Um-YXa" id="VTX-ga-H5q"/>
-                        <outlet property="parentHorizontalStackView" destination="QqX-ez-p3U" id="EZs-ke-cad"/>
+                        <outlet property="leftToolbarParent" destination="0GJ-lk-jQs" id="NU8-re-Bjq"/>
+                        <outlet property="opacityButton" destination="TJC-hG-xQa" id="Xkg-re-jfs"/>
+                        <outlet property="parentGridHorizontalStackView" destination="QqX-ez-p3U" id="EZs-ke-cad"/>
+                        <outlet property="sansSerifButton" destination="Z8c-Jv-OFF" id="FR0-uV-wux"/>
+                        <outlet property="scribbleButton" destination="B1Z-Qq-ier" id="nul-Dh-JbM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1wg-lT-Y6J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -18,23 +18,24 @@
 
 import UIKit
 
-class DrawToolbarPersistedButton: DrawToolbarButton {
+class SecondaryToolbarButton: DrawToolbarButton {
+
+  init(image: UIImage) {
+    super.init(frame: .zero)
+    self.setImage(image, for: .normal)
+    self.addTarget(self, action:#selector(onButtonTapped), for: .touchUpInside)
+  }
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
 
-  init(image: UIImage) {
-    super.init(frame: .zero)
-    self.setImage(image, for: .normal)
-  }
-
-  func select() {
-    self.backgroundColor = self.selectedBackgroundColor
-  }
-
-  func deselect() {
-    self.backgroundColor = self.originalBackgroundColor
+  @objc func onButtonTapped() {
+    if self.backgroundColor == self.originalBackgroundColor {
+      self.backgroundColor = self.selectedBackgroundColor
+    } else {
+      self.backgroundColor = self.originalBackgroundColor
+    }
   }
 
 }

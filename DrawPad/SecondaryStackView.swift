@@ -18,23 +18,14 @@
 
 import UIKit
 
-class DrawToolbarPersistedButton: DrawToolbarButton {
+class SecondaryStackView: UIStackView {
 
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-  }
-
-  init(image: UIImage) {
-    super.init(frame: .zero)
-    self.setImage(image, for: .normal)
-  }
-
-  func select() {
-    self.backgroundColor = self.selectedBackgroundColor
-  }
-
-  func deselect() {
-    self.backgroundColor = self.originalBackgroundColor
-  }
+//  func clearCurrentButtonSelection() {
+//    for button in self.arrangedSubviews {
+//      if let persistedButton = button as? SecondaryToolbarButton {
+//        persistedButton.deselect()
+//      }
+//    }
+//  }
 
 }

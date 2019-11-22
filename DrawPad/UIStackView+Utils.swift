@@ -18,23 +18,21 @@
 
 import UIKit
 
-class DrawToolbarPersistedButton: DrawToolbarButton {
+extension UIStackView {
 
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
+  func safelyRemoveArrangedSubviews() {
+
+      // Remove all the arranged subviews and save them to an array
+      let removedSubviews = arrangedSubviews.reduce([]) { (sum, next) -> [UIView] in
+          self.removeArrangedSubview(next)
+          return sum + [next]
+      }
+
+      // Deactive all constraints at once
+      NSLayoutConstraint.deactivate(removedSubviews.flatMap({ $0.constraints }))
+
+      // Remove the views from self
+      removedSubviews.forEach({ $0.removeFromSuperview() })
   }
-
-  init(image: UIImage) {
-    super.init(frame: .zero)
-    self.setImage(image, for: .normal)
-  }
-
-  func select() {
-    self.backgroundColor = self.selectedBackgroundColor
-  }
-
-  func deselect() {
-    self.backgroundColor = self.originalBackgroundColor
-  }
-
+  
 }

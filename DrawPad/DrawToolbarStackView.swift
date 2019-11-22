@@ -19,6 +19,8 @@
 import UIKit
 
 class DrawToolbarStackView: UIStackView {
+
+  var savedSelection = 0
   
   func clearCurrentButtonSelection() {
     for button in self.arrangedSubviews {
