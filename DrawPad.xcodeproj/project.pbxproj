@@ -25,6 +25,13 @@
 		49ECB9E02375DC9C003102AD /* grumpy_cat_stamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */; };
 		49EE44AA2382AD9F00621659 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EE44A92382AD9F00621659 /* IntroViewController.swift */; };
 		7800221824890A137A866BA3 /* Pods_DrawPad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E1A5D24BCE0B1C88D4CD0E /* Pods_DrawPad.framework */; };
+		DC2FF6EB238707E50046FAD6 /* DrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6EA238707E50046FAD6 /* DrawViewController.swift */; };
+		DC2FF6ED2387189B0046FAD6 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6EC2387189B0046FAD6 /* BaseViewController.swift */; };
+		DC2FF6F0238728460046FAD6 /* DrawToolbarPopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6EF238728460046FAD6 /* DrawToolbarPopoverButton.swift */; };
+		DC2FF6F2238765A20046FAD6 /* DrawToolbarPersistedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6F1238765A20046FAD6 /* DrawToolbarPersistedButton.swift */; };
+		DC2FF6F4238767D00046FAD6 /* DrawToolbarStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6F3238767D00046FAD6 /* DrawToolbarStackView.swift */; };
+		DC2FF6F9238778B90046FAD6 /* DrawToolbarEphemeralButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6F8238778B90046FAD6 /* DrawToolbarEphemeralButton.swift */; };
+		DC2FF6FB2387793B0046FAD6 /* DrawToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6FA2387793B0046FAD6 /* DrawToolbarButton.swift */; };
 		E1941C5720B53CB4004A2217 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C5620B53CB4004A2217 /* AppDelegate.swift */; };
 		E1941C5920B53CB4004A2217 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C5820B53CB4004A2217 /* ViewController.swift */; };
 		E1941C5C20B53CB4004A2217 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1941C5A20B53CB4004A2217 /* Main.storyboard */; };
@@ -54,6 +61,13 @@
 		49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grumpy_cat_stamp.png; sourceTree = "<group>"; };
 		49EE44A92382AD9F00621659 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		699E5BBD41FBE963D779C01F /* Pods-DrawPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrawPad.release.xcconfig"; path = "Target Support Files/Pods-DrawPad/Pods-DrawPad.release.xcconfig"; sourceTree = "<group>"; };
+		DC2FF6EA238707E50046FAD6 /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
+		DC2FF6EC2387189B0046FAD6 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		DC2FF6EF238728460046FAD6 /* DrawToolbarPopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawToolbarPopoverButton.swift; sourceTree = "<group>"; };
+		DC2FF6F1238765A20046FAD6 /* DrawToolbarPersistedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawToolbarPersistedButton.swift; sourceTree = "<group>"; };
+		DC2FF6F3238767D00046FAD6 /* DrawToolbarStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawToolbarStackView.swift; sourceTree = "<group>"; };
+		DC2FF6F8238778B90046FAD6 /* DrawToolbarEphemeralButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawToolbarEphemeralButton.swift; sourceTree = "<group>"; };
+		DC2FF6FA2387793B0046FAD6 /* DrawToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawToolbarButton.swift; sourceTree = "<group>"; };
 		E1941C5320B53CB4004A2217 /* DrawPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1941C5620B53CB4004A2217 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1941C5820B53CB4004A2217 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +103,7 @@
 		49C8097223835F5E0061D4C1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				DC2FF6EC2387189B0046FAD6 /* BaseViewController.swift */,
 				49C809332382FE630061D4C1 /* DrawMenuViewController.swift */,
 				49EE44A92382AD9F00621659 /* IntroViewController.swift */,
 				49C80976238366CA0061D4C1 /* LineThicknessController.swift */,
@@ -99,6 +114,7 @@
 				E1941C5820B53CB4004A2217 /* ViewController.swift */,
 				49394E1B2371AB12006136B3 /* WelcomeViewController.swift */,
 				49C8097A2383FAF80061D4C1 /* ShapeSelectorViewController.swift */,
+				DC2FF6EA238707E50046FAD6 /* DrawViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -144,6 +160,18 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		DC2FF6EE2387282F0046FAD6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DC2FF6FA2387793B0046FAD6 /* DrawToolbarButton.swift */,
+				DC2FF6F1238765A20046FAD6 /* DrawToolbarPersistedButton.swift */,
+				DC2FF6F8238778B90046FAD6 /* DrawToolbarEphemeralButton.swift */,
+				DC2FF6EF238728460046FAD6 /* DrawToolbarPopoverButton.swift */,
+				DC2FF6F3238767D00046FAD6 /* DrawToolbarStackView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		E1941C4A20B53CB4004A2217 = {
 			isa = PBXGroup;
 			children = (
@@ -171,6 +199,7 @@
 				49C8097423835F8B0061D4C1 /* Helpers & State */,
 				49C8097323835F7A0061D4C1 /* Model */,
 				49C8097223835F5E0061D4C1 /* View Controllers */,
+				DC2FF6EE2387282F0046FAD6 /* Views */,
 				49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */,
 				E1941C5620B53CB4004A2217 /* AppDelegate.swift */,
 				E1941C5D20B53CB5004A2217 /* Assets.xcassets */,
@@ -296,26 +325,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC2FF6F0238728460046FAD6 /* DrawToolbarPopoverButton.swift in Sources */,
 				49C8093A238335BB0061D4C1 /* RealmConnection.swift in Sources */,
 				49394E182371A668006136B3 /* Constants.swift in Sources */,
 				49C809342382FE630061D4C1 /* DrawMenuViewController.swift in Sources */,
 				E1941C5920B53CB4004A2217 /* ViewController.swift in Sources */,
 				49C809322382FC9D0061D4C1 /* SubmitFormViewController.swift in Sources */,
+				DC2FF6F4238767D00046FAD6 /* DrawToolbarStackView.swift in Sources */,
 				E1941C5720B53CB4004A2217 /* AppDelegate.swift in Sources */,
 				E1941C6B20B54914004A2217 /* Pencil.swift in Sources */,
 				49394E1A2371AAF4006136B3 /* Shape.swift in Sources */,
+				DC2FF6F9238778B90046FAD6 /* DrawToolbarEphemeralButton.swift in Sources */,
 				49EE44AA2382AD9F00621659 /* IntroViewController.swift in Sources */,
 				49C8093623831D400061D4C1 /* User.swift in Sources */,
 				49C8092C2382D2250061D4C1 /* RealmConfigViewController.swift in Sources */,
 				49E3600F2375854F00FC52B8 /* StoredImage.swift in Sources */,
 				49C80977238366CA0061D4C1 /* LineThicknessController.swift in Sources */,
+				DC2FF6F2238765A20046FAD6 /* DrawToolbarPersistedButton.swift in Sources */,
+				DC2FF6ED2387189B0046FAD6 /* BaseViewController.swift in Sources */,
 				49C809302382F63A0061D4C1 /* UIViewExtension.swift in Sources */,
 				E1941C6920B544E8004A2217 /* SettingsViewController.swift in Sources */,
 				49C8097B2383FAF80061D4C1 /* ShapeSelectorViewController.swift in Sources */,
 				49C809382383276E0061D4C1 /* ThanksViewController.swift in Sources */,
 				49394E1C2371AB12006136B3 /* WelcomeViewController.swift in Sources */,
+				DC2FF6EB238707E50046FAD6 /* DrawViewController.swift in Sources */,
 				49C80979238374370061D4C1 /* CurrentTool.swift in Sources */,
 				494F624923742E9B00F0C7F6 /* AWS.swift in Sources */,
+				DC2FF6FB2387793B0046FAD6 /* DrawToolbarButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

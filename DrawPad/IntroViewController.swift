@@ -12,7 +12,7 @@ import SwiftUI
 //var agreedToTerms = false  // TODO replace with an IBOutlet
 
 // This is the introducion view
-class IntroViewController: UIViewController {
+class IntroViewController: BaseViewController {
   
     var agreedToTerms = false
     
@@ -25,6 +25,12 @@ class IntroViewController: UIViewController {
 //        super.viewDidLoad()
 //        agreedToTerms = false
 //    }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawViewController") as? DrawViewController
+    self.navigationController!.pushViewController(vc!, animated: true)
+  }
     
     @IBAction func showTermsAndConditionsButton() {
         let alert = UIAlertController(title: "Terms & Conditions", message: "TODO", preferredStyle: UIAlertController.Style.alert)

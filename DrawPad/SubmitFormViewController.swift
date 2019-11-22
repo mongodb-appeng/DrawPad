@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class SubmitFormViewController: UIViewController {
+class SubmitFormViewController: BaseViewController {
   
     @IBOutlet weak var firstName: UITextField!
     @IBOutlet weak var lastName: UITextField!
