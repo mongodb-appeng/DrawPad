@@ -713,7 +713,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp owl toolbar tap")
     stampsPopoverToolbar.savedSelection = 0
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_owl.pdf"
+    CurrentTool.stampFile = "stamp_owl.png"
     stampButton.setImage(UIImage(named: "owl.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -722,7 +722,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp planet toolbar tap")
     stampsPopoverToolbar.savedSelection = 1
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_planet.pdf"
+    CurrentTool.stampFile = "stamp_planet.png"
     stampButton.setImage(UIImage(named: "planet.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -731,7 +731,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp eye toolbar tap")
     stampsPopoverToolbar.savedSelection = 2
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_eye.pdf"
+    CurrentTool.stampFile = "stamp_eye.png"
     stampButton.setImage(UIImage(named: "eye.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -740,7 +740,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp arrows toolbar tap")
     stampsPopoverToolbar.savedSelection = 3
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_arrows.pdf"
+    CurrentTool.stampFile = "stamp_arrows.png"
     stampButton.setImage(UIImage(named: "arrows.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -749,7 +749,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp leaf toolbar tap")
     stampsPopoverToolbar.savedSelection = 4
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_leaf.pdf"
+    CurrentTool.stampFile = "stamp_leaf.png"
     stampButton.setImage(UIImage(named: "leaf.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -758,7 +758,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp database toolbar tap")
     stampsPopoverToolbar.savedSelection = 5
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_database.pdf"
+    CurrentTool.stampFile = "stamp_database.png"
     stampButton.setImage(UIImage(named: "database.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -767,7 +767,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp server toolbar tap")
     stampsPopoverToolbar.savedSelection = 6
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_leaf.pdf"
+    CurrentTool.stampFile = "stamp_server.png"
     stampButton.setImage(UIImage(named: "server.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -776,7 +776,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp anchor toolbar tap")
     stampsPopoverToolbar.savedSelection = 7
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_anchor.pdf"
+    CurrentTool.stampFile = "stamp_anchor.png"
     stampButton.setImage(UIImage(named: "anchor.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -785,7 +785,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp planet2 toolbar tap")
     stampsPopoverToolbar.savedSelection = 8
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_planet2.pdf"
+    CurrentTool.stampFile = "stamp_planet2.png"
     stampButton.setImage(UIImage(named: "planet2.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -794,7 +794,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp beach toolbar tap")
     stampsPopoverToolbar.savedSelection = 9
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_beach.pdf"
+    CurrentTool.stampFile = "stamp_beach.png"
     stampButton.setImage(UIImage(named: "beach.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -803,7 +803,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp swords toolbar tap")
     stampsPopoverToolbar.savedSelection = 10
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_swords.pdf"
+    CurrentTool.stampFile = "stamp_swords.png"
     stampButton.setImage(UIImage(named: "swords.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
@@ -812,7 +812,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp diamond toolbar tap")
     stampsPopoverToolbar.savedSelection = 11
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_diamond.pdf"
+    CurrentTool.stampFile = "stamp_diamond.png"
     stampButton.setImage(UIImage(named: "diamond.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
