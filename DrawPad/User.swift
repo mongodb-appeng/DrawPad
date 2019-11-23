@@ -12,5 +12,4 @@ class User {
   static var imageToSend: StoredImage? = nil
   static var email: String = ""
   static var userName: String = ""
-  
 }
