@@ -131,7 +131,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   
   func extractImage() -> Data? {
-    guard let image = mainImageView.image?.jpegData(compressionQuality: 1) else {
+    guard let image = mainImageView.image?.pngData() else {
       print("Failed to get to the image")
       return nil
     }
@@ -380,6 +380,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     }
 
     let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
+    submitVC?.drawing = UIImage(data: image)
     self.navigationController!.pushViewController(submitVC!, animated: true)
   }
 

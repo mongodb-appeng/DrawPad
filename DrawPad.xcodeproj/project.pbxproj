@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3FB4918F2388A23300A1D95E /* PhotoCaptureOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB4918E2388A23300A1D95E /* PhotoCaptureOverlayView.swift */; };
 		49394E182371A668006136B3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E172371A668006136B3 /* Constants.swift */; };
 		49394E1A2371AAF4006136B3 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E192371AAF4006136B3 /* Shape.swift */; };
 		49394E1C2371AB12006136B3 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E1B2371AB12006136B3 /* WelcomeViewController.swift */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		24E1A5D24BCE0B1C88D4CD0E /* Pods_DrawPad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DrawPad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FB4918E2388A23300A1D95E /* PhotoCaptureOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureOverlayView.swift; sourceTree = "<group>"; };
 		49394E172371A668006136B3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		49394E192371AAF4006136B3 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		49394E1B2371AB12006136B3 /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				49C8093523831D400061D4C1 /* User.swift */,
 				49C8092F2382F63A0061D4C1 /* UIViewExtension.swift */,
 				49C80978238374370061D4C1 /* CurrentTool.swift */,
+				3FB4918E2388A23300A1D95E /* PhotoCaptureOverlayView.swift */,
 			);
 			name = "Helpers & State";
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				49C809322382FC9D0061D4C1 /* SubmitFormViewController.swift in Sources */,
 				DC2FF6F4238767D00046FAD6 /* DrawToolbarStackView.swift in Sources */,
 				E1941C5720B53CB4004A2217 /* AppDelegate.swift in Sources */,
+				3FB4918F2388A23300A1D95E /* PhotoCaptureOverlayView.swift in Sources */,
 				E1941C6B20B54914004A2217 /* Pencil.swift in Sources */,
 				49394E1A2371AAF4006136B3 /* Shape.swift in Sources */,
 				DC2FF6F9238778B90046FAD6 /* DrawToolbarEphemeralButton.swift in Sources */,
