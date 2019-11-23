@@ -19,10 +19,30 @@ class SubmitFormViewController: BaseViewController {
     @IBOutlet weak var state: UITextField!
     @IBOutlet weak var postalCode: UITextField!
     @IBOutlet weak var country: UITextField!
-        
+    @IBOutlet weak var photoCaptureOverlay: PhotoCaptureOverlayView!
+    public var drawing: UIImage?
+    @IBOutlet weak var snapShotImageView: UIImageView!
+    @IBOutlet weak var deleteSnapButton: UIButton!
+    private var snapShotImage: UIImage? {
+        didSet {
+            snapShotImageView.image = snapShotImage
+            deleteSnapButton.isHidden = snapShotImage == nil
+        }
+    }
+    
+    @IBAction func snapPressed() {
+        photoCaptureOverlay.getCompositeImage { [weak self] image in
+            self?.snapShotImage = image
+        }
+    }
+    @IBAction func deleteSnapPressed() {
+        snapShotImage = nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("SubmitFormViewController.viewDidLoad")
+        photoCaptureOverlay.startCameraPreview(with: drawing)
     }
     
     @IBAction func submitPressed(_ sender: Any) {
