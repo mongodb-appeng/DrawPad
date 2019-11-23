@@ -27,13 +27,15 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBOutlet weak var tempImageView: UIImageView!
   @IBOutlet weak var hiddenTextField: UITextField!
   
+  @IBOutlet weak var pencilButton: DrawToolbarPersistedButton!
   @IBOutlet weak var leftToolbarParent: UIView!
   @IBOutlet weak var drawToolbar: DrawToolbarStackView!
   @IBOutlet weak var parentGridHorizontalStackView: UIStackView!
   @IBOutlet weak var scribbleButton: DrawToolbarPopoverButton!
   @IBOutlet weak var sansSerifButton: DrawToolbarPopoverButton!
   @IBOutlet weak var opacityButton: DrawToolbarPopoverButton!
-
+  @IBOutlet weak var stampButton: DrawToolbarPopoverButton!
+  
   // MARK: - INIT
   
   let scribblePopoverParent = UIView()
@@ -64,6 +66,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent]
+    pencilButton.select()
     notificationToken = shapes.observe { [weak self] changes in
       guard let strongSelf = self else {
         return
@@ -148,6 +151,9 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     currentShape!.color = CurrentTool.color.toHex
     currentShape!.brushWidth = CurrentTool.brushWidth
     currentShape!.fontStyle = CurrentTool.fontStyle
+    if CurrentTool.shapeType == ShapeType.stamp {
+      currentShape!.stampFIle = CurrentTool.stampFile
+    }
 
     if CurrentTool.shapeType == .line {
       try! RealmConnection.realm!.write {
@@ -231,8 +237,9 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     }
     
     switch CurrentTool.shapeType {
-    case .line:
-      mergeViews()
+    // TODO - REMOVE
+    //    case .line:
+    //      mergeViews()
     case .text:
       // The bounding rectangle for the text has been created but the user
       // must now type in their text
@@ -290,7 +297,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       button.select()
     }
   }
-  // TODO - Implement fonts
+
   @objc func scribblePopoverTapHandler(gesture: UITapGestureRecognizer) {
     print("Secondary scribble toolbar tap")
     scribblePopoverToolbar.clearCurrentButtonSelection()
@@ -318,6 +325,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @objc func opacityBlackTapped(sender: UIButton) {
     print("Secondary Black opacity toolbar tap")
     opacityPopoverToolbar.clearCurrentButtonSelection()
+    opacityPopoverToolbar.savedSelection = 0
+    opacityButton.setImage(UIImage(named: "shade100.pdf"), for: .normal)
     guard let pencil = Pencil(tag: 1) else {
       return
     }
@@ -327,6 +336,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @objc func opacityDarkestTapped(sender: UIButton) {
     print("Secondary Darkest Grey opacity toolbar tap")
     opacityPopoverToolbar.clearCurrentButtonSelection()
+    opacityPopoverToolbar.savedSelection = 1
+    opacityButton.setImage(UIImage(named: "shade70.pdf"), for: .normal)
     guard let pencil = Pencil(tag: 2) else {
       return
     }
@@ -336,6 +347,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @objc func opacityMidTapped(sender: UIButton) {
     print("Secondary Mid Grey opacity toolbar tap")
     opacityPopoverToolbar.clearCurrentButtonSelection()
+    opacityPopoverToolbar.savedSelection = 2
+    opacityButton.setImage(UIImage(named: "shade50.pdf"), for: .normal)
     guard let pencil = Pencil(tag: 3) else {
       return
     }
@@ -345,6 +358,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @objc func opacityLightestTapped(sender: UIButton) {
     print("Secondary Lightest Grey opacity toolbar tap")
     opacityPopoverToolbar.clearCurrentButtonSelection()
+    opacityPopoverToolbar.savedSelection = 3
+    opacityButton.setImage(UIImage(named: "shade30.pdf"), for: .normal)
     guard let pencil = Pencil(tag: 4) else {
       return
     }
@@ -409,13 +424,12 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
   @IBAction func scribbleButtonTapped(_ sender: UIButton) {
     print("Scribble button tapped")
-
     clearSecondaryPopovers(except: [scribblePopoverParent])
     if scribblePopoverParent.isDescendant(of: self.view) {
       return
     }
 
-    scribblePopoverParent.backgroundColor = UIColor(red: 22/255, green: 26/255, blue: 26/255, alpha: 1)
+    scribblePopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
     self.view.addSubview(scribblePopoverParent)
     scribblePopoverParent.translatesAutoresizingMaskIntoConstraints = false
 
@@ -433,19 +447,19 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
     // TODO: UPDATE IMAGES TO SHOW DIFFERENT WIDTHS
 
-    let scribbleLightImage = UIImage(systemName: "scribble")
+    let scribbleLightImage = UIImage(named: "line_thin.pdf")
     let scribbleLightButton = DrawToolbarPersistedButton(image: scribbleLightImage!)
     scribbleLightButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     scribbleLightButton.addTarget(self, action: #selector(scribbleLightTapped(sender:)), for: .touchUpInside)
     scribbleLightButton.tintColor = .white
 
-    let scribbleMediumImage = UIImage(systemName: "scribble")
+    let scribbleMediumImage = UIImage(named: "line_med.pdf")
     let scribbleMediumButton = DrawToolbarPersistedButton(image: scribbleMediumImage!)
     scribbleMediumButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     scribbleMediumButton.addTarget(self, action: #selector(scribbleMediumTapped(sender:)), for: .touchUpInside)
     scribbleMediumButton.tintColor = .white
 
-    let scribbleHeavyImage = UIImage(systemName: "scribble")
+    let scribbleHeavyImage = UIImage(named: "line_fat.pdf")
     let scribbleHeavyButton = DrawToolbarPersistedButton(image: scribbleHeavyImage!)
     scribbleHeavyButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     scribbleHeavyButton.addTarget(self, action: #selector(scribbleHeavyTapped(sender:)), for: .touchUpInside)
@@ -488,7 +502,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
     CurrentTool.shapeType = .text
     
-    sansSerifPopoverParent.backgroundColor = UIColor(red: 22/255, green: 26/255, blue: 26/255, alpha: 1)
+    sansSerifPopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
     self.view.addSubview(sansSerifPopoverParent)
     sansSerifPopoverParent.translatesAutoresizingMaskIntoConstraints = false
 
@@ -577,7 +591,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       return
     }
 
-    stampsPopoverParent.backgroundColor = UIColor(red: 22/255, green: 26/255, blue: 26/255, alpha: 1)
+    stampsPopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
     self.view.addSubview(stampsPopoverParent)
     stampsPopoverParent.translatesAutoresizingMaskIntoConstraints = false
 
@@ -607,76 +621,80 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     planetButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     planetButton.addTarget(self, action: #selector(stampPlanetTapped(sender:)), for: .touchUpInside)
     planetButton.tintColor = .white
+
+    let eyeImage = UIImage(named: "eye.pdf")
+    let eyeButton = DrawToolbarPersistedButton(image: eyeImage!)
+    eyeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    eyeButton.addTarget(self, action: #selector(stampEyeTapped(sender:)), for: .touchUpInside)
+    eyeButton.tintColor = .white
+
+    let arrowsImage = UIImage(named: "arrows.pdf")
+    let arrowsButton = DrawToolbarPersistedButton(image: arrowsImage!)
+    arrowsButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    arrowsButton.addTarget(self, action: #selector(stampArrowsTapped(sender:)), for: .touchUpInside)
+    arrowsButton.tintColor = .white
+
+    let leafImage = UIImage(named: "leaf.pdf")
+    let leafButton = DrawToolbarPersistedButton(image: leafImage!)
+    leafButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    leafButton.addTarget(self, action: #selector(stampLeafTapped(sender:)), for: .touchUpInside)
+    leafButton.tintColor = .white
     
-
-    let squareImage = UIImage(systemName: "scribble")
-    let squareButton = DrawToolbarPersistedButton(image: squareImage!)
-    squareButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    squareButton.tintColor = .white
-
-    let scribbleLightImage2 = UIImage(systemName: "scribble")
-    let scribbleLightButton2 = DrawToolbarPersistedButton(image: scribbleLightImage2!)
-    scribbleLightButton2.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    scribbleLightButton2.tintColor = .white
-
-    let textboxImage2 = UIImage(systemName: "scribble")
-    let textBoxButton2 = DrawToolbarPersistedButton(image: textboxImage2!)
-    textBoxButton2.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    textBoxButton2.tintColor = .white
-
-    let squareImage2 = UIImage(systemName: "scribble")
-    let squareButton2 = DrawToolbarPersistedButton(image: squareImage2!)
-    squareButton2.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    squareButton2.tintColor = .white
-
-    let scribbleLightImage3 = UIImage(systemName: "scribble")
-    let scribbleLightButton3 = DrawToolbarPersistedButton(image: scribbleLightImage3!)
-    scribbleLightButton3.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    scribbleLightButton3.tintColor = .white
-
-    let textboxImage3 = UIImage(systemName: "scribble")
-    let textBoxButton3 = DrawToolbarPersistedButton(image: textboxImage3!)
-    textBoxButton3.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    textBoxButton3.tintColor = .white
-
-    let squareImage3 = UIImage(systemName: "scribble")
-    let squareButton3 = DrawToolbarPersistedButton(image: squareImage3!)
-    squareButton3.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    squareButton3.tintColor = .white
-
-    let scribbleLightImage4 = UIImage(systemName: "scribble")
-    let scribbleLightButton4 = DrawToolbarPersistedButton(image: scribbleLightImage4!)
-    scribbleLightButton4.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    scribbleLightButton4.tintColor = .white
-
-    let textboxImage4 = UIImage(systemName: "scribble")
-    let textBoxButton4 = DrawToolbarPersistedButton(image: textboxImage4!)
-    textBoxButton4.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    textBoxButton4.tintColor = .white
-
-    let squareImage4 = UIImage(systemName: "scribble")
-    let squareButton4 = DrawToolbarPersistedButton(image: squareImage4!)
-    squareButton4.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    squareButton4.tintColor = .white
-
-    let squareImage5 = UIImage(systemName: "scribble")
-    let squareButton5 = DrawToolbarPersistedButton(image: squareImage5!)
-    squareButton5.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    squareButton5.tintColor = .white
-
+    let databaseImage = UIImage(named: "database.pdf")
+    let databaseButton = DrawToolbarPersistedButton(image: databaseImage!)
+    databaseButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    databaseButton.addTarget(self, action: #selector(stampDatabaseTapped(sender:)), for: .touchUpInside)
+    databaseButton.tintColor = .white
+    
+    let serverImage = UIImage(named: "server.pdf")
+    let serverButton = DrawToolbarPersistedButton(image: serverImage!)
+    serverButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    serverButton.addTarget(self, action: #selector(stampServerTapped(sender:)), for: .touchUpInside)
+    serverButton.tintColor = .white
+    
+    let anchorImage = UIImage(named: "anchor.pdf")
+    let anchorButton = DrawToolbarPersistedButton(image: anchorImage!)
+    anchorButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    anchorButton.addTarget(self, action: #selector(stampAnchorTapped(sender:)), for: .touchUpInside)
+    anchorButton.tintColor = .white
+    
+    let planet2Image = UIImage(named: "planet2.pdf")
+    let planet2Button = DrawToolbarPersistedButton(image: planet2Image!)
+    planet2Button.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    planet2Button.addTarget(self, action: #selector(stampPlanet2Tapped(sender:)), for: .touchUpInside)
+    planet2Button.tintColor = .white
+    
+    let beachImage = UIImage(named: "beach.pdf")
+    let beachButton = DrawToolbarPersistedButton(image: beachImage!)
+    beachButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    beachButton.addTarget(self, action: #selector(stampBeachTapped(sender:)), for: .touchUpInside)
+    beachButton.tintColor = .white
+    
+    let swordsImage = UIImage(named: "swords.pdf")
+    let swordsButton = DrawToolbarPersistedButton(image: swordsImage!)
+    swordsButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    swordsButton.addTarget(self, action: #selector(stampSwordsTapped(sender:)), for: .touchUpInside)
+    swordsButton.tintColor = .white
+    
+    let diamondImage = UIImage(named: "diamond.pdf")
+    let diamondButton = DrawToolbarPersistedButton(image: diamondImage!)
+    diamondButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    diamondButton.addTarget(self, action: #selector(stampDiamondTapped(sender:)), for: .touchUpInside)
+    diamondButton.tintColor = .white
+    
     stampsPopoverToolbar.addArrangedSubview(owlButton)
     stampsPopoverToolbar.addArrangedSubview(planetButton)
-    stampsPopoverToolbar.addArrangedSubview(squareButton)
-    stampsPopoverToolbar.addArrangedSubview(scribbleLightButton2)
-    stampsPopoverToolbar.addArrangedSubview(textBoxButton2)
-    stampsPopoverToolbar.addArrangedSubview(squareButton2)
-    stampsPopoverToolbar.addArrangedSubview(scribbleLightButton3)
-    stampsPopoverToolbar.addArrangedSubview(textBoxButton3)
-    stampsPopoverToolbar.addArrangedSubview(squareButton3)
-    stampsPopoverToolbar.addArrangedSubview(scribbleLightButton4)
-    stampsPopoverToolbar.addArrangedSubview(textBoxButton4)
-    stampsPopoverToolbar.addArrangedSubview(squareButton4)
-    stampsPopoverToolbar.addArrangedSubview(squareButton5)
+    stampsPopoverToolbar.addArrangedSubview(eyeButton)
+    stampsPopoverToolbar.addArrangedSubview(arrowsButton)
+    stampsPopoverToolbar.addArrangedSubview(leafButton)
+    stampsPopoverToolbar.addArrangedSubview(databaseButton)
+    stampsPopoverToolbar.addArrangedSubview(serverButton)
+    stampsPopoverToolbar.addArrangedSubview(anchorButton)
+    stampsPopoverToolbar.addArrangedSubview(planet2Button)
+    stampsPopoverToolbar.addArrangedSubview(beachButton)
+    stampsPopoverToolbar.addArrangedSubview(swordsButton)
+    stampsPopoverToolbar.addArrangedSubview(diamondButton)
+    
     stampsPopoverParent.addSubview(stampsPopoverToolbar)
     stampsPopoverToolbar.translatesAutoresizingMaskIntoConstraints = false
 
@@ -690,25 +708,114 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       selectedButton.select()
     }
   }
-  
+   
   @objc func stampOwlTapped(sender: UIButton) {
     print("Secondary stamp owl toolbar tap")
     stampsPopoverToolbar.savedSelection = 0
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    // TODO set the stamp name
-//    CurrentTool.fontStyle = .normal
+    CurrentTool.stampFile = "stamp_owl.pdf"
+    stampButton.setImage(UIImage(named: "owl.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
 
   @objc func stampPlanetTapped(sender: UIButton) {
-    print("Secondary stamp Planet toolbar tap")
+    print("Secondary stamp planet toolbar tap")
     stampsPopoverToolbar.savedSelection = 1
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    // TODO set the stamp name
-//    CurrentTool.fontStyle = .normal
+    CurrentTool.stampFile = "stamp_planet.pdf"
+    stampButton.setImage(UIImage(named: "planet.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+
+  @objc func stampEyeTapped(sender: UIButton) {
+    print("Secondary stamp eye toolbar tap")
+    stampsPopoverToolbar.savedSelection = 2
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_eye.pdf"
+    stampButton.setImage(UIImage(named: "eye.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
   
+  @objc func stampArrowsTapped(sender: UIButton) {
+    print("Secondary stamp arrows toolbar tap")
+    stampsPopoverToolbar.savedSelection = 3
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_arrows.pdf"
+    stampButton.setImage(UIImage(named: "arrows.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+  
+  @objc func stampLeafTapped(sender: UIButton) {
+    print("Secondary stamp leaf toolbar tap")
+    stampsPopoverToolbar.savedSelection = 4
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_leaf.pdf"
+    stampButton.setImage(UIImage(named: "leaf.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+
+  @objc func stampDatabaseTapped(sender: UIButton) {
+    print("Secondary stamp database toolbar tap")
+    stampsPopoverToolbar.savedSelection = 5
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_database.pdf"
+    stampButton.setImage(UIImage(named: "database.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+  
+  @objc func stampServerTapped(sender: UIButton) {
+    print("Secondary stamp server toolbar tap")
+    stampsPopoverToolbar.savedSelection = 6
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_leaf.pdf"
+    stampButton.setImage(UIImage(named: "server.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+  
+  @objc func stampAnchorTapped(sender: UIButton) {
+    print("Secondary stamp anchor toolbar tap")
+    stampsPopoverToolbar.savedSelection = 7
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_anchor.pdf"
+    stampButton.setImage(UIImage(named: "anchor.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+  
+  @objc func stampPlanet2Tapped(sender: UIButton) {
+    print("Secondary stamp planet2 toolbar tap")
+    stampsPopoverToolbar.savedSelection = 8
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_planet2.pdf"
+    stampButton.setImage(UIImage(named: "planet2.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+  
+  @objc func stampBeachTapped(sender: UIButton) {
+    print("Secondary stamp beach toolbar tap")
+    stampsPopoverToolbar.savedSelection = 9
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_beach.pdf"
+    stampButton.setImage(UIImage(named: "beach.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+  
+  @objc func stampSwordsTapped(sender: UIButton) {
+    print("Secondary stamp swords toolbar tap")
+    stampsPopoverToolbar.savedSelection = 10
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_swords.pdf"
+    stampButton.setImage(UIImage(named: "swords.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
+  
+  @objc func stampDiamondTapped(sender: UIButton) {
+    print("Secondary stamp diamond toolbar tap")
+    stampsPopoverToolbar.savedSelection = 11
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.stampFile = "stamp_diamond.pdf"
+    stampButton.setImage(UIImage(named: "diamond.pdf"), for: .normal)
+    clearSecondaryPopovers(except: nil)
+  }
   @IBAction func opacityButtonTapped(_ sender: UIButton) {
     print("Opacity button tapped")
     clearSecondaryPopovers(except: [opacityPopoverParent])
@@ -717,7 +824,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       return
     }
 
-    opacityPopoverParent.backgroundColor = UIColor(red: 22/255, green: 26/255, blue: 26/255, alpha: 1)
+    opacityPopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
     self.view.addSubview(opacityPopoverParent)
     opacityPopoverParent.translatesAutoresizingMaskIntoConstraints = false
 
@@ -735,25 +842,25 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
     // TODO: UPDATE IMAGES
 
-    let blackShadeImage = UIImage(systemName: "eyedropper")
+    let blackShadeImage = UIImage(named: "shade100.pdf")
     let blackShadeButton = DrawToolbarPersistedButton(image: blackShadeImage!)
     blackShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     blackShadeButton.addTarget(self, action: #selector(opacityBlackTapped(sender:)), for: .touchUpInside)
     blackShadeButton.tintColor = .white
 
-    let darkestShadeImage = UIImage(systemName: "eyedropper")
+    let darkestShadeImage = UIImage(named: "shade70.pdf")
     let darkestShadeButton = DrawToolbarPersistedButton(image: darkestShadeImage!)
     darkestShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     darkestShadeButton.addTarget(self, action: #selector(opacityDarkestTapped(sender:)), for: .touchUpInside)
     darkestShadeButton.tintColor = .white
 
-    let midShadeImage = UIImage(systemName: "eyedropper")
+    let midShadeImage = UIImage(named: "shade50.pdf")
     let midShadeButton = DrawToolbarPersistedButton(image: midShadeImage!)
     midShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     midShadeButton.addTarget(self, action: #selector(opacityMidTapped(sender:)), for: .touchUpInside)
     midShadeButton.tintColor = .white
 
-    let lightestShadeImage = UIImage(systemName: "eyedropper")
+    let lightestShadeImage = UIImage(named: "shade30.pdf")
     let lightestShadeButton = DrawToolbarPersistedButton(image: lightestShadeImage!)
     lightestShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     lightestShadeButton.addTarget(self, action: #selector(opacityLightestTapped(sender:)), for: .touchUpInside)
@@ -796,10 +903,11 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
 
   // MARK: - SECONDARY TOOLBAR TAP HANDLDERS
-
+  
   @objc func scribbleLightTapped(sender: UIButton) {
     print("Scribble light tapped")
     scribblePopoverToolbar.savedSelection = 0
+    scribbleButton.setImage(UIImage(named: "line_thin.pdf"), for: .normal)
     CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_THIN)
     clearSecondaryPopovers(except: nil)
   }
@@ -807,6 +915,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @objc func scribbleMediumTapped(sender: UIButton) {
     print("Scribble medium tapped")
     scribblePopoverToolbar.savedSelection = 1
+    scribbleButton.setImage(UIImage(named: "line_med.pdf"), for: .normal)
     CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_MEDIUM)
     clearSecondaryPopovers(except: nil)
   }
@@ -814,6 +923,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @objc func scribbleHeavyTapped(sender: UIButton) {
     print("Scribble heavy tapped")
     scribblePopoverToolbar.savedSelection = 2
+    scribbleButton.setImage(UIImage(named: "line_fat.pdf"), for: .normal)
     CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_WIDE)
     clearSecondaryPopovers(except: nil)
   }

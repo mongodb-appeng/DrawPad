@@ -116,7 +116,7 @@ class Shape: Object {
   /// the color the shape was painted with
   @objc dynamic var color: String = "666666"
   
-  @objc dynamic var image: String = ""
+  @objc dynamic var stampFIle: String = ""
   @objc dynamic var text: String = "Your text goes here"
   @objc dynamic var fontStyle: FontStyle = .normal
   
