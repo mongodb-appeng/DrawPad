@@ -482,12 +482,12 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func sansSerifButtonTapped(_ sender: UIButton) {
     print("Sans Serif button tapped")
     clearSecondaryPopovers(except: [sansSerifPopoverParent])
-
     if sansSerifPopoverParent.isDescendant(of: self.view) {
       return
     }
 
     CurrentTool.shapeType = .text
+    
     sansSerifPopoverParent.backgroundColor = UIColor(red: 22/255, green: 26/255, blue: 26/255, alpha: 1)
     self.view.addSubview(sansSerifPopoverParent)
     sansSerifPopoverParent.translatesAutoresizingMaskIntoConstraints = false
@@ -535,7 +535,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     let trailing = sansSerifPopoverToolbar.trailingAnchor.constraint(equalTo: sansSerifPopoverParent.trailingAnchor)
     let bottom = sansSerifPopoverToolbar.bottomAnchor.constraint(equalTo: sansSerifPopoverParent.bottomAnchor)
     NSLayoutConstraint.activate([leading, top, trailing, bottom])
-
     if let selectedButton = sansSerifPopoverToolbar.arrangedSubviews[sansSerifPopoverToolbar.savedSelection] as? DrawToolbarPersistedButton {
       selectedButton.select()
     }
@@ -543,23 +542,31 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   
   @objc func sansSerifNormalTapped(sender: UIButton) {
     print("Secondary Text normal toolbar tap")
+    // TODO - do the same for the other sub-menus ZXZX
+    sansSerifPopoverToolbar.savedSelection = 0
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .normal
     sansSerifButton.setTitle("Sans Serif", for: .normal)
+    // TODO - do the same for the other sub-menus ZXZX
+    clearSecondaryPopovers(except: nil)
   }
 
   @objc func sansSerifSerifTapped(sender: UIButton) {
     print("Secondary Text serif toolbar tap")
+    sansSerifPopoverToolbar.savedSelection = 1
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .serif
     sansSerifButton.setTitle("Serif", for: .normal)
+    clearSecondaryPopovers(except: nil)
   }
   
   @objc func sansSerifMonoTapped(sender: UIButton) {
     print("Secondary Text mono toolbar tap")
+    sansSerifPopoverToolbar.savedSelection = 2
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .monospace
     sansSerifButton.setTitle("Monospace", for: .normal)
+    clearSecondaryPopovers(except: nil)
   }
   
   @IBAction func stampsButtonTapped(_ sender: UIButton) {
@@ -588,15 +595,19 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
     // TODO: UPDATE VARIABLE NAMES AND IMAGES
 
-    let scribbleLightImage = UIImage(systemName: "scribble")
-    let scribbleLightButton = DrawToolbarPersistedButton(image: scribbleLightImage!)
-    scribbleLightButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    scribbleLightButton.tintColor = .white
+//    let scribbleLightImage = UIImage(systemName: "scribble")
+    let owlImage = UIImage(named: "owl.pdf")
+    let owlButton = DrawToolbarPersistedButton(image: owlImage!)
+    owlButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    owlButton.addTarget(self, action: #selector(stampOwlTapped(sender:)), for: .touchUpInside)
+    owlButton.tintColor = .white
 
-    let textboxImage = UIImage(systemName: "scribble")
-    let textBoxButton = DrawToolbarPersistedButton(image: textboxImage!)
-    textBoxButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
-    textBoxButton.tintColor = .white
+    let planetImage = UIImage(named: "planet.pdf")
+    let planetButton = DrawToolbarPersistedButton(image: planetImage!)
+    planetButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    planetButton.addTarget(self, action: #selector(stampPlanetTapped(sender:)), for: .touchUpInside)
+    planetButton.tintColor = .white
+    
 
     let squareImage = UIImage(systemName: "scribble")
     let squareButton = DrawToolbarPersistedButton(image: squareImage!)
@@ -653,8 +664,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     squareButton5.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     squareButton5.tintColor = .white
 
-    stampsPopoverToolbar.addArrangedSubview(scribbleLightButton)
-    stampsPopoverToolbar.addArrangedSubview(textBoxButton)
+    stampsPopoverToolbar.addArrangedSubview(owlButton)
+    stampsPopoverToolbar.addArrangedSubview(planetButton)
     stampsPopoverToolbar.addArrangedSubview(squareButton)
     stampsPopoverToolbar.addArrangedSubview(scribbleLightButton2)
     stampsPopoverToolbar.addArrangedSubview(textBoxButton2)
@@ -679,7 +690,25 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       selectedButton.select()
     }
   }
+  
+  @objc func stampOwlTapped(sender: UIButton) {
+    print("Secondary stamp owl toolbar tap")
+    stampsPopoverToolbar.savedSelection = 0
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    // TODO set the stamp name
+//    CurrentTool.fontStyle = .normal
+    clearSecondaryPopovers(except: nil)
+  }
 
+  @objc func stampPlanetTapped(sender: UIButton) {
+    print("Secondary stamp Planet toolbar tap")
+    stampsPopoverToolbar.savedSelection = 1
+    stampsPopoverToolbar.clearCurrentButtonSelection()
+    // TODO set the stamp name
+//    CurrentTool.fontStyle = .normal
+    clearSecondaryPopovers(except: nil)
+  }
+  
   @IBAction func opacityButtonTapped(_ sender: UIButton) {
     print("Opacity button tapped")
     clearSecondaryPopovers(except: [opacityPopoverParent])
