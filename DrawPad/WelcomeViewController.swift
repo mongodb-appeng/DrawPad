@@ -44,8 +44,8 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
       super.viewDidLoad()
       navigationController?.setNavigationBarHidden(true, animated: false)
-
-      if SyncUser.current != nil {
+      self.view.backgroundColor = UIColor.white
+      if SyncUser.current != nil && User.userName != "" {
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "IntroViewController") as? IntroViewController
         self.navigationController!.pushViewController(vc!, animated: true)
           view.backgroundColor = .white
