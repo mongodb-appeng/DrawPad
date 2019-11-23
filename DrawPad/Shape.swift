@@ -202,7 +202,7 @@ class Shape: Object {
 
   private func drawStamp(_ context: CGContext) {
     context.move(to: lastPoint!.asCGPoint())
-    let image = UIImage(named: "grumpy_cat_stamp.png")!
+    let image = UIImage(named: stampFIle)!
     image.draw(in: lastPoint!.asCGRect(), blendMode: .normal, alpha: 1.0)
   }
   
