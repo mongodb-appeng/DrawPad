@@ -20,6 +20,8 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Preview the drawing on your skin</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMainStoryboardFile</key>
