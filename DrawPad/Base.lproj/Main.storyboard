@@ -874,7 +874,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKs-go-Ckg" userLabel="Button - Textbox" customClass="DrawToolbarEphemeralButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="265" width="80" height="66.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="textbox" catalog="system"/>
+                                                <state key="normal" image="TextBox"/>
                                                 <connections>
                                                     <action selector="textboxButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="bxb-UI-hpW"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="UCF-Qo-8KD"/>
@@ -912,7 +912,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V7G-w8-urN" userLabel="Button - Square" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="530" width="80" height="66.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="square" catalog="system"/>
+                                                <state key="normal" image="Rectangle"/>
                                                 <connections>
                                                     <action selector="squareButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="ufs-z6-GZ8"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="mob-6M-JwD"/>
@@ -921,7 +921,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQz-Mx-MgE" userLabel="Button - Circle" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="596.5" width="80" height="66"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="circle" catalog="system"/>
+                                                <state key="normal" image="Oval"/>
                                                 <connections>
                                                     <action selector="circleButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="F7Q-nc-Bkj"/>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="obn-tm-NG8"/>
@@ -930,7 +930,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lwo-cr-CIv" userLabel="Button - Triangle" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="662.5" width="80" height="66.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="triangle" catalog="system"/>
+                                                <state key="normal" image="Triangle"/>
                                                 <connections>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="xMe-Zh-tQW"/>
                                                     <action selector="triangleButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="ks1-Yh-mT6"/>
@@ -2121,11 +2121,15 @@ Talk to our booth staff or head to mongodb.com/realm</string>
         <image name="Image" width="375" height="122"/>
         <image name="LightBlue" width="53" height="332"/>
         <image name="LightGreen" width="53" height="332"/>
+        <image name="Oval" width="26" height="26"/>
         <image name="Path10" width="17" height="19"/>
+        <image name="Rectangle" width="26" height="26"/>
         <image name="Red" width="53" height="332"/>
         <image name="Redo" width="21" height="19"/>
-        <image name="Shade" width="100" height="99"/>
+        <image name="Shade" width="24" height="24"/>
+        <image name="TextBox" width="48" height="44"/>
         <image name="ThankYou" width="2875" height="1228"/>
+        <image name="Triangle" width="26" height="25"/>
         <image name="Yellow" width="53" height="332"/>
         <image name="arrow.uturn.left.square.fill" catalog="system" width="64" height="56"/>
         <image name="checkmark.square" catalog="system" width="64" height="56"/>
@@ -2142,7 +2146,6 @@ Talk to our booth staff or head to mongodb.com/realm</string>
         <image name="square.fill" catalog="system" width="64" height="56"/>
         <image name="text.bubble" catalog="system" width="64" height="54"/>
         <image name="text.bubble.fill" catalog="system" width="64" height="54"/>
-        <image name="textbox" catalog="system" width="64" height="44"/>
         <image name="triangle" catalog="system" width="64" height="56"/>
         <image name="triangle.fill" catalog="system" width="64" height="56"/>
         <image name="wand.and.stars" catalog="system" width="64" height="56"/>
