@@ -137,11 +137,11 @@
 			children = (
 				494F624823742E9B00F0C7F6 /* AWS.swift */,
 				49394E172371A668006136B3 /* Constants.swift */,
+				49C80978238374370061D4C1 /* CurrentTool.swift */,
 				E1941C6A20B54914004A2217 /* Pencil.swift */,
 				49C80939238335BB0061D4C1 /* RealmConnection.swift */,
 				49C8093523831D400061D4C1 /* User.swift */,
 				49C8092F2382F63A0061D4C1 /* UIViewExtension.swift */,
-				49C80978238374370061D4C1 /* CurrentTool.swift */,
 				3FB4918E2388A23300A1D95E /* PhotoCaptureOverlayView.swift */,
 			);
 			name = "Helpers & State";

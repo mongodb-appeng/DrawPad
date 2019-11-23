@@ -13,6 +13,7 @@ class CurrentTool {
   static var shapeType: ShapeType = .line
   static var color = UIColor.black
   static var fontStyle: FontStyle = .normal
+  static var stampFile: String = ""
   
   static func setWidth (width: Float) {
     CurrentTool.brushWidth = CGFloat(width)
@@ -24,5 +25,6 @@ class CurrentTool {
     shapeType = .line
     color = UIColor.black
     fontStyle = .normal
+    stampFile = ""
   }
 }
