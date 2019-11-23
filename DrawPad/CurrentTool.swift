@@ -9,7 +9,7 @@
 import UIKit
 
 class CurrentTool {
-  static var brushWidth: CGFloat = CGFloat(Constants.DRAW_PEN_WIDTH_MEDIUM)
+  static var brushWidth: CGFloat = CGFloat(Constants.DRAW_PEN_WIDTH_THIN)
   static var shapeType: ShapeType = .line
   static var color = UIColor.black
   static var fontStyle: FontStyle = .normal
