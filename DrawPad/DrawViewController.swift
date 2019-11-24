@@ -1098,8 +1098,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     let leading = trianglePopoverToolbar.leadingAnchor.constraint(equalTo: trianglePopoverParent.leadingAnchor)
     let top = trianglePopoverToolbar.topAnchor.constraint(equalTo: trianglePopoverParent.topAnchor)
     let trailing = trianglePopoverToolbar.trailingAnchor.constraint(equalTo: trianglePopoverParent.trailingAnchor)
-    let bottom = trianglePopoverToolbar.bottomAnchor.constraint(equalTo: trianglePopoverParent.bottomAnchor)
-    NSLayoutConstraint.activate([leading, top, trailing, bottom])
+    let bottom = trianglePopoverToolbar.bottomAnchor.constraint(equalTo: drawToolbar.bottomAnchor)
+    NSLayoutConstraint.activate([leading, trailing, top, bottom])
 
     if let selectedButton = trianglePopoverToolbar.arrangedSubviews[trianglePopoverToolbar.savedSelection] as? DrawToolbarPersistedButton {
       selectedButton.select()
