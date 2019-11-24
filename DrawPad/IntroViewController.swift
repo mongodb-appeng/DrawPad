@@ -45,7 +45,8 @@ class IntroViewController: BaseViewController {
         agreedToTerms = sender.isSelected
     }
     
-    @IBAction func startDrawingPressed(_ sender: Any) {
+
+  @IBAction func startDrawingPressed(_ sender: Any) {
         if !isValidEmail(emailStr: emailField.text ?? "") {
             // create the alert
             let alert = UIAlertController(title: "Ooops!", message: "Please enter a valid email", preferredStyle: UIAlertController.Style.alert)
@@ -65,6 +66,7 @@ class IntroViewController: BaseViewController {
         }
         User.email = emailField.text!
         emailField.text = ""
+        emailField.endEditing(true)
         agreedToTerms = false
         agreedToTermsButton.isSelected = false
         
