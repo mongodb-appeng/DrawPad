@@ -102,7 +102,7 @@ class Shape: Object {
   @objc dynamic var lastPoint: LinkedPoint?
 
   /// the width of the brush the shape was painted with
-  @objc dynamic var brushWidthFloat: Float = 10.0
+  @objc dynamic var brushWidthFloat: Float = Constants.DRAW_PEN_WIDTH_MEDIUM
   
   var brushWidth: CGFloat {
     get {
@@ -112,6 +112,8 @@ class Shape: Object {
       brushWidthFloat = Float(width)
     }
   }
+  
+  @objc dynamic var filled: Bool = true
   
   /// the color the shape was painted with
   @objc dynamic var color: String = "666666"
@@ -165,8 +167,10 @@ class Shape: Object {
     context.setBlendMode(.normal)
     context.setLineWidth(brushWidth)
     context.setStrokeColor(UIColor(hex: color)!.cgColor)
-    context.setFillColor(UIColor(hex: color)!.cgColor)
-    UIRectFill (rectangle)
+    if filled {
+      context.setFillColor(UIColor(hex: color)!.cgColor)
+      UIRectFill (rectangle)
+    }
     context.strokePath()
   }
 
@@ -177,8 +181,12 @@ class Shape: Object {
     context.setBlendMode(.normal)
     context.setLineWidth(brushWidth)
     context.setStrokeColor(UIColor(hex: color)!.cgColor)
-    context.setFillColor(UIColor(hex: color)!.cgColor)
-    context.fillEllipse(in: rectangle)
+    if filled {
+      context.setFillColor(UIColor(hex: color)!.cgColor)
+      context.fillEllipse(in: rectangle)
+    } else {
+      context.strokeEllipse(in: rectangle)
+    }
     context.strokePath()
   }
 
@@ -196,8 +204,12 @@ class Shape: Object {
     context.setBlendMode(.normal)
     context.setLineWidth(brushWidth)
     context.setStrokeColor(UIColor(hex: color)!.cgColor)
-    context.setFillColor(UIColor(hex: color)!.cgColor)
-    context.fillPath()
+    if filled  {
+      context.setFillColor(UIColor(hex: color)!.cgColor)
+      context.fillPath()
+    } else {
+      context.strokePath()
+    }
   }
 
   private func drawStamp(_ context: CGContext) {

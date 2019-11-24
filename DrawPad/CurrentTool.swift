@@ -14,17 +14,19 @@ class CurrentTool {
   static var color = UIColor.black
   static var fontStyle: FontStyle = .normal
   static var stampFile: String = ""
+  static var filled: Bool = true
   
   static func setWidth (width: Float) {
     CurrentTool.brushWidth = CGFloat(width)
-    CurrentTool.shapeType = .line
+//    CurrentTool.shapeType = .line
   }
   
   static func reset() {
-    brushWidth = CGFloat(Constants.DRAW_PEN_WIDTH_MEDIUM)
+    brushWidth = CGFloat(Constants.DRAW_PEN_WIDTH_THIN)
     shapeType = .line
     color = UIColor.black
     fontStyle = .normal
     stampFile = ""
+    filled = true
   }
 }
