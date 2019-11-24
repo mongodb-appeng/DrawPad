@@ -14,9 +14,9 @@
             filePath = "DrawPad/DrawViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "767"
-            endingLineNumber = "767"
-            landmarkName = "stampServerTapped(sender:)"
+            startingLineNumber = "805"
+            endingLineNumber = "805"
+            landmarkName = "stampArrowsTapped(sender:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

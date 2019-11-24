@@ -906,7 +906,7 @@
                                                     <action selector="opacityButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="pLN-Ja-uzt"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V7G-w8-urN" userLabel="Button - Square" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V7G-w8-urN" userLabel="Button - Square" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="530" width="80" height="66.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Rectangle"/>
@@ -915,7 +915,7 @@
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="mob-6M-JwD"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQz-Mx-MgE" userLabel="Button - Circle" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQz-Mx-MgE" userLabel="Button - Circle" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="596.5" width="80" height="66"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Oval"/>
@@ -924,7 +924,7 @@
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="obn-tm-NG8"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lwo-cr-CIv" userLabel="Button - Triangle" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lwo-cr-CIv" userLabel="Button - Triangle" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="662.5" width="80" height="66.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Triangle"/>
@@ -1016,11 +1016,14 @@
                         <outlet property="leftToolbarParent" destination="0GJ-lk-jQs" id="NU8-re-Bjq"/>
                         <outlet property="mainImageView" destination="fIh-zH-RJp" id="Bel-ce-4x4"/>
                         <outlet property="opacityButton" destination="TJC-hG-xQa" id="Xkg-re-jfs"/>
+                        <outlet property="ovalButton" destination="hQz-Mx-MgE" id="DUt-5q-6oy"/>
                         <outlet property="pencilButton" destination="KFa-st-ai3" id="Nry-5f-UiX"/>
+                        <outlet property="rectangleButton" destination="V7G-w8-urN" id="eib-29-A5b"/>
                         <outlet property="sansSerifButton" destination="Z8c-Jv-OFF" id="FR0-uV-wux"/>
                         <outlet property="scribbleButton" destination="B1Z-Qq-ier" id="nul-Dh-JbM"/>
                         <outlet property="stampButton" destination="tBL-gM-hWl" id="UCD-JV-q3v"/>
                         <outlet property="tempImageView" destination="lcF-1C-bpE" id="QEm-8K-44G"/>
+                        <outlet property="triangleButton" destination="Lwo-cr-CIv" id="Krk-I5-lFo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1wg-lT-Y6J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1377,7 +1380,7 @@ Talk to our booth staff or head to mongodb.com/realm</string>
         <image name="Shade" width="24" height="24"/>
         <image name="TextBox" width="48" height="44"/>
         <image name="ThankYou" width="2875" height="1228"/>
-        <image name="Triangle" width="26" height="25"/>
+        <image name="Triangle" width="27" height="26"/>
         <image name="Yellow" width="53" height="332"/>
         <image name="arrow.uturn.left.square.fill" catalog="system" width="64" height="56"/>
         <image name="checkmark.square" catalog="system" width="64" height="56"/>

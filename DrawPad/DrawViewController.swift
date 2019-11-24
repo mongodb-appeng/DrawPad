@@ -36,8 +36,11 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBOutlet weak var opacityButton: DrawToolbarPopoverButton!
   @IBOutlet weak var stampButton: DrawToolbarPopoverButton!
   
+  @IBOutlet weak var rectangleButton: DrawToolbarPersistedButton!
+  @IBOutlet weak var ovalButton: DrawToolbarPersistedButton!
+  @IBOutlet weak var triangleButton: DrawToolbarPersistedButton!
+
   // MARK: - INIT
-  
   let scribblePopoverParent = UIView()
   let scribblePopoverToolbar = DrawToolbarStackView()
   let sansSerifPopoverParent = UIView()
@@ -46,6 +49,12 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   let stampsPopoverToolbar = DrawToolbarStackView()
   let opacityPopoverParent = UIView()
   let opacityPopoverToolbar = DrawToolbarStackView()
+  let rectanglePopoverParent = UIView()
+  let rectanglePopoverToolbar = DrawToolbarStackView()
+  let ovalPopoverParent = UIView()
+  let ovalPopoverToolbar = DrawToolbarStackView()
+  let trianglePopoverParent = UIView()
+  let trianglePopoverToolbar = DrawToolbarStackView()
   var popoverParents: [UIView] = []
   
   var shapes: Results<Shape>
@@ -65,7 +74,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent]
+    popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent, rectanglePopoverParent, ovalPopoverParent, trianglePopoverParent]
     pencilButton.select()
     notificationToken = shapes.observe { [weak self] changes in
       guard let strongSelf = self else {
@@ -151,6 +160,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     currentShape!.color = CurrentTool.color.toHex
     currentShape!.brushWidth = CurrentTool.brushWidth
     currentShape!.fontStyle = CurrentTool.fontStyle
+    currentShape!.filled = CurrentTool.filled
     if CurrentTool.shapeType == ShapeType.stamp {
       currentShape!.stampFIle = CurrentTool.stampFile
     }
@@ -308,14 +318,74 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
   }
 
-  // TODO - Add stamps
   @objc func stampsPopoverTapHandler(gesture: UITapGestureRecognizer) {
     print("Secondary stamps toolbar tap")
     stampsPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.shapeType = .stamp
   }
   
-  // TODO - Add shades of grey
+  @objc func rectanglePopoverTapHandler(gesture: UITapGestureRecognizer) {
+    print("Secondary rectangle toolbar tap")
+    rectanglePopoverToolbar.clearCurrentButtonSelection()
+  }
+  
+  @objc func rectangleFilledTapped(sender: UIButton) {
+    print("Secondary rectangle filled toolbar tap")
+    rectanglePopoverToolbar.clearCurrentButtonSelection()
+    rectanglePopoverToolbar.savedSelection = 0
+    rectangleButton.setImage(UIImage(named: "RectangleFilled.pdf"), for: .normal)
+    CurrentTool.filled = true
+  }
+  
+  @objc func rectangleEmptyTapped(sender: UIButton) {
+    print("Secondary rectangle empty toolbar tap")
+    rectanglePopoverToolbar.clearCurrentButtonSelection()
+    rectanglePopoverToolbar.savedSelection = 1
+    rectangleButton.setImage(UIImage(named: "Rectangle.pdf"), for: .normal)
+    CurrentTool.filled = false
+  }
+  
+  @objc func ovalPopoverTapHandler(gesture: UITapGestureRecognizer) {
+    print("Secondary oval toolbar tap")
+    ovalPopoverToolbar.clearCurrentButtonSelection()
+  }
+  
+  @objc func ovalFilledTapped(sender: UIButton) {
+    print("Secondary oval filled toolbar tap")
+    ovalPopoverToolbar.clearCurrentButtonSelection()
+    ovalPopoverToolbar.savedSelection = 0
+    ovalButton.setImage(UIImage(named: "OvalFilled.pdf"), for: .normal)
+    CurrentTool.filled = true
+  }
+  
+  @objc func ovalEmptyTapped(sender: UIButton) {
+    print("Secondary oval empty toolbar tap")
+    ovalPopoverToolbar.clearCurrentButtonSelection()
+    ovalPopoverToolbar.savedSelection = 1
+    ovalButton.setImage(UIImage(named: "Oval.pdf"), for: .normal)
+    CurrentTool.filled = false
+  }
+  
+  @objc func trianglePopoverTapHandler(gesture: UITapGestureRecognizer) {
+    print("Secondary triangle toolbar tap")
+    trianglePopoverToolbar.clearCurrentButtonSelection()
+  }
+  
+  @objc func triangleFilledTapped(sender: UIButton) {
+    print("Secondary triangle filled toolbar tap")
+    trianglePopoverToolbar.clearCurrentButtonSelection()
+    trianglePopoverToolbar.savedSelection = 0
+    triangleButton.setImage(UIImage(named: "TriangleFilled.pdf"), for: .normal)
+    CurrentTool.filled = true
+  }
+  
+  @objc func triangleEmptyTapped(sender: UIButton) {
+    print("Secondary triangle empty toolbar tap")
+    trianglePopoverToolbar.clearCurrentButtonSelection()
+    trianglePopoverToolbar.savedSelection = 1
+    triangleButton.setImage(UIImage(named: "Triangle.pdf"), for: .normal)
+    CurrentTool.filled = false
+  }
   
   @objc func opacityPopoverTapHandler(gesture: UITapGestureRecognizer) {
     print("Secondary opacity toolbar tap")
@@ -428,7 +498,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     if scribblePopoverParent.isDescendant(of: self.view) {
       return
     }
-
     scribblePopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
     self.view.addSubview(scribblePopoverParent)
     scribblePopoverParent.translatesAutoresizingMaskIntoConstraints = false
@@ -444,8 +513,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(scribblePopoverTapHandler(gesture:)))
     tapGesture.cancelsTouchesInView = false
     scribblePopoverToolbar.addGestureRecognizer(tapGesture)
-
-    // TODO: UPDATE IMAGES TO SHOW DIFFERENT WIDTHS
 
     let scribbleLightImage = UIImage(named: "line_thin.pdf")
     let scribbleLightButton = DrawToolbarPersistedButton(image: scribbleLightImage!)
@@ -556,12 +623,10 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   
   @objc func sansSerifNormalTapped(sender: UIButton) {
     print("Secondary Text normal toolbar tap")
-    // TODO - do the same for the other sub-menus ZXZX
     sansSerifPopoverToolbar.savedSelection = 0
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .normal
     sansSerifButton.setTitle("Sans Serif", for: .normal)
-    // TODO - do the same for the other sub-menus ZXZX
     clearSecondaryPopovers(except: nil)
   }
 
@@ -840,8 +905,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     tapGesture.cancelsTouchesInView = false
     opacityPopoverToolbar.addGestureRecognizer(tapGesture)
 
-    // TODO: UPDATE IMAGES
-
     let blackShadeImage = UIImage(named: "shade100.pdf")
     let blackShadeButton = DrawToolbarPersistedButton(image: blackShadeImage!)
     blackShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
@@ -886,19 +949,161 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
   @IBAction func squareButtonTapped(_ sender: UIButton) {
     print("Square button tapped")
-    clearSecondaryPopovers(except: nil)
+    clearSecondaryPopovers(except: [rectanglePopoverParent])
+
+    if rectanglePopoverParent.isDescendant(of: self.view) {
+      return
+    }
+
+    rectanglePopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
+    self.view.addSubview(rectanglePopoverParent)
+    rectanglePopoverParent.translatesAutoresizingMaskIntoConstraints = false
+
+    let leadingConstraint = rectanglePopoverParent.leadingAnchor.constraint(equalTo: leftToolbarParent.trailingAnchor, constant: 2)
+    let topConstraint = rectanglePopoverParent.topAnchor.constraint(equalTo: rectangleButton.topAnchor, constant: 0)
+    let widthConstraint = rectanglePopoverParent.widthAnchor.constraint(equalTo: leftToolbarParent.widthAnchor, constant: 0)
+    let heightConstraint = rectanglePopoverParent.heightAnchor.constraint(equalTo: rectangleButton.heightAnchor, multiplier: 2)
+    NSLayoutConstraint.activate([leadingConstraint, topConstraint, widthConstraint, heightConstraint])
+
+    rectanglePopoverToolbar.axis = .vertical
+    rectanglePopoverToolbar.distribution = .fillEqually
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(rectanglePopoverTapHandler(gesture:)))
+    tapGesture.cancelsTouchesInView = false
+    rectanglePopoverToolbar.addGestureRecognizer(tapGesture)
+
+    let rectangleFilledImage = UIImage(named: "RectangleFilled.pdf")
+    let rectangleFilledButton = DrawToolbarPersistedButton(image: rectangleFilledImage!)
+    rectangleFilledButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    rectangleFilledButton.addTarget(self, action: #selector(rectangleFilledTapped(sender:)), for: .touchUpInside)
+    rectangleFilledButton.tintColor = .white
+    
+    let rectangleImage = UIImage(named: "Rectangle.pdf")
+    let rectangleButton = DrawToolbarPersistedButton(image: rectangleImage!)
+    rectangleButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    rectangleButton.addTarget(self, action: #selector(rectangleEmptyTapped(sender:)), for: .touchUpInside)
+    rectangleButton.tintColor = .white
+
+    rectanglePopoverToolbar.addArrangedSubview(rectangleFilledButton)
+    rectanglePopoverToolbar.addArrangedSubview(rectangleButton)
+    rectanglePopoverParent.addSubview(rectanglePopoverToolbar)
+    rectanglePopoverToolbar.translatesAutoresizingMaskIntoConstraints = false
+
+    let leading = rectanglePopoverToolbar.leadingAnchor.constraint(equalTo: rectanglePopoverParent.leadingAnchor)
+    let top = rectanglePopoverToolbar.topAnchor.constraint(equalTo: rectanglePopoverParent.topAnchor)
+    let trailing = rectanglePopoverToolbar.trailingAnchor.constraint(equalTo: rectanglePopoverParent.trailingAnchor)
+    let bottom = rectanglePopoverToolbar.bottomAnchor.constraint(equalTo: rectanglePopoverParent.bottomAnchor)
+    NSLayoutConstraint.activate([leading, top, trailing, bottom])
+
+    if let selectedButton = rectanglePopoverToolbar.arrangedSubviews[rectanglePopoverToolbar.savedSelection] as? DrawToolbarPersistedButton {
+      selectedButton.select()
+    }
     CurrentTool.shapeType = .rect
   }
 
   @IBAction func circleButtonTapped(_ sender: UIButton) {
     print("Circle button tapped")
-    clearSecondaryPopovers(except: nil)
+    clearSecondaryPopovers(except: [ovalPopoverParent])
+
+    if ovalPopoverParent.isDescendant(of: self.view) {
+      return
+    }
+
+    ovalPopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
+    self.view.addSubview(ovalPopoverParent)
+    ovalPopoverParent.translatesAutoresizingMaskIntoConstraints = false
+
+    let leadingConstraint = ovalPopoverParent.leadingAnchor.constraint(equalTo: leftToolbarParent.trailingAnchor, constant: 2)
+    let topConstraint = ovalPopoverParent.topAnchor.constraint(equalTo: ovalButton.topAnchor, constant: 0)
+    let widthConstraint = ovalPopoverParent.widthAnchor.constraint(equalTo: leftToolbarParent.widthAnchor, constant: 0)
+    let heightConstraint = ovalPopoverParent.heightAnchor.constraint(equalTo: ovalButton.heightAnchor, multiplier: 2)
+    NSLayoutConstraint.activate([leadingConstraint, topConstraint, widthConstraint, heightConstraint])
+
+    ovalPopoverToolbar.axis = .vertical
+    ovalPopoverToolbar.distribution = .fillEqually
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ovalPopoverTapHandler(gesture:)))
+    tapGesture.cancelsTouchesInView = false
+    ovalPopoverToolbar.addGestureRecognizer(tapGesture)
+
+    let ovalFilledImage = UIImage(named: "OvalFilled.pdf")
+    let ovalFilledButton = DrawToolbarPersistedButton(image: ovalFilledImage!)
+    ovalFilledButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    ovalFilledButton.addTarget(self, action: #selector(ovalFilledTapped(sender:)), for: .touchUpInside)
+    ovalFilledButton.tintColor = .white
+    
+    let ovalImage = UIImage(named: "Oval.pdf")
+    let ovalButton = DrawToolbarPersistedButton(image: ovalImage!)
+    ovalButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    ovalButton.addTarget(self, action: #selector(ovalEmptyTapped(sender:)), for: .touchUpInside)
+    ovalButton.tintColor = .white
+
+    ovalPopoverToolbar.addArrangedSubview(ovalFilledButton)
+    ovalPopoverToolbar.addArrangedSubview(ovalButton)
+    ovalPopoverParent.addSubview(ovalPopoverToolbar)
+    ovalPopoverToolbar.translatesAutoresizingMaskIntoConstraints = false
+
+    let leading = ovalPopoverToolbar.leadingAnchor.constraint(equalTo: ovalPopoverParent.leadingAnchor)
+    let top = ovalPopoverToolbar.topAnchor.constraint(equalTo: ovalPopoverParent.topAnchor)
+    let trailing = ovalPopoverToolbar.trailingAnchor.constraint(equalTo: ovalPopoverParent.trailingAnchor)
+    let bottom = ovalPopoverToolbar.bottomAnchor.constraint(equalTo: ovalPopoverParent.bottomAnchor)
+    NSLayoutConstraint.activate([leading, top, trailing, bottom])
+
+    if let selectedButton = ovalPopoverToolbar.arrangedSubviews[ovalPopoverToolbar.savedSelection] as? DrawToolbarPersistedButton {
+      selectedButton.select()
+    }
+    
     CurrentTool.shapeType = .ellipse
   }
 
   @IBAction func triangleButtonTapped(_ sender: UIButton) {
     print("Triangle button tapped")
-    clearSecondaryPopovers(except: nil)
+    clearSecondaryPopovers(except: [trianglePopoverParent])
+
+    if trianglePopoverParent.isDescendant(of: self.view) {
+      return
+    }
+
+    trianglePopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
+    self.view.addSubview(trianglePopoverParent)
+    trianglePopoverParent.translatesAutoresizingMaskIntoConstraints = false
+
+    let leadingConstraint = trianglePopoverParent.leadingAnchor.constraint(equalTo: leftToolbarParent.trailingAnchor, constant: 2)
+    let topConstraint = trianglePopoverParent.topAnchor.constraint(equalTo: triangleButton.topAnchor, constant: 0)
+    let widthConstraint = trianglePopoverParent.widthAnchor.constraint(equalTo: leftToolbarParent.widthAnchor, constant: 0)
+    let heightConstraint = trianglePopoverParent.heightAnchor.constraint(equalTo: triangleButton.heightAnchor, multiplier: 2)
+    NSLayoutConstraint.activate([leadingConstraint, topConstraint, widthConstraint, heightConstraint])
+
+    trianglePopoverToolbar.axis = .vertical
+    trianglePopoverToolbar.distribution = .fillEqually
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(trianglePopoverTapHandler(gesture:)))
+    tapGesture.cancelsTouchesInView = false
+    trianglePopoverToolbar.addGestureRecognizer(tapGesture)
+
+    let triangleFilledImage = UIImage(named: "TriangleFilled.pdf")
+    let triangleFilledButton = DrawToolbarPersistedButton(image: triangleFilledImage!)
+    triangleFilledButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    triangleFilledButton.addTarget(self, action: #selector(triangleFilledTapped(sender:)), for: .touchUpInside)
+    triangleFilledButton.tintColor = .white
+    
+    let triangleImage = UIImage(named: "Triangle.pdf")
+    let triangleButton = DrawToolbarPersistedButton(image: triangleImage!)
+    triangleButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    triangleButton.addTarget(self, action: #selector(triangleEmptyTapped(sender:)), for: .touchUpInside)
+    triangleButton.tintColor = .white
+
+    trianglePopoverToolbar.addArrangedSubview(triangleFilledButton)
+    trianglePopoverToolbar.addArrangedSubview(triangleButton)
+    trianglePopoverParent.addSubview(trianglePopoverToolbar)
+    trianglePopoverToolbar.translatesAutoresizingMaskIntoConstraints = false
+
+    let leading = trianglePopoverToolbar.leadingAnchor.constraint(equalTo: trianglePopoverParent.leadingAnchor)
+    let top = trianglePopoverToolbar.topAnchor.constraint(equalTo: trianglePopoverParent.topAnchor)
+    let trailing = trianglePopoverToolbar.trailingAnchor.constraint(equalTo: trianglePopoverParent.trailingAnchor)
+    let bottom = trianglePopoverToolbar.bottomAnchor.constraint(equalTo: trianglePopoverParent.bottomAnchor)
+    NSLayoutConstraint.activate([leading, top, trailing, bottom])
+
+    if let selectedButton = trianglePopoverToolbar.arrangedSubviews[trianglePopoverToolbar.savedSelection] as? DrawToolbarPersistedButton {
+      selectedButton.select()
+    }
     CurrentTool.shapeType = .triangle
   }
 
