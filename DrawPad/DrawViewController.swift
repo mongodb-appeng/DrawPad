@@ -316,6 +316,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @objc func sansSerifPopoverTapHandler(gesture: UITapGestureRecognizer) {
     print("Secondary sans serif toolbar tap")
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
+    CurrentTool.shapeType = .text
   }
 
   @objc func stampsPopoverTapHandler(gesture: UITapGestureRecognizer) {
@@ -596,7 +597,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
 //    let sansSerifSerifImage = UIImage(systemName: "textbox")
 //    let sansSerifSerifButton = DrawToolbarPersistedButton(image: sansSerifSerifImage!)
-    let sansSerifSerifButton = DrawToolbarPersistedButton(label: "Zapfino")
+    let sansSerifSerifButton = DrawToolbarPersistedButton(label: "Type")
     sansSerifSerifButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     sansSerifSerifButton.addTarget(self, action: #selector(sansSerifSerifTapped(sender:)), for: .touchUpInside)
     sansSerifSerifButton.tintColor = .white
