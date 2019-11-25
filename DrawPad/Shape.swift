@@ -119,7 +119,7 @@ class Shape: Object {
   @objc dynamic var color: String = "666666"
   
   @objc dynamic var stampFIle: String = ""
-  @objc dynamic var text: String = "Your text goes here"
+  @objc dynamic var text: String = "Start typing your text"
   @objc dynamic var fontStyle: FontStyle = .normal
   
   /// the type of shape this is
@@ -227,11 +227,11 @@ class Shape: Object {
     var fontName = ""
     switch fontStyle {
     case .normal:
-      fontName = "TrebuchetMS-Bold"
+      fontName = "Helvetica"
     case .serif:
-      fontName = "AmericanTypewriter-Bold"
+      fontName = "Zapfino"
     case .monospace:
-      fontName = "Menlo-Bold"
+      fontName = "MarkerFelt-Wide"
     }
     
     let font = UIFont(name: fontName, size: CGFloat(fontSize))

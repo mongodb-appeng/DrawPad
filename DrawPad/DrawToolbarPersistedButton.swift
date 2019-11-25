@@ -28,6 +28,11 @@ class DrawToolbarPersistedButton: DrawToolbarButton {
     super.init(frame: .zero)
     self.setImage(image, for: .normal)
   }
+  
+  init(label: String) {
+    super.init(frame: .zero)
+    self.setTitle(label, for: .normal)
+  }
 
   func select() {
     self.backgroundColor = self.selectedBackgroundColor
