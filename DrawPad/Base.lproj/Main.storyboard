@@ -867,6 +867,7 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="sansSerifButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="9MF-Q6-cFl"/>
+                                                    <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="gT4-cm-lEH"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBL-gM-hWl" userLabel="Button - Stamps" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">

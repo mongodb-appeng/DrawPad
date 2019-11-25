@@ -229,7 +229,7 @@ class Shape: Object {
     case .normal:
       fontName = "Helvetica"
     case .serif:
-      fontName = "Zapfino"
+      fontName = "AmericanTypewriter-Bold"
     case .monospace:
       fontName = "MarkerFelt-Wide"
     }
