@@ -69,11 +69,15 @@ class SubmitFormViewController: BaseViewController {
     }
     
     @IBAction func submitPressed(_ sender: Any) {
-    
         if (isSubmitAllowed())
         {
-            let msg = "TODO -- 123 Mongo Ave"
-            
+            let fn = "First Name: " + String(firstName.text ?? "" )
+            let ln = "\nLast Name: " + String(lastName.text ?? "" )
+            let a1 = "\nAddress 1: " + String(address1.text ?? "" )
+            let a2 = "\nAddress 2: " + String(address2.text ?? "" )
+            let cs = "\nCity: " + String(city.text ?? "" ) + "\nState: " + String(state.text ?? "" )
+            let pc = "\nPostal Code: " + String(postalCode.text ?? "" ) + "\nCountry: " + String(country.text ?? "" )
+            let msg =  fn + ln +  a1 + a2 + cs + pc
             let alert = UIAlertController(title: "Confirm Shipping Address", message: msg, preferredStyle: .alert)
 
             alert.addAction(UIAlertAction(title: "Looks Good!", style: .default, handler: { action in
@@ -91,12 +95,6 @@ class SubmitFormViewController: BaseViewController {
                      self.present(alert, animated: true, completion: nil)
                 return
         }
-        
-        
-//        if  (userConfirmedAddress)   {
-           
-//        }
-
     }
     
     @IBAction func skipPressed(_ sender: Any) {
