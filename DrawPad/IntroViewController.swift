@@ -175,6 +175,17 @@ class IntroViewController: BaseViewController {
     This Privacy Policy was last revised on 29 March 2019.
     """
     
+    override func viewDidLoad() {
+       super.viewDidLoad()
+        print("IntroViewController.viewDidLoad")
+        self.hideKeyboardWhenTappedAround()
+        gotValidEmail = false
+        agreedToTerms = false
+        checkBoxTCPP.isSelected = false
+        configDrawingButton()
+    }
+    
+    @IBOutlet weak var checkBoxTCPP: UIButton!
     @IBOutlet weak var startDrawingButton: UIButton! // APPENG-72
     @IBOutlet weak var agreedToTermsButton: UIButton!
     @IBOutlet weak var emailField: UITextField!
@@ -203,6 +214,8 @@ class IntroViewController: BaseViewController {
         return gotValidEmail  // APPENG-72
     }
     @IBAction func agreeToTermsButton(_ sender: UIButton) {
+       
+        self.view.endEditing(false)
         sender.isSelected = !sender.isSelected
         agreedToTerms = sender.isSelected
         configDrawingButton()
@@ -262,5 +275,19 @@ class IntroViewController: BaseViewController {
             }
         }
         return true
+    }
+}
+
+
+// Put this piece of code anywhere you like
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

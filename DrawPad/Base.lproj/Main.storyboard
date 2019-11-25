@@ -373,7 +373,7 @@
                                     <constraint firstAttribute="height" constant="34" id="mJg-Fk-lVM"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" enablesReturnKeyAutomatically="YES" textContentType="email"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="email"/>
                                 <connections>
                                     <action selector="enteringEmailField:" destination="hbn-c3-epQ" eventType="editingChanged" id="PTF-Th-6kk"/>
                                 </connections>
@@ -474,6 +474,7 @@
                     <navigationItem key="navigationItem" id="5aw-l3-XEX"/>
                     <connections>
                         <outlet property="agreedToTermsButton" destination="a1R-ff-1nt" id="NX8-ch-DU3"/>
+                        <outlet property="checkBoxTCPP" destination="a1R-ff-1nt" id="WO0-Am-qDa"/>
                         <outlet property="emailField" destination="Wha-Pz-zmu" id="Yt9-JW-1Ft"/>
                         <outlet property="startDrawingButton" destination="utE-HJ-uR0" id="EsQ-PH-OYe"/>
                     </connections>
