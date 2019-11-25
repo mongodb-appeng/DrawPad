@@ -699,7 +699,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     arrowsButton.addTarget(self, action: #selector(stampArrowsTapped(sender:)), for: .touchUpInside)
     arrowsButton.tintColor = .white
 
-    let leafImage = UIImage(named: "leaf.pdf")
+    let leafImage = UIImage(named: "leaf_outline.pdf")
     let leafButton = DrawToolbarPersistedButton(image: leafImage!)
     leafButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     leafButton.addTarget(self, action: #selector(stampLeafTapped(sender:)), for: .touchUpInside)
@@ -814,8 +814,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Secondary stamp leaf toolbar tap")
     stampsPopoverToolbar.savedSelection = 4
     stampsPopoverToolbar.clearCurrentButtonSelection()
-    CurrentTool.stampFile = "stamp_leaf.png"
-    stampButton.setImage(UIImage(named: "leaf.pdf"), for: .normal)
+    CurrentTool.stampFile = "stamp_leaf_outline.png"
+    stampButton.setImage(UIImage(named: "leaf_outline.pdf"), for: .normal)
     clearSecondaryPopovers(except: nil)
   }
 
