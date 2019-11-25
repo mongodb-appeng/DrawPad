@@ -587,20 +587,23 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
     // TODO: UPDATE IMAGES TO SHOW DIFFERENT WIDTHS
 
-    let sansSerifNormalImage = UIImage(systemName: "textbox")
-    let sansSerifNormalButton = DrawToolbarPersistedButton(image: sansSerifNormalImage!)
+//    let sansSerifNormalImage = UIImage(systemName: "textbox")
+//    let sansSerifNormalButton = DrawToolbarPersistedButton(image: sansSerifNormalImage!)
+    let sansSerifNormalButton = DrawToolbarPersistedButton(label: "Helvetica")
     sansSerifNormalButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     sansSerifNormalButton.addTarget(self, action: #selector(sansSerifNormalTapped(sender:)), for: .touchUpInside)
     sansSerifNormalButton.tintColor = .white
 
-    let sansSerifSerifImage = UIImage(systemName: "textbox")
-    let sansSerifSerifButton = DrawToolbarPersistedButton(image: sansSerifSerifImage!)
+//    let sansSerifSerifImage = UIImage(systemName: "textbox")
+//    let sansSerifSerifButton = DrawToolbarPersistedButton(image: sansSerifSerifImage!)
+    let sansSerifSerifButton = DrawToolbarPersistedButton(label: "Zapfino")
     sansSerifSerifButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     sansSerifSerifButton.addTarget(self, action: #selector(sansSerifSerifTapped(sender:)), for: .touchUpInside)
     sansSerifSerifButton.tintColor = .white
 
-    let sansSerifMonoImage = UIImage(systemName: "textbox")
-    let sansSerifMonoButton = DrawToolbarPersistedButton(image: sansSerifMonoImage!)
+//    let sansSerifMonoImage = UIImage(systemName: "textbox")
+//    let sansSerifMonoButton = DrawToolbarPersistedButton(image: sansSerifMonoImage!)
+    let sansSerifMonoButton = DrawToolbarPersistedButton(label: "Marker")
     sansSerifMonoButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     sansSerifMonoButton.addTarget(self, action: #selector(sansSerifMonoTapped(sender:)), for: .touchUpInside)
     sansSerifMonoButton.tintColor = .white
@@ -626,7 +629,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     sansSerifPopoverToolbar.savedSelection = 0
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .normal
-    sansSerifButton.setTitle("Sans Serif", for: .normal)
+//    sansSerifButton.setTitle("Sans Serif", for: .normal)
     clearSecondaryPopovers(except: nil)
   }
 
@@ -635,7 +638,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     sansSerifPopoverToolbar.savedSelection = 1
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .serif
-    sansSerifButton.setTitle("Serif", for: .normal)
+//    sansSerifButton.setTitle("Serif", for: .normal)
     clearSecondaryPopovers(except: nil)
   }
   
@@ -644,7 +647,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     sansSerifPopoverToolbar.savedSelection = 2
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .monospace
-    sansSerifButton.setTitle("Monospace", for: .normal)
+//    sansSerifButton.setTitle("Monospace", for: .normal)
     clearSecondaryPopovers(except: nil)
   }
   

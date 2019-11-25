@@ -833,17 +833,8 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1hJ-Um-YXa" customClass="DrawToolbarStackView" customModule="DrawPad" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="81" width="80" height="729"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K0m-xQ-2jq" userLabel="Button - Undo" customClass="DrawToolbarEphemeralButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="80" height="66.5"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="Redo"/>
-                                                <connections>
-                                                    <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="uRt-J2-u8T"/>
-                                                    <action selector="undoButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="vu5-An-tML"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KFa-st-ai3" userLabel="Button - Pencil" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="66.5" width="80" height="66"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="80" height="73"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Edit">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="black"/>
@@ -854,7 +845,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B1Z-Qq-ier" userLabel="Button - Scribble" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="132.5" width="80" height="66.5"/>
+                                                <rect key="frame" x="0.0" y="73" width="80" height="73"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Path10"/>
                                                 <connections>
@@ -862,25 +853,16 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jq2-Co-a5V" userLabel="Button - Eraser" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="199" width="80" height="66"/>
+                                                <rect key="frame" x="0.0" y="146" width="80" height="72.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="eraser"/>
                                                 <connections>
                                                     <action selector="eraserButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="4j8-V4-PGT"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKs-go-Ckg" userLabel="Button - Textbox" customClass="DrawToolbarPersistedButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="265" width="80" height="66.5"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="TextBox"/>
-                                                <connections>
-                                                    <action selector="textboxButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="bxb-UI-hpW"/>
-                                                    <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="UCF-Qo-8KD"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8c-Jv-OFF" userLabel="Button - Sans Serif" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="331.5" width="80" height="66"/>
-                                                <state key="normal" title="Sans Serif">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8c-Jv-OFF" userLabel="Button - Sans Serif" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="218.5" width="80" height="73"/>
+                                                <state key="normal" image="TextBox2">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
@@ -888,7 +870,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBL-gM-hWl" userLabel="Button - Stamps" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="397.5" width="80" height="66.5"/>
+                                                <rect key="frame" x="0.0" y="291.5" width="80" height="73"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="owl">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -899,7 +881,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJC-hG-xQa" userLabel="Button - Opacity" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="464" width="80" height="66"/>
+                                                <rect key="frame" x="0.0" y="364.5" width="80" height="73"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Shade"/>
                                                 <connections>
@@ -907,7 +889,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V7G-w8-urN" userLabel="Button - Square" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="530" width="80" height="66.5"/>
+                                                <rect key="frame" x="0.0" y="437.5" width="80" height="73"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Rectangle"/>
                                                 <connections>
@@ -916,7 +898,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQz-Mx-MgE" userLabel="Button - Circle" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="596.5" width="80" height="66"/>
+                                                <rect key="frame" x="0.0" y="510.5" width="80" height="72.5"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Oval"/>
                                                 <connections>
@@ -925,12 +907,21 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lwo-cr-CIv" userLabel="Button - Triangle" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="662.5" width="80" height="66.5"/>
+                                                <rect key="frame" x="0.0" y="583" width="80" height="73"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="Triangle"/>
                                                 <connections>
                                                     <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="xMe-Zh-tQW"/>
                                                     <action selector="triangleButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="ks1-Yh-mT6"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K0m-xQ-2jq" userLabel="Button - Undo" customClass="DrawToolbarEphemeralButton" customModule="DrawPad" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="656" width="80" height="73"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="Redo"/>
+                                                <connections>
+                                                    <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="uRt-J2-u8T"/>
+                                                    <action selector="undoButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="vu5-An-tML"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -1378,7 +1369,7 @@ Talk to our booth staff or head to mongodb.com/realm</string>
         <image name="Red" width="53" height="332"/>
         <image name="Redo" width="21" height="19"/>
         <image name="Shade" width="24" height="24"/>
-        <image name="TextBox" width="48" height="44"/>
+        <image name="TextBox2" width="48" height="44"/>
         <image name="ThankYou" width="2875" height="1228"/>
         <image name="Triangle" width="27" height="26"/>
         <image name="Yellow" width="53" height="332"/>
