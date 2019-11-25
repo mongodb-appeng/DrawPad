@@ -11,6 +11,7 @@ import RealmSwift
 
 class SubmitFormViewController: BaseViewController {
   
+    @IBOutlet weak var shippingWarningLabel: UILabel!
     @IBOutlet weak var firstName: UITextField!
     @IBOutlet weak var lastName: UITextField!
     @IBOutlet weak var address1: UITextField!
@@ -30,6 +31,21 @@ class SubmitFormViewController: BaseViewController {
         }
     }
     
+    
+    func isValidInput(text: String!, minLength: Int!) -> Bool {
+        return text.count >= minLength
+    }
+    
+    func isSubmitAllowed() -> Bool {
+        return isValidInput(text: firstName.text ?? "", minLength: 2) &&
+        isValidInput(text: lastName.text ?? "",  minLength: 2) &&
+        isValidInput(text: address1.text ?? "",  minLength: 2) &&
+        isValidInput(text: city.text ?? "",  minLength: 2) &&
+        isValidInput(text: state.text ?? "",  minLength: 2) &&
+        isValidInput(text: postalCode.text ?? "",  minLength: 2) &&
+        isValidInput(text: country.text ?? "",  minLength: 2)
+    }
+    
     @IBAction func snapPressed() {
         photoCaptureOverlay.getCompositeImage { [weak self] image in
             self?.snapShotImage = image
@@ -45,12 +61,42 @@ class SubmitFormViewController: BaseViewController {
         photoCaptureOverlay.startCameraPreview(with: drawing)
     }
     
-    @IBAction func submitPressed(_ sender: Any) {
-//        let userContact: UserContact = UserContact(firstName: firstName.text!, lastName: lastName.text!, email: User.email, street1: address1.text!, street2: address2.text!, city: city.text!, state: state.text!, postalCode: postalCode.text!, country: country.text!)
+    func addressIsConfirmed() {
         try! RealmConnection.realmAtlas!.write {
-          User.imageToSend!.userContact!.setUser(firstName: firstName.text!, lastName: lastName.text!, email: User.email, street1: address1.text!, street2: address2.text!, city: city.text!, state: state.text!, postalCode: postalCode.text!, country: country.text!)
+         User.imageToSend!.userContact!.setUser(firstName: firstName.text!, lastName: lastName.text!, email: User.email, street1: address1.text!, street2: address2.text!, city: city.text!, state: state.text!, postalCode: postalCode.text!, country: country.text!)
         }
         clearAndGo()
+    }
+    
+    @IBAction func submitPressed(_ sender: Any) {
+    
+        if (isSubmitAllowed())
+        {
+            let msg = "TODO -- 123 Mongo Ave"
+            
+            let alert = UIAlertController(title: "Confirm Shipping Address", message: msg, preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "Looks Good!", style: .default, handler: { action in
+               self.addressIsConfirmed()
+                   }))
+            alert.addAction(UIAlertAction(title: "Edit", style: .cancel, handler:nil))
+            self.present(alert, animated: true)
+            
+        } else
+        {
+            let alert = UIAlertController(title: "Ooops!", message: "Please enter a valid mailing address", preferredStyle: UIAlertController.Style.alert)
+                     // add an action (button)
+                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                     // show the alert
+                     self.present(alert, animated: true, completion: nil)
+                return
+        }
+        
+        
+//        if  (userConfirmedAddress)   {
+           
+//        }
+
     }
     
     @IBAction func skipPressed(_ sender: Any) {
