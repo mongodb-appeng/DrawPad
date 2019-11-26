@@ -57,7 +57,7 @@ class AWS {
         switch result {
         case .success(let awsResult):
           print("Executed AWS request \(awsResult)")
-          url = "https://\(Constants.S3_BUCKET_NAME).s3.amazonaws.com/\(imageName)"
+          url = "https://\(Constants.S3_BUCKET_NAME).s3.amazonaws.com/\(imageName)-\(tag)"
           semaphore.signal()
          case .failure(let awsFailure):
           print ("Failed to execute AWS request: \(awsFailure)")

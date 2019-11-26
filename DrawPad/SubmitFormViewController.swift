@@ -62,13 +62,13 @@ class SubmitFormViewController: BaseViewController {
     }
     
     func extractImage() -> Data? {
-      guard let image = snapShotImage?.pngData() else {
+      guard let image = self.snapShotImage?.pngData() else {
         print("No snapshot image")
         return nil
       }
       return image
     }
-  
+    
     func addressIsConfirmed() {
         let image = extractImage()
         var imageURL = ""
@@ -112,8 +112,14 @@ class SubmitFormViewController: BaseViewController {
     }
     
     @IBAction func skipPressed(_ sender: Any) {
+        let image = extractImage()
+        var imageURL = ""
+        if image != nil {
+          imageURL = AWS.uploadImage(image: image!, email: User.email, tag: "snapshot")
+        }
         try! RealmConnection.realmAtlas!.write {
-            User.imageToSend!.userContact?.firstName = "Skippy"
+          User.imageToSend!.userContact?.firstName = "Skippy"
+          User.imageToSend!.imageLink = imageURL
         }
       clearAndGo()
     }
