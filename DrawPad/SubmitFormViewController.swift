@@ -61,9 +61,23 @@ class SubmitFormViewController: BaseViewController {
         photoCaptureOverlay.startCameraPreview(with: drawing)
     }
     
+    func extractImage() -> Data? {
+      guard let image = snapShotImage?.pngData() else {
+        print("No snapshot image")
+        return nil
+      }
+      return image
+    }
+  
     func addressIsConfirmed() {
+        let image = extractImage()
+        var imageURL = ""
+        if image != nil {
+          imageURL = AWS.uploadImage(image: image!, email: User.email, tag: "snapshot")
+        }
         try! RealmConnection.realmAtlas!.write {
-         User.imageToSend!.userContact!.setUser(firstName: firstName.text!, lastName: lastName.text!, email: User.email, street1: address1.text!, street2: address2.text!, city: city.text!, state: state.text!, postalCode: postalCode.text!, country: country.text!)
+          User.imageToSend!.userContact!.setUser(firstName: firstName.text!, lastName: lastName.text!, email: User.email, street1: address1.text!, street2: address2.text!, city: city.text!, state: state.text!, postalCode: postalCode.text!, country: country.text!)
+          User.imageToSend!.imageLink = imageURL
         }
         clearAndGo()
     }

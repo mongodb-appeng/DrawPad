@@ -74,8 +74,8 @@ class StoredImage: Object {
   @objc dynamic var creator: String = User.userName
   @objc dynamic var _id: String = UUID().uuidString
   @objc dynamic var userContact: UserContact? = UserContact()
-  @objc dynamic var image: _BsonBinary? = nil
-  @objc dynamic var imageLink: String? = nil
+  @objc dynamic var image: _BsonBinary? = nil // This is the tattoo itself
+  @objc dynamic var imageLink: String? = nil  // This is a link to the snapshot
   @objc dynamic var timestamp = Date()
   
   convenience init(image: Data?) {

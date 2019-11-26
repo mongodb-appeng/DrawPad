@@ -15,7 +15,7 @@ import MongoSwift
 class AWS {
   static var uploadToS3: Bool = true
   
-  static func uploadImage(image: Data, email imageName: String) -> String {
+  static func uploadImage(image: Data, email imageName: String, tag: String) -> String {
     if !uploadToS3 {
       print("Skip S3")
       return ""
@@ -38,7 +38,7 @@ class AWS {
     // These are the arguments specifically for s3 service PutObject function
     let args: Document = [
       "Bucket": Constants.S3_BUCKET_NAME,
-       "Key": imageName,
+       "Key": "\(imageName)-\(tag)",
        "ACL": "public-read",
        "ContentType": "image/jpeg",
        "Body": imageBSON,

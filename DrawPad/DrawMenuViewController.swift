@@ -39,12 +39,12 @@ class DrawMenuViewController: UIViewController {
       }
       let storedImage = StoredImage(image: image)
       storedImage.userContact?.email = User.email
-      let imageURL = AWS.uploadImage(image: image, email: User.email)
-      if imageURL != "" {
-        storedImage.imageLink = imageURL
-      } else {
-              print("Failed to upload the image to S3")
-      }
+//      let imageURL = AWS.uploadImage(image: image, email: User.email)
+//      if imageURL != "" {
+//        storedImage.imageLink = imageURL
+//      } else {
+//              print("Failed to upload the image to S3")
+//      }
       
       try! RealmConnection.realmAtlas!.write {
         RealmConnection.realmAtlas!.add(storedImage)

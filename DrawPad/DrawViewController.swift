@@ -143,7 +143,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   
   func extractImage() -> Data? {
-    guard let image = mainImageView.image?.pngData() else {
+    guard let image = mainImageView.image?.jpegData(compressionQuality: 1.0) else {
       print("Failed to get to the image")
       return nil
     }
@@ -453,12 +453,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     }
     let storedImage = StoredImage(image: image)
     storedImage.userContact?.email = User.email
-    let imageURL = AWS.uploadImage(image: image, email: User.email)
-    if imageURL != "" {
-      storedImage.imageLink = imageURL
-    } else {
-            print("Failed to upload the image to S3")
-    }
     
     try! RealmConnection.realmAtlas!.write {
       RealmConnection.realmAtlas!.add(storedImage)
@@ -469,7 +463,32 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     submitVC?.drawing = UIImage(data: image)
     self.navigationController!.pushViewController(submitVC!, animated: true)
   }
-
+//   @IBAction func finishButtonTapped(_ sender: UIButton) {
+//  print("Finish button tapped")
+//  guard let image = extractImage() else {
+//    print("Failed to extract image")
+//    return
+//  }
+//  let storedImage = StoredImage(image: image)
+//  storedImage.userContact?.email = User.email
+//  let imageURL = AWS.uploadImage(image: image, email: User.email)
+//  if imageURL != "" {
+//    storedImage.imageLink = imageURL
+//  } else {
+//          print("Failed to upload the image to S3")
+//  }
+//
+//  try! RealmConnection.realmAtlas!.write {
+//    RealmConnection.realmAtlas!.add(storedImage)
+//    User.imageToSend = storedImage
+//  }
+//
+//  let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
+//  submitVC?.drawing = UIImage(data: image)
+//  self.navigationController!.pushViewController(submitVC!, animated: true)
+//}
+  
+  
   @IBAction func undoButtonTapped(_ sender: UIButton) {
     print("Undo button tapped")
     guard shapes.count > 0 else {
