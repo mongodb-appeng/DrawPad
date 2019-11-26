@@ -35,7 +35,7 @@ class IntroViewController: BaseViewController {
     }
     func configDrawingButton() {
         startDrawingButton.backgroundColor = (agreedToTerms && gotValidEmail)
-                  ? UIColor.green : UIColor.lightGray// APPENG-72
+          ? UIColor(red: 19/255, green: 164/255, blue: 63/255, alpha: 1.0) : UIColor.lightGray// APPENG-72
                startDrawingButton.isEnabled = (agreedToTerms && gotValidEmail) ? true : false
     }
     func isValidEmail(emailStr:String) -> Bool {
@@ -76,6 +76,8 @@ class IntroViewController: BaseViewController {
         emailField.endEditing(true)
         agreedToTerms = false
         agreedToTermsButton.isSelected = false
+        startDrawingButton.backgroundColor = UIColor.lightGray
+        startDrawingButton.isEnabled = false
         
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawViewController") as? DrawViewController
         self.navigationController!.pushViewController(vc!, animated: true)
