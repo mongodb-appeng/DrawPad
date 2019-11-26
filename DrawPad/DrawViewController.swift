@@ -586,8 +586,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     tapGesture.cancelsTouchesInView = false
     sansSerifPopoverToolbar.addGestureRecognizer(tapGesture)
 
-    // TODO: UPDATE IMAGES TO SHOW DIFFERENT WIDTHS
-
 //    let sansSerifNormalImage = UIImage(systemName: "textbox")
 //    let sansSerifNormalButton = DrawToolbarPersistedButton(image: sansSerifNormalImage!)
     let sansSerifNormalButton = DrawToolbarPersistedButton(label: "Helvetica")
