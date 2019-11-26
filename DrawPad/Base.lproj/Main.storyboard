@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bnj-k7-SPu">
     <device id="ipad10_2" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -874,6 +874,7 @@
                                                 <state key="normal" image="eraser"/>
                                                 <connections>
                                                     <action selector="eraserButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="4j8-V4-PGT"/>
+                                                    <action selector="toolbarButtonTapped:" destination="0tS-vH-1iA" eventType="touchUpInside" id="NiQ-Y7-fIG"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8c-Jv-OFF" userLabel="Button - Sans Serif" customClass="DrawToolbarPopoverButton" customModule="DrawPad" customModuleProvider="target">
