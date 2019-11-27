@@ -48,7 +48,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBOutlet weak var rectangleButton: DrawToolbarPersistedButton!
   @IBOutlet weak var ovalButton: DrawToolbarPersistedButton!
   @IBOutlet weak var triangleButton: DrawToolbarPersistedButton!
-
+  @IBOutlet weak var uernameLabel: UILabel!
+  
   // MARK: - INIT
   let scribblePopoverParent = UIView()
   let scribblePopoverToolbar = DrawToolbarStackView()
@@ -83,6 +84,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    uernameLabel!.text = User.userName
     popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent, rectanglePopoverParent, ovalPopoverParent, trianglePopoverParent]
     pencilButton.select()
     notificationToken = shapes.observe { [weak self] changes in
