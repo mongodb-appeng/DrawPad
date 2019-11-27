@@ -83,7 +83,7 @@ class LinkedPoint: Object {
 
 /// ShapeType enumerates types of possible shapes
 @objc enum ShapeType: Int {
-  case line, rect, ellipse, triangle, stamp, text
+  case line, rect, ellipse, triangle, stamp, text, straightLine
 }
 
 @objc enum FontStyle: Int {
@@ -157,7 +157,17 @@ class Shape: Object {
       nextPoint = nextPoint!.nextPoint
     }
   }
-
+  
+  private func drawStraightLine(_ context: CGContext) {
+    context.move(to: lastPoint!.asCGPoint())
+    context.addLine(to: lastPoint!.nextPoint?.asCGPoint() ?? lastPoint!.asCGPoint())
+    context.setLineCap(.round)
+    context.setBlendMode(.normal)
+    context.setLineWidth(brushWidth)
+    context.setStrokeColor(UIColor(hex: color)!.cgColor)
+    context.strokePath()
+  }
+  
   private func drawRect(_ context: CGContext) {
     context.move(to: lastPoint!.asCGPoint())
     
@@ -267,6 +277,8 @@ class Shape: Object {
       if (lastPoint!.nextPoint != nil) { drawStamp(context) }
     case .text:
       if (lastPoint!.nextPoint != nil) { drawText(context) }
+    case .straightLine:
+      if (lastPoint!.nextPoint != nil) { drawStraightLine(context) }
     }
   }
 }
