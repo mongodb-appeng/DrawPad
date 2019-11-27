@@ -314,17 +314,27 @@ class SubmitFormViewController: BaseViewController {
         }
     }
     
-    @IBAction func skipPressed(_ sender: Any) {
+    func skipConfirmed() {
         let image = extractImage()
-        var imageURL = ""
-        if image != nil {
-          imageURL = AWS.uploadImage(image: image!, email: User.email, tag: "snapshot")
-        }
-        try! RealmConnection.realmAtlas!.write {
-          User.imageToSend!.userContact?.firstName = "Skippy"
-          User.imageToSend!.imageLink = imageURL
-        }
-      clearAndGo()
+              var imageURL = ""
+              if image != nil {
+                imageURL = AWS.uploadImage(image: image!, email: User.email, tag: "snapshot")
+              }
+              try! RealmConnection.realmAtlas!.write {
+                User.imageToSend!.userContact?.firstName = "Skippy"
+                User.imageToSend!.imageLink = imageURL
+              }
+            clearAndGo()
+    }
+    
+    @IBAction func skipPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "Confirm Skip", message: "Are you sure you want to skip getting your tattoo mailed?", preferredStyle: .alert)
+
+                alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
+                   self.skipConfirmed()
+                       }))
+                alert.addAction(UIAlertAction(title: "No!", style: .cancel, handler:nil))
+                self.present(alert, animated: true)
     }
     
     func clearAndGo() {
@@ -349,20 +359,13 @@ class SubmitFormViewController: BaseViewController {
 }
 
 extension SubmitFormViewController: UITextFieldDelegate {
-
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == address1 {
+        if textField == state {
             moveForm(y: -50)
-        } else if textField == address2 {
-            moveForm(y: -100)
-        } else if textField == city {
-            moveForm(y: -150)
-        } else if textField == state {
-            moveForm(y: -200)
         } else if textField == postalCode {
-            moveForm(y: -250)
+            moveForm(y: -50)
         } else if textField == country {
-            moveForm(y: -250)
+            moveForm(y: -50)
         }
     }
 
