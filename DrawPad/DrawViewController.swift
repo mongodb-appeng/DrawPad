@@ -48,7 +48,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBOutlet weak var rectangleButton: DrawToolbarPersistedButton!
   @IBOutlet weak var ovalButton: DrawToolbarPersistedButton!
   @IBOutlet weak var triangleButton: DrawToolbarPersistedButton!
-  @IBOutlet weak var uernameLabel: UILabel!
+  @IBOutlet weak var usernameLabel: UILabel!
   
   // MARK: - INIT
   let scribblePopoverParent = UIView()
@@ -84,7 +84,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    uernameLabel!.text = User.userName
+    usernameLabel!.text = User.userName
     popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent, rectanglePopoverParent, ovalPopoverParent, trianglePopoverParent]
     pencilButton.select()
     notificationToken = shapes.observe { [weak self] changes in
@@ -330,6 +330,10 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func straightLineTapped(_ sender: Any) {
     print("Stright line button tapped")
     clearSecondaryPopovers(except: nil)
+    if CurrentTool.erasing {
+      CurrentTool.color = CurrentTool.previousColor
+      CurrentTool.erasing = false
+    }
     CurrentTool.shapeType = .straightLine
   }
   
@@ -469,6 +473,17 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     }
     CurrentTool.color = pencil.color
   }
+  
+  @objc func opacityEraserTapped(sender: UIButton) {
+    print("Secondary Eraser opacity toolbar tap")
+    opacityPopoverToolbar.clearCurrentButtonSelection()
+    opacityPopoverToolbar.savedSelection = 4
+    opacityButton.setImage(UIImage(named: "shade0.pdf"), for: .normal)
+    guard let pencil = Pencil(tag: 5) else {
+      return
+    }
+    CurrentTool.color = pencil.color
+  }
  
   @objc func secondaryToolbarButtonTapped(sender: DrawToolbarPersistedButton) {
     print("Secondary button tap")
@@ -543,6 +558,10 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func pencilButtonTapped(_ sender: UIButton) {
     print("Pencil button tapped")
     clearSecondaryPopovers(except: nil)
+    if CurrentTool.erasing {
+      CurrentTool.color = CurrentTool.previousColor
+      CurrentTool.erasing = false
+    }
     CurrentTool.shapeType = .line
     // Cannot just reset the color back to black as a different color might have been selected
 //    CurrentTool.color = .black
@@ -608,21 +627,34 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func eraserButtonTapped(_ sender: UIButton) {
     print("Eraser button tapped")
     clearSecondaryPopovers(except: nil)
+    print("previous color: \(CurrentTool.previousColor)")
+    if !CurrentTool.erasing {
+      CurrentTool.previousColor = CurrentTool.color
+    }
     CurrentTool.color = .white
+    CurrentTool.erasing = true
+    CurrentTool.shapeType = .line
   }
 
   @IBAction func textboxButtonTapped(_ sender: UIButton) {
     print("Textbox button tapped")
+    if CurrentTool.erasing {
+      CurrentTool.color = CurrentTool.previousColor
+      CurrentTool.erasing = false
+    }
     CurrentTool.shapeType = .text
   }
 
   @IBAction func sansSerifButtonTapped(_ sender: UIButton) {
+    if CurrentTool.erasing {
+      CurrentTool.color = CurrentTool.previousColor
+      CurrentTool.erasing = false
+    }
     print("Sans Serif button tapped")
     clearSecondaryPopovers(except: [sansSerifPopoverParent])
     if sansSerifPopoverParent.isDescendant(of: self.view) {
       return
     }
-
     CurrentTool.shapeType = .text
     
     sansSerifPopoverParent.backgroundColor = UIColor(red: 48/255, green: 52/255, blue: 52/255, alpha: 1)
@@ -708,7 +740,9 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func stampsButtonTapped(_ sender: UIButton) {
     print("Stamps button tapped")
     clearSecondaryPopovers(except: [stampsPopoverParent])
-
+    if CurrentTool.erasing {
+      CurrentTool.color = CurrentTool.previousColor
+    }
     if stampsPopoverParent.isDescendant(of: self.view) {
       return
     }
@@ -937,8 +971,11 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   @IBAction func opacityButtonTapped(_ sender: UIButton) {
     print("Opacity button tapped")
+    if CurrentTool.erasing {
+      print("Opacity menu disabled while erasing")
+      return
+    }
     clearSecondaryPopovers(except: [opacityPopoverParent])
-
     if opacityPopoverParent.isDescendant(of: self.view) {
       return
     }
@@ -950,7 +987,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     let leadingConstraint = opacityPopoverParent.leadingAnchor.constraint(equalTo: leftToolbarParent.trailingAnchor, constant: 2)
     let topConstraint = opacityPopoverParent.topAnchor.constraint(equalTo: opacityButton.topAnchor, constant: 0)
     let widthConstraint = opacityPopoverParent.widthAnchor.constraint(equalTo: leftToolbarParent.widthAnchor, constant: 0)
-    let heightConstraint = opacityPopoverParent.heightAnchor.constraint(equalTo: opacityButton.heightAnchor, multiplier: 4)
+    let heightConstraint = opacityPopoverParent.heightAnchor.constraint(equalTo: opacityButton.heightAnchor, multiplier: 5)
     NSLayoutConstraint.activate([leadingConstraint, topConstraint, widthConstraint, heightConstraint])
 
     opacityPopoverToolbar.axis = .vertical
@@ -983,10 +1020,17 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     lightestShadeButton.addTarget(self, action: #selector(opacityLightestTapped(sender:)), for: .touchUpInside)
     lightestShadeButton.tintColor = .white
 
+    let eraserShadeImage = UIImage(named: "shade0.pdf")
+    let eraserShadeButton = DrawToolbarPersistedButton(image: eraserShadeImage!)
+    eraserShadeButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
+    eraserShadeButton.addTarget(self, action: #selector(opacityEraserTapped(sender:)), for: .touchUpInside)
+    eraserShadeButton.tintColor = .white
+    
     opacityPopoverToolbar.addArrangedSubview(blackShadeButton)
     opacityPopoverToolbar.addArrangedSubview(darkestShadeButton)
     opacityPopoverToolbar.addArrangedSubview(midShadeButton)
     opacityPopoverToolbar.addArrangedSubview(lightestShadeButton)
+    opacityPopoverToolbar.addArrangedSubview(eraserShadeButton)
     opacityPopoverParent.addSubview(opacityPopoverToolbar)
     opacityPopoverToolbar.translatesAutoresizingMaskIntoConstraints = false
 
@@ -1004,7 +1048,10 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func squareButtonTapped(_ sender: UIButton) {
     print("Square button tapped")
     clearSecondaryPopovers(except: [rectanglePopoverParent])
-
+    if CurrentTool.erasing {
+      CurrentTool.color = CurrentTool.previousColor
+      CurrentTool.erasing = false
+    }
     if rectanglePopoverParent.isDescendant(of: self.view) {
       return
     }
@@ -1057,7 +1104,10 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func circleButtonTapped(_ sender: UIButton) {
     print("Circle button tapped")
     clearSecondaryPopovers(except: [ovalPopoverParent])
-
+    if CurrentTool.erasing {
+      CurrentTool.color = CurrentTool.previousColor
+      CurrentTool.erasing = false
+    }
     if ovalPopoverParent.isDescendant(of: self.view) {
       return
     }
@@ -1111,7 +1161,10 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func triangleButtonTapped(_ sender: UIButton) {
     print("Triangle button tapped")
     clearSecondaryPopovers(except: [trianglePopoverParent])
-
+    if CurrentTool.erasing {
+      CurrentTool.color = CurrentTool.previousColor
+      CurrentTool.erasing = false
+    }
     if trianglePopoverParent.isDescendant(of: self.view) {
       return
     }

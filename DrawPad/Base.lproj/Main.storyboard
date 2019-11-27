@@ -1250,8 +1250,8 @@ This Privacy Policy was last revised on 29 March 2019.</string>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7SH-DO-sTb">
                                 <rect key="frame" x="987" y="769" width="110" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -1281,7 +1281,7 @@ This Privacy Policy was last revised on 29 March 2019.</string>
                         <outlet property="stampButton" destination="tBL-gM-hWl" id="UCD-JV-q3v"/>
                         <outlet property="tempImageView" destination="lcF-1C-bpE" id="QEm-8K-44G"/>
                         <outlet property="triangleButton" destination="Lwo-cr-CIv" id="Krk-I5-lFo"/>
-                        <outlet property="uernameLabel" destination="7SH-DO-sTb" id="3Sa-LA-7hA"/>
+                        <outlet property="usernameLabel" destination="7SH-DO-sTb" id="K77-dG-gcG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1wg-lT-Y6J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

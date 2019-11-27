@@ -12,6 +12,8 @@ class CurrentTool {
   static var brushWidth: CGFloat = CGFloat(Constants.DRAW_PEN_WIDTH_THIN)
   static var shapeType: ShapeType = .line
   static var color = UIColor.black
+  static var erasing = false
+  static var previousColor = UIColor.black
   static var fontStyle: FontStyle = .normal
   static var stampFile: String = ""
   static var filled: Bool = true
