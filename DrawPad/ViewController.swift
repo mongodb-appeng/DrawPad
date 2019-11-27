@@ -231,7 +231,7 @@ class ViewController: UIViewController, SettingsViewControllerDelegate, UITextFi
         // with the dragged point. the LinkedPoint list should always contain
         // (x₁, y₁) and (x₂, y₂), the top left and and bottom right corners
         // of the rect
-      case .rect, .ellipse, .stamp, .text:
+      case .rect, .ellipse, .stamp, .text, .straightLine:
         // if 'swiped' (a.k.a. not a single point), erase the current shape,
         // which is effectively acting as a draft. then redraw the current
         // state
