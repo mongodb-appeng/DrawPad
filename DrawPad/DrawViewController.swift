@@ -219,7 +219,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       
       case .straightLine:
         if swiped {
-          // TODO could we just clear the temp view instead?
           self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
@@ -231,7 +230,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
         // which is effectively acting as a draft. then redraw the current
         // state
         if swiped {
-          // TODO could we just clear the temp view instead?
           self.mainImageView.image = nil
           self.shapes.forEach { $0.draw(context) }
         }
@@ -278,9 +276,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     }
     
     switch CurrentTool.shapeType {
-    // TODO - REMOVE
-    //    case .line:
-    //      mergeViews()
     case .text:
       // The bounding rectangle for the text has been created but the user
       // must now type in their text
@@ -289,7 +284,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     default:
       // if the shape is not a line, it exists in a draft state.
       // add it to the realm now
-      // TODO: move the "draft" business logic out of the view
       if CurrentTool.shapeType != .line {
         try! RealmConnection.realm!.write {
           RealmConnection.realm!.add(currentShape!)
@@ -330,6 +324,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   
   // MARK: - ACTIONS
+  
   @IBAction func straightLineTapped(_ sender: Any) {
     print("Stright line button tapped")
     clearSecondaryPopovers(except: nil)
@@ -732,9 +727,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     tapGesture.cancelsTouchesInView = false
     stampsPopoverToolbar.addGestureRecognizer(tapGesture)
 
-    // TODO: UPDATE VARIABLE NAMES AND IMAGES
-
-//    let scribbleLightImage = UIImage(systemName: "scribble")
     let owlImage = UIImage(named: "owl.pdf")
     let owlButton = DrawToolbarPersistedButton(image: owlImage!)
     owlButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
