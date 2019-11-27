@@ -510,6 +510,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Pencil button tapped")
     clearSecondaryPopovers(except: nil)
     CurrentTool.shapeType = .line
+    CurrentTool.color = .black
   }
 
   @IBAction func scribbleButtonTapped(_ sender: UIButton) {
@@ -1153,8 +1154,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     CurrentTool.setWidth(width: Constants.DRAW_PEN_WIDTH_WIDE)
     clearSecondaryPopovers(except: nil)
   }
-
-  // TODO: ADD THE REST OF THE TAP HANDLERS THE SAME WAY THESE WERE ADDED
 
   // MARK: - UTIL
 

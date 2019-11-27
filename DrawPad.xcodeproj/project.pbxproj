@@ -64,7 +64,7 @@
 		49C8097A2383FAF80061D4C1 /* ShapeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeSelectorViewController.swift; sourceTree = "<group>"; };
 		49E3600E2375854F00FC52B8 /* StoredImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredImage.swift; sourceTree = "<group>"; };
 		49ECB9DF2375DC9C003102AD /* grumpy_cat_stamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grumpy_cat_stamp.png; sourceTree = "<group>"; };
-		49EE44A92382AD9F00621659 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		49EE44A92382AD9F00621659 /* IntroViewController.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		699E5BBD41FBE963D779C01F /* Pods-DrawPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrawPad.release.xcconfig"; path = "Target Support Files/Pods-DrawPad/Pods-DrawPad.release.xcconfig"; sourceTree = "<group>"; };
 		DC2FF6EA238707E50046FAD6 /* DrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewController.swift; sourceTree = "<group>"; };
 		DC2FF6EC2387189B0046FAD6 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
