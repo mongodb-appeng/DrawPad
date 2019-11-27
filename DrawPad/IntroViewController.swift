@@ -204,11 +204,18 @@ import SwiftUI
 
 // global vars
 // This is the introducion view
-class IntroViewController: BaseViewController {
+class IntroViewController: BaseViewController, UITextFieldDelegate {
   
+    
+    @IBOutlet weak var checkBoxTCPP: UIButton!
+    @IBOutlet weak var startDrawingButton: UIButton! // APPENG-72
+    @IBOutlet weak var agreedToTermsButton: UIButton!
+    @IBOutlet weak var emailField: UITextField!
+
     var agreedToTerms = false
     var gotValidEmail = false  // APPENG-72
     
+   
     override func viewDidLoad() {
        super.viewDidLoad()
         print("IntroViewController.viewDidLoad")
@@ -217,12 +224,14 @@ class IntroViewController: BaseViewController {
         agreedToTerms = false
         checkBoxTCPP.isSelected = false
         configDrawingButton()
+        
+        self.emailField.delegate = self
     }
     
-    @IBOutlet weak var checkBoxTCPP: UIButton!
-    @IBOutlet weak var startDrawingButton: UIButton! // APPENG-72
-    @IBOutlet weak var agreedToTermsButton: UIButton!
-    @IBOutlet weak var emailField: UITextField!
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     
     @IBAction func enteringEmailField(_ sender: UITextField) {
         isValidEmail(emailStr: emailField.text ?? "")
