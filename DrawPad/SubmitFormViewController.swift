@@ -46,6 +46,13 @@ class SubmitFormViewController: BaseViewController {
         isValidInput(text: country.text ?? "",  minLength: 2)
     }
     
+    @IBAction func cameraZoomChanged(_ sender: UISlider) {
+        photoCaptureOverlay.zoom = CGFloat(sender.value)
+    }
+    @IBAction func drawingSizeChanged(_ sender: UISlider) {
+        photoCaptureOverlay.overlayZoom = CGFloat(sender.value)
+    }
+    var snapValue: CGFloat = 0.0
     @IBAction func snapPressed() {
         photoCaptureOverlay.getCompositeImage { [weak self] image in
             self?.snapShotImage = image

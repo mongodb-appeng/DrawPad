@@ -531,7 +531,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <inset key="scrollIndicatorInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                        <mutableString key="text">1. Purpose of this Privacy Policy.
+                                        <string key="text">1. Purpose of this Privacy Policy.
 MongoDB, Inc. is committed to protecting your privacy. We have prepared this Privacy Policy to describe to you our practices regarding the Personal Data (as defined below) we collect from users of our website located at MongoDB.com and in connection with our MongoDB products and services (the "Products"). In addition, this Privacy Policy tells you about your privacy rights and how the law protects you.
 
 This website is not intended for children and we do not knowingly collect data relating to children.
@@ -686,7 +686,7 @@ As noted above, MongoDB uses a limited number of third-party service providers t
 
 MongoDB’s commitments under the Privacy Shield are subject to the investigatory and enforcement powers of the United States Federal Trade Commission. MongoDB may be required to disclose personal information in response to lawful requests by public authorities, including to meet national security or law enforcement requirements.
 
-This Privacy Policy was last revised on 29 March 2019.</mutableString>
+This Privacy Policy was last revised on 29 March 2019.</string>
                                         <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1376,7 +1376,7 @@ This Privacy Policy was last revised on 29 March 2019.</mutableString>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Want to Wear Your Tattoo?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="svZ-BU-bqz">
-                                <rect key="frame" x="56" y="575" width="515" height="33"/>
+                                <rect key="frame" x="56" y="600" width="480" height="33"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="33" id="eje-dR-Bnf"/>
                                 </constraints>
@@ -1384,19 +1384,19 @@ This Privacy Policy was last revised on 29 March 2019.</mutableString>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" editable="NO" text="Heck. Yes. Your tattoo design will hit your inbox soon. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l5s-tJ-yLQ">
-                                <rect key="frame" x="64" y="48" width="508" height="103"/>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" editable="NO" text="Heck. Yes. Your tattoo design will hit your inbox soon. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l5s-tJ-yLQ">
+                                <rect key="frame" x="56" y="30" width="480" height="94"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="94" id="OSd-1E-FHY"/>
+                                </constraints>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="32"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VaC-zq-uDh">
-                                <rect key="frame" x="56" y="575" width="515" height="174"/>
+                                <rect key="frame" x="56" y="666" width="480" height="83"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="174" id="455-ad-kav"/>
-                                </constraints>
                                 <string key="text">Share your shipping address and Inkbox will mail your temporary tattoo. 
 
 Expect to [get a shipping confirmation email from Inkbox] [get an email from Inkbox confirming your design] in the next [2 weeks].</string>
@@ -1405,25 +1405,25 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kaP-9q-NzL" customClass="PhotoCaptureOverlayView" customModule="DrawPad" customModuleProvider="target">
-                                <rect key="frame" x="63.5" y="159" width="500" height="380"/>
+                                <rect key="frame" x="56" y="159" width="480" height="360"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="500" id="MAV-r3-jXq"/>
-                                    <constraint firstAttribute="height" constant="380" id="vjO-tC-xv4"/>
+                                    <constraint firstAttribute="width" constant="480" id="MAV-r3-jXq"/>
+                                    <constraint firstAttribute="height" constant="360" id="vjO-tC-xv4"/>
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8IA-lm-243">
-                                <rect key="frame" x="63.5" y="159" width="500" height="380"/>
+                                <rect key="frame" x="56" y="159" width="480" height="360"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVZ-31-Jxs">
-                                <rect key="frame" x="18.5" y="334" width="35" height="30"/>
+                                <rect key="frame" x="13" y="324" width="35" height="30"/>
                                 <state key="normal" title="Snap"/>
                                 <connections>
                                     <action selector="snapPressed" destination="Tho-hh-xWr" eventType="touchUpInside" id="GNb-Qz-xDj"/>
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BMN-yV-Chs">
-                                <rect key="frame" x="533.5" y="159" width="30" height="30"/>
+                                <rect key="frame" x="506" y="159" width="30" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.51232394366197187" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="X">
                                     <color key="titleColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1441,12 +1441,26 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="family-name"/>
                             </textField>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="BqJ-Qs-vy6">
+                                <rect key="frame" x="54" y="522" width="484" height="31"/>
+                                <connections>
+                                    <action selector="cameraZoomChanged:" destination="Tho-hh-xWr" eventType="valueChanged" id="NSY-F9-Rf1"/>
+                                </connections>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pw8-qP-zUB">
+                                <rect key="frame" x="54" y="124" width="484" height="31"/>
+                                <connections>
+                                    <action selector="drawingSizeChanged:" destination="Tho-hh-xWr" eventType="valueChanged" id="Vtp-1u-TIM"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="trailing" secondItem="d39-gq-C7f" secondAttribute="trailing" constant="-136" id="0dw-bR-FXZ"/>
                             <constraint firstItem="tLi-wT-EHS" firstAttribute="top" secondItem="66N-7Y-7kd" secondAttribute="bottom" constant="20" id="0kE-s4-2Q5"/>
+                            <constraint firstItem="pw8-qP-zUB" firstAttribute="trailing" secondItem="kaP-9q-NzL" secondAttribute="trailing" id="2HH-jq-aZn"/>
                             <constraint firstItem="66N-7Y-7kd" firstAttribute="centerY" secondItem="slo-k7-PXo" secondAttribute="centerY" id="2cE-Fg-Q44"/>
+                            <constraint firstItem="BqJ-Qs-vy6" firstAttribute="top" secondItem="kaP-9q-NzL" secondAttribute="bottom" constant="3" id="2lH-EY-yct"/>
                             <constraint firstItem="svZ-BU-bqz" firstAttribute="leading" secondItem="VaC-zq-uDh" secondAttribute="leading" id="4F7-Og-gZz"/>
                             <constraint firstItem="cdd-NR-ilC" firstAttribute="centerY" secondItem="zc4-7z-XLk" secondAttribute="centerY" id="6CG-oc-buZ"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="top" secondItem="2Ca-Br-HU1" secondAttribute="bottom" constant="21" id="9XN-4C-Gto"/>
@@ -1456,6 +1470,7 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
                             <constraint firstItem="zRS-2d-aep" firstAttribute="leading" secondItem="vzz-EL-t6C" secondAttribute="trailing" constant="8" symbolic="YES" id="Bxt-iR-Y15"/>
                             <constraint firstItem="Bsn-qO-fhK" firstAttribute="trailing" secondItem="slo-k7-PXo" secondAttribute="trailing" constant="271" id="EBv-Wt-1sZ"/>
                             <constraint firstItem="l5s-tJ-yLQ" firstAttribute="trailing" secondItem="svZ-BU-bqz" secondAttribute="trailing" id="EIR-DX-CHS"/>
+                            <constraint firstItem="pw8-qP-zUB" firstAttribute="top" secondItem="l5s-tJ-yLQ" secondAttribute="bottom" id="F6u-oz-A7R"/>
                             <constraint firstItem="zc4-7z-XLk" firstAttribute="top" secondItem="vzz-EL-t6C" secondAttribute="bottom" constant="27" id="Fnq-OS-i60"/>
                             <constraint firstItem="vzz-EL-t6C" firstAttribute="leading" secondItem="cdd-NR-ilC" secondAttribute="leading" id="FoK-zz-gmp"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="top" secondItem="ifZ-fB-ZCK" secondAttribute="top" constant="200" id="GJj-u3-22V"/>
@@ -1463,7 +1478,9 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
                             <constraint firstItem="slo-k7-PXo" firstAttribute="leading" secondItem="d39-gq-C7f" secondAttribute="leading" id="KIl-3k-vII"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="leading" secondItem="N7r-mw-H3R" secondAttribute="leading" id="KYH-aV-JaK"/>
                             <constraint firstItem="BMN-yV-Chs" firstAttribute="trailing" secondItem="8IA-lm-243" secondAttribute="trailing" id="LLb-i7-fRE"/>
+                            <constraint firstItem="pw8-qP-zUB" firstAttribute="leading" secondItem="kaP-9q-NzL" secondAttribute="leading" id="NBv-L5-Iw2"/>
                             <constraint firstItem="zRS-2d-aep" firstAttribute="trailing" secondItem="zc4-7z-XLk" secondAttribute="trailing" id="OPK-q6-013"/>
+                            <constraint firstItem="hVZ-31-Jxs" firstAttribute="centerY" secondItem="kaP-9q-NzL" secondAttribute="centerY" id="OtD-6C-GGy"/>
                             <constraint firstItem="tLi-wT-EHS" firstAttribute="top" secondItem="slo-k7-PXo" secondAttribute="bottom" constant="20" id="P0C-Qh-kIo"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="leading" secondItem="EY5-4p-9xV" secondAttribute="leading" id="P0D-aV-EHI"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="leading" secondItem="2Ca-Br-HU1" secondAttribute="leading" id="S5X-iN-RfB"/>
@@ -1471,12 +1488,11 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
                             <constraint firstItem="Vqc-Td-Wcq" firstAttribute="top" secondItem="tLi-wT-EHS" secondAttribute="bottom" constant="23" id="Spy-Gh-jTW"/>
                             <constraint firstItem="cdd-NR-ilC" firstAttribute="bottom" secondItem="zc4-7z-XLk" secondAttribute="bottom" id="TMQ-Fs-TSM"/>
                             <constraint firstItem="Bsn-qO-fhK" firstAttribute="trailing" secondItem="66N-7Y-7kd" secondAttribute="trailing" constant="135" id="TXg-nd-JF2"/>
+                            <constraint firstItem="l5s-tJ-yLQ" firstAttribute="width" secondItem="kaP-9q-NzL" secondAttribute="width" id="Tam-a3-Iih"/>
                             <constraint firstItem="vzz-EL-t6C" firstAttribute="baseline" secondItem="zRS-2d-aep" secondAttribute="baseline" id="Te4-yr-oBc"/>
-                            <constraint firstItem="kaP-9q-NzL" firstAttribute="leading" secondItem="hVZ-31-Jxs" secondAttribute="trailing" constant="10" id="TkS-fy-MZt"/>
-                            <constraint firstItem="hVZ-31-Jxs" firstAttribute="centerY" secondItem="8IA-lm-243" secondAttribute="centerY" id="Uan-0B-3Zm"/>
+                            <constraint firstItem="kaP-9q-NzL" firstAttribute="leading" secondItem="hVZ-31-Jxs" secondAttribute="trailing" constant="8" symbolic="YES" id="TkS-fy-MZt"/>
                             <constraint firstItem="vzz-EL-t6C" firstAttribute="top" secondItem="EY5-4p-9xV" secondAttribute="bottom" constant="8" symbolic="YES" id="Umj-3R-7Jw"/>
-                            <constraint firstItem="l5s-tJ-yLQ" firstAttribute="top" secondItem="Bsn-qO-fhK" secondAttribute="top" constant="48" id="XzG-zN-d6c"/>
-                            <constraint firstItem="Bsn-qO-fhK" firstAttribute="trailing" secondItem="l5s-tJ-yLQ" secondAttribute="trailing" constant="509" id="aK2-u1-5D9"/>
+                            <constraint firstItem="l5s-tJ-yLQ" firstAttribute="top" secondItem="Bsn-qO-fhK" secondAttribute="top" constant="30" id="XzG-zN-d6c"/>
                             <constraint firstAttribute="bottom" secondItem="VaC-zq-uDh" secondAttribute="bottom" constant="61" id="b69-CH-Isi"/>
                             <constraint firstItem="8IA-lm-243" firstAttribute="centerX" secondItem="kaP-9q-NzL" secondAttribute="centerX" id="bEs-Ec-Bmu"/>
                             <constraint firstItem="Bsn-qO-fhK" firstAttribute="bottom" secondItem="cdd-NR-ilC" secondAttribute="bottom" constant="233" id="cCg-4P-Ujt"/>
@@ -1485,20 +1501,22 @@ Expect to [get a shipping confirmation email from Inkbox] [get an email from Ink
                             <constraint firstItem="slo-k7-PXo" firstAttribute="trailing" secondItem="tLi-wT-EHS" secondAttribute="trailing" constant="-136" id="eKR-si-FE5"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="trailing" secondItem="2Ca-Br-HU1" secondAttribute="trailing" constant="-136" id="fI1-Lf-Mie"/>
                             <constraint firstItem="EY5-4p-9xV" firstAttribute="top" secondItem="d39-gq-C7f" secondAttribute="bottom" constant="8" symbolic="YES" id="iXW-3M-G6c"/>
+                            <constraint firstItem="kaP-9q-NzL" firstAttribute="top" secondItem="pw8-qP-zUB" secondAttribute="bottom" constant="5" id="kTX-ou-MYH"/>
                             <constraint firstItem="BMN-yV-Chs" firstAttribute="top" secondItem="2Ca-Br-HU1" secondAttribute="top" id="leJ-1R-vHB"/>
                             <constraint firstItem="8IA-lm-243" firstAttribute="width" secondItem="kaP-9q-NzL" secondAttribute="width" id="ljN-Ja-db3"/>
+                            <constraint firstItem="BqJ-Qs-vy6" firstAttribute="leading" secondItem="kaP-9q-NzL" secondAttribute="leading" id="ms9-o3-Edj"/>
                             <constraint firstItem="l5s-tJ-yLQ" firstAttribute="leading" secondItem="svZ-BU-bqz" secondAttribute="leading" id="nQ1-U7-vOG"/>
                             <constraint firstItem="8IA-lm-243" firstAttribute="centerY" secondItem="kaP-9q-NzL" secondAttribute="centerY" id="nyS-K9-9wH"/>
                             <constraint firstItem="zc4-7z-XLk" firstAttribute="leading" secondItem="cdd-NR-ilC" secondAttribute="trailing" constant="8.5" id="oPh-f6-OPa"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="trailing" secondItem="zRS-2d-aep" secondAttribute="trailing" constant="-136" id="q55-dN-P1L"/>
-                            <constraint firstItem="kaP-9q-NzL" firstAttribute="top" secondItem="l5s-tJ-yLQ" secondAttribute="bottom" constant="8" id="roz-n7-NYN"/>
+                            <constraint firstItem="BqJ-Qs-vy6" firstAttribute="trailing" secondItem="kaP-9q-NzL" secondAttribute="trailing" id="rVh-Mp-PKE"/>
                             <constraint firstItem="l5s-tJ-yLQ" firstAttribute="leading" secondItem="ifZ-fB-ZCK" secondAttribute="leadingMargin" constant="36" id="s0D-JA-72R"/>
                             <constraint firstItem="d39-gq-C7f" firstAttribute="top" secondItem="N7r-mw-H3R" secondAttribute="bottom" constant="8" symbolic="YES" id="tsQ-3Y-jpF"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="leading" secondItem="Vqc-Td-Wcq" secondAttribute="leading" id="ufs-n4-hWl"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="trailing" secondItem="N7r-mw-H3R" secondAttribute="trailing" constant="-136" id="ugp-hQ-uWK"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="trailing" secondItem="Vqc-Td-Wcq" secondAttribute="trailing" constant="-136" id="wSW-Jp-8b8"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="trailing" secondItem="EY5-4p-9xV" secondAttribute="trailing" constant="-136" id="wgT-04-2Kp"/>
-                            <constraint firstItem="VaC-zq-uDh" firstAttribute="top" secondItem="svZ-BU-bqz" secondAttribute="bottom" constant="-33" id="xm9-IO-OaG"/>
+                            <constraint firstItem="VaC-zq-uDh" firstAttribute="top" secondItem="svZ-BU-bqz" secondAttribute="bottom" constant="33" id="xm9-IO-OaG"/>
                             <constraint firstItem="slo-k7-PXo" firstAttribute="leading" secondItem="tLi-wT-EHS" secondAttribute="leading" id="yBI-xq-OH0"/>
                             <constraint firstItem="66N-7Y-7kd" firstAttribute="width" secondItem="slo-k7-PXo" secondAttribute="width" multiplier="1.01307" constant="-11.401684999999986" id="zBP-eV-FQz"/>
                         </constraints>
