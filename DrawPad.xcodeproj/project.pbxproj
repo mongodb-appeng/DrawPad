@@ -54,7 +54,7 @@
 		494F624823742E9B00F0C7F6 /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49C8092B2382D2240061D4C1 /* RealmConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfigViewController.swift; sourceTree = "<group>"; };
 		49C8092F2382F63A0061D4C1 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
-		49C809312382FC9D0061D4C1 /* SubmitFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitFormViewController.swift; sourceTree = "<group>"; };
+		49C809312382FC9D0061D4C1 /* SubmitFormViewController.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = SubmitFormViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		49C809332382FE630061D4C1 /* DrawMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawMenuViewController.swift; sourceTree = "<group>"; };
 		49C8093523831D400061D4C1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		49C809372383276E0061D4C1 /* ThanksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewController.swift; sourceTree = "<group>"; };

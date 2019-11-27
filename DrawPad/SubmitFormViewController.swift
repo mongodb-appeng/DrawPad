@@ -145,4 +145,10 @@ class SubmitFormViewController: BaseViewController {
     }
 }
 
+extension SubmitFormViewController: UITextFieldDelegate {
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("started editing text field")
+    }
+
+}
