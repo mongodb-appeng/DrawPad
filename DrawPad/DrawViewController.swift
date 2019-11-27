@@ -535,7 +535,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Pencil button tapped")
     clearSecondaryPopovers(except: nil)
     CurrentTool.shapeType = .line
-    CurrentTool.color = .black
+    // Cannot just reset the color back to black as a different color might have been selected
+//    CurrentTool.color = .black
   }
 
   @IBAction func scribbleButtonTapped(_ sender: UIButton) {
