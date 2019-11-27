@@ -4,10 +4,13 @@ import AVFoundation
 public class PhotoCaptureOverlayView: UIView, AVCapturePhotoCaptureDelegate {
   let drawingLayer = CALayer()
   var originalDrawing: UIImage?
+  var captureDevice: AVCaptureDevice?
+  var maxZoom: CGFloat = 2.0
   let photoOutput = AVCapturePhotoOutput()
   let captureSession = AVCaptureSession()
   public typealias CompositePhotoResult = (UIImage?) -> Void
   var waitingCapture: CompositePhotoResult?
+  var drawingSize = CGSize.zero
   
   public func startCameraPreview(with overlay: UIImage?) {
     if captureSession.isRunning {
@@ -25,6 +28,8 @@ public class PhotoCaptureOverlayView: UIView, AVCapturePhotoCaptureDelegate {
         return
     }
     
+    captureDevice = device
+    maxZoom = device.maxAvailableVideoZoomFactor
     captureSession.addInput(input)
     captureSession.addOutput(photoOutput)
     let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -38,11 +43,38 @@ public class PhotoCaptureOverlayView: UIView, AVCapturePhotoCaptureDelegate {
     drawingLayer.contents = overlay?.cgImage
     originalDrawing = overlay
     let squareSide = min(bounds.width, bounds.height)
-    let origin = CGPoint(x: bounds.width / 2 - squareSide / 2 , y: bounds.height / 2 - squareSide / 2)
-    drawingLayer.frame = CGRect(origin: origin, size: CGSize(width: squareSide, height: squareSide))
+    drawingSize = CGSize(width: squareSide, height: squareSide)
+    updateDrawingLayerFrame()
     
     layer.addSublayer(previewLayer)
     layer.addSublayer(drawingLayer)
+  }
+  
+  func updateDrawingLayerFrame() {
+    let adjustedWidth = drawingSize.width * overlayZoom
+    let adjustedHeight = drawingSize.height * overlayZoom
+    let x = bounds.width / 2 - adjustedWidth / 2
+    let y = bounds.height / 2 - adjustedHeight / 2
+    drawingLayer.frame = CGRect(x: x, y: y, width: adjustedWidth, height: adjustedHeight)
+  }
+  
+  public var zoom: CGFloat = 0.0 {
+    didSet {
+      let percentage = min(zoom, 1.0)
+      let value = percentage * (maxZoom - 1.0) + 1.0
+      let defensive = max(min(maxZoom, value), 1.0)
+      do{
+        try captureDevice?.lockForConfiguration()
+        captureDevice?.videoZoomFactor = defensive
+        captureDevice?.unlockForConfiguration()
+      } catch {}
+    }
+  }
+  
+  public var overlayZoom: CGFloat = 1.0 {
+    didSet {
+      updateDrawingLayerFrame()
+    }
   }
   
   func getCompositeImage(_ callback: @escaping CompositePhotoResult) {
