@@ -225,6 +225,7 @@ class SubmitFormViewController: BaseViewController {
             deleteSnapButton.isHidden = snapShotImage == nil
         }
     }
+
     
     @IBOutlet weak var formContainerViewTopConstraint: NSLayoutConstraint!
 
@@ -262,6 +263,8 @@ class SubmitFormViewController: BaseViewController {
         super.viewDidLoad()
         print("SubmitFormViewController.viewDidLoad")
         photoCaptureOverlay.startCameraPreview(with: drawing)
+        self.country.delegate = self
+        
     }
     
     func extractImage() -> Data? {
@@ -372,5 +375,40 @@ extension SubmitFormViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         moveForm(y: 0)
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+       if textField == firstName {
+          textField.resignFirstResponder()
+          lastName.becomeFirstResponder()
+       } else if textField == lastName {
+          lastName.resignFirstResponder()
+          address1.becomeFirstResponder()
+       } else if textField == address1 {
+          address1.resignFirstResponder()
+          address2.becomeFirstResponder()
+       } else if textField == address1 {
+            address1.resignFirstResponder()
+            address2.becomeFirstResponder()
+        } else if textField == address2 {
+            address2.resignFirstResponder()
+            city.becomeFirstResponder()
+        } else if textField == city {
+            city.resignFirstResponder()
+            state.becomeFirstResponder()
+        } else if textField == state {
+            state.resignFirstResponder()
+            postalCode.becomeFirstResponder()
+        } else if textField == postalCode {
+            postalCode.resignFirstResponder()
+            country.becomeFirstResponder()
+        } else if textField == country {
+          self.view.endEditing(true)
+          return false
+        }
+        
+       
+    
+      return true
+     }
 
 }
