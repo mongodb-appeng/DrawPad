@@ -19,6 +19,15 @@
 import UIKit
 import RealmSwift
 
+extension UIImage {
+  func resized(withPercentage percentage: CGFloat) -> UIImage? {
+    let canvas = CGSize(width: size.width * percentage, height: size.height * percentage)
+    return UIGraphicsImageRenderer(size: canvas, format: imageRendererFormat).image {
+      _ in draw(in: CGRect(origin: .zero, size: canvas))
+    }
+  }
+}
+
 class DrawViewController: BaseViewController, UITextFieldDelegate {
 
   // MARK: - OUTLETS
@@ -143,11 +152,14 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   
   func extractImage() -> Data? {
-    guard let image = mainImageView.image?.pngData() else {
+    guard let rawImage = mainImageView.image,
+      let resizedImage = rawImage.resized(withPercentage: 0.5),
+      let imageData = resizedImage.pngData() else {
       print("Failed to get to the image")
       return nil
     }
-    return image
+
+    return imageData
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -451,6 +463,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       print("Failed to extract image")
       return
     }
+    print("Drawing to be uploaded is \(image.count / 1000)kb")
     let storedImage = StoredImage(image: image)
     storedImage.userContact?.email = User.email
     
@@ -460,7 +473,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     }
 
     let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
-    submitVC?.drawing = UIImage(data: image)
+    submitVC?.drawing = mainImageView.image
     self.navigationController!.pushViewController(submitVC!, animated: true)
   }
 //   @IBAction func finishButtonTapped(_ sender: UIButton) {
