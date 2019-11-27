@@ -12,6 +12,7 @@ import RealmSwift
 class SubmitFormViewController: BaseViewController {
   
     @IBOutlet weak var shippingWarningLabel: UILabel!
+    @IBOutlet weak var formContainerView: UIView!
     @IBOutlet weak var firstName: UITextField!
     @IBOutlet weak var lastName: UITextField!
     @IBOutlet weak var address1: UITextField!
@@ -31,7 +32,8 @@ class SubmitFormViewController: BaseViewController {
         }
     }
     
-    
+    @IBOutlet weak var formContainerViewTopConstraint: NSLayoutConstraint!
+
     func isValidInput(text: String!, minLength: Int!) -> Bool {
         return text.count >= minLength
     }
@@ -143,12 +145,35 @@ class SubmitFormViewController: BaseViewController {
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ThanksViewController") as? ThanksViewController
         self.navigationController!.pushViewController(vc!, animated: true)
     }
+
+    fileprivate func moveForm(y: CGFloat) {
+        self.formContainerViewTopConstraint.constant = y
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
 extension SubmitFormViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("started editing text field")
+        if textField == address1 {
+            moveForm(y: -50)
+        } else if textField == address2 {
+            moveForm(y: -100)
+        } else if textField == city {
+            moveForm(y: -150)
+        } else if textField == state {
+            moveForm(y: -200)
+        } else if textField == postalCode {
+            moveForm(y: -250)
+        } else if textField == country {
+            moveForm(y: -250)
+        }
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        moveForm(y: 0)
     }
 
 }
