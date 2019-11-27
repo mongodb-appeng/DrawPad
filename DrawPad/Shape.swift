@@ -87,7 +87,7 @@ class LinkedPoint: Object {
 }
 
 @objc enum FontStyle: Int {
-  case normal, serif, monospace
+  case normal, serif, monospace, hand
 }
 
 /// Shape is the all encompassing class for the various
@@ -236,14 +236,15 @@ class Shape: Object {
     
     var fontName = ""
     switch fontStyle {
-    case .normal:
-      fontName = "Helvetica"
-    case .serif:
-      fontName = "AmericanTypewriter-Bold"
-    case .monospace:
-      fontName = "MarkerFelt-Wide"
+      case .normal:
+        fontName = "Helvetica"
+      case .serif:
+        fontName = "BradleyHandITCTT-Bold"
+      case .hand:
+        fontName = "DINCondensed-Bold"
+      case .monospace:
+        fontName = "MarkerFelt-Wide"
     }
-    
     let font = UIFont(name: fontName, size: CGFloat(fontSize))
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .left
