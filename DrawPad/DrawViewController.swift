@@ -210,6 +210,22 @@ extension UIImage {
       _ in draw(in: CGRect(origin: .zero, size: canvas))
     }
   }
+  
+  func whiteMask() -> UIImage? {
+    let opaqueImage = UIImage(data: jpegData(compressionQuality: 1.0)!)!
+    let opaqueImageRef: CGImage = opaqueImage.cgImage!
+    
+    let colorMasking: [CGFloat] = [222, 255, 222, 255, 222, 255]
+    UIGraphicsBeginImageContext(opaqueImage.size);
+    
+    let maskedImageRef = opaqueImageRef.copy(maskingColorComponents: colorMasking)
+    UIGraphicsGetCurrentContext()?.translateBy(x: 0.0,y: opaqueImage.size.height)
+    UIGraphicsGetCurrentContext()?.scaleBy(x: 1.0, y: -1.0)
+    UIGraphicsGetCurrentContext()?.draw(maskedImageRef!, in: CGRect.init(x: 0, y: 0, width: opaqueImage.size.width, height: opaqueImage.size.height))
+    let transparentImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return transparentImage
+  }
 }
 
 class DrawViewController: BaseViewController, UITextFieldDelegate {
@@ -341,19 +357,14 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     
     // The image must be extracted as a JPEG (not a PNG) or else erased conent will
     // show as white on a transparent background
-    guard let image = mainImageView.image?.jpegData(compressionQuality: 1.0) else {
+    guard let rawImage = mainImageView.image,
+      let resizedImage = rawImage.resized(withPercentage: 0.5),
+      let imageData = resizedImage.jpegData(compressionQuality: 1.0) else {
       print("Failed to get to the image")
-        return nil
-      }
-    return image
-//    guard let rawImage = mainImageView.image,
-//      let resizedImage = rawImage.resized(withPercentage: 0.5),
-//      let imageData = resizedImage.pngData() else {
-//      print("Failed to get to the image")
-//      return nil
-//    }
-//
-//    return imageData
+      return nil
+    }
+
+    return imageData
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -693,7 +704,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     }
 
     let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
-    submitVC?.drawing = mainImageView.image
+    submitVC?.drawing = mainImageView.image?.whiteMask()
     self.navigationController!.pushViewController(submitVC!, animated: true)
   }
 //   @IBAction func finishButtonTapped(_ sender: UIButton) {
