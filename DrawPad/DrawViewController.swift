@@ -357,14 +357,17 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     
     // The image must be extracted as a JPEG (not a PNG) or else erased conent will
     // show as white on a transparent background
-    guard let rawImage = mainImageView.image,
-      let resizedImage = rawImage.resized(withPercentage: 0.5),
-      let imageData = resizedImage.jpegData(compressionQuality: 1.0) else {
+//    guard let rawImage = mainImageView.image,
+//      let resizedImage = rawImage.resized(withPercentage: 0.5),
+//      let imageData = resizedImage.jpegData(compressionQuality: 1.0) else {
+//      print("Failed to get to the image")
+//      return nil
+//    }
+    guard let image = mainImageView.image?.jpegData(compressionQuality: 1.0) else {
       print("Failed to get to the image")
       return nil
     }
-
-    return imageData
+    return image
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
