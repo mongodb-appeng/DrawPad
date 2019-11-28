@@ -243,7 +243,10 @@ class SubmitFormViewController: BaseViewController {
         isValidInput(text: country.text ?? "",  minLength: 2)
     }
     
-    @IBAction func cameraZoomChanged(_ sender: UISlider) {
+  @IBAction func BackTapped(_ sender: Any) {
+    self.navigationController!.popViewController(animated: true)
+  }
+  @IBAction func cameraZoomChanged(_ sender: UISlider) {
         photoCaptureOverlay.zoom = CGFloat(sender.value)
     }
     @IBAction func drawingSizeChanged(_ sender: UISlider) {
