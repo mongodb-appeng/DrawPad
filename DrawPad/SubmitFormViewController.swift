@@ -279,6 +279,8 @@ class SubmitFormViewController: BaseViewController {
     }
     
     func addressIsConfirmed() {
+      view.endEditing(true)
+//      country.endEditing(true)
         let image = extractImage()
         var imageURL = ""
         if image != nil {
@@ -294,6 +296,7 @@ class SubmitFormViewController: BaseViewController {
     @IBAction func submitPressed(_ sender: Any) {
         if (isSubmitAllowed())
         {
+          view.endEditing(true)
             let fn = "First Name: " + String(firstName.text ?? "" )
             let ln = "\nLast Name: " + String(lastName.text ?? "" )
             let a1 = "\nAddress 1: " + String(address1.text ?? "" )
@@ -334,6 +337,7 @@ class SubmitFormViewController: BaseViewController {
     }
     
     @IBAction func skipPressed(_ sender: Any) {
+        view.endEditing(true)
         let alert = UIAlertController(title: "Confirm Skip", message: "Are you sure you want to skip getting your tattoo mailed?", preferredStyle: .alert)
 
                 alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
