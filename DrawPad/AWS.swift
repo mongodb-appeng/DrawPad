@@ -209,10 +209,11 @@ import MongoSwift
 class AWS {
   static var uploadToS3: Bool = true
   
-  static func uploadImage(image: Data, email imageName: String, tag: String) -> String {
-    if !uploadToS3 {
+  static func uploadImage(image: Data, email imageName: String, tag: String, _ completionHandler: @escaping ((String) -> Void)) {
+    guard uploadToS3 else {
       print("Skip S3")
-      return ""
+      completionHandler("")
+      return
     }
     
     // MyAwsService is the name of the aws service you created in
@@ -220,13 +221,11 @@ class AWS {
     // that allows the PutObject action on the s3 API
     let aws = stitch.serviceClient(fromFactory: awsServiceClientFactory, withName: "AWS")
     var url: String = ""
-    var imageBSON: Binary
     
-    do {
-      imageBSON = try Binary(data: image, subtype: .generic)
-    } catch {
+    guard let imageBSON = try? Binary(data: image, subtype: .generic) else {
       print("Failed to convert the image to BSON")
-      return url
+      completionHandler("")
+      return
     }
     
     // These are the arguments specifically for s3 service PutObject function
@@ -238,31 +237,26 @@ class AWS {
        "Body": imageBSON,
        // or "Body": Binary.init(...)
     ]
-    let semaphore = DispatchSemaphore(value: 0)
-    do {
-      let request = try AWSRequestBuilder()
+
+    guard  let request = try? AWSRequestBuilder()
          .with(service: "s3")
          .with(action: "PutObject")
         .with(region: Constants.AWS_REGION) // this is optional
          .with(arguments: args) // depending on the service and action, this may be optional as well
-        .build()
+      .build() else {
+        completionHandler("")
+        return
+    }
 
       aws.execute(request: request) { (result: StitchResult<Document>) in
         switch result {
         case .success(let awsResult):
           print("Executed AWS request \(awsResult)")
-          url = "https://\(Constants.S3_BUCKET_NAME).s3.amazonaws.com/\(imageName)-\(tag)"
-          semaphore.signal()
+          completionHandler("https://\(Constants.S3_BUCKET_NAME).s3.amazonaws.com/\(imageName)-\(tag)")
          case .failure(let awsFailure):
           print ("Failed to execute AWS request: \(awsFailure)")
-          semaphore.signal()
+          completionHandler("")
          }
       }
-    } catch {
-      print("Failed so send AWS S3 request")
-      semaphore.signal()
-    }
-    semaphore.wait()
-    return url
   }
 }

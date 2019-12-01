@@ -266,6 +266,7 @@ class WelcomeViewController: UIViewController {
       // Configure the username and password text input fields.
       usernameField.placeholder = "Username"
       usernameField.borderStyle = .roundedRect
+      usernameField.autocapitalizationType = .none
       container.addArrangedSubview(usernameField)
 
       passwordField.placeholder = "Password"
