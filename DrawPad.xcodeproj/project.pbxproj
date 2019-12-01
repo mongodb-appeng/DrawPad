@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03BDA68C238CC7CB009D182B /* TermConditionsPrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BDA68B238CC7CB009D182B /* TermConditionsPrivacyPolicyViewController.swift */; };
 		3FB4918F2388A23300A1D95E /* PhotoCaptureOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB4918E2388A23300A1D95E /* PhotoCaptureOverlayView.swift */; };
+		4902BBDB2394394400888752 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902BBDA2394394400888752 /* SpinnerViewController.swift */; };
 		49394E182371A668006136B3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E172371A668006136B3 /* Constants.swift */; };
 		49394E1A2371AAF4006136B3 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E192371AAF4006136B3 /* Shape.swift */; };
 		49394E1C2371AB12006136B3 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E1B2371AB12006136B3 /* WelcomeViewController.swift */; };
@@ -47,6 +48,7 @@
 		03BDA68B238CC7CB009D182B /* TermConditionsPrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermConditionsPrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		24E1A5D24BCE0B1C88D4CD0E /* Pods_DrawPad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DrawPad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FB4918E2388A23300A1D95E /* PhotoCaptureOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureOverlayView.swift; sourceTree = "<group>"; };
+		4902BBDA2394394400888752 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		49394E172371A668006136B3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		49394E192371AAF4006136B3 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		49394E1B2371AB12006136B3 /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				49C8092B2382D2240061D4C1 /* RealmConfigViewController.swift */,
 				E1941C6820B544E8004A2217 /* SettingsViewController.swift */,
 				49C809312382FC9D0061D4C1 /* SubmitFormViewController.swift */,
+				4902BBDA2394394400888752 /* SpinnerViewController.swift */,
 				49C809372383276E0061D4C1 /* ThanksViewController.swift */,
 				E1941C5820B53CB4004A2217 /* ViewController.swift */,
 				49394E1B2371AB12006136B3 /* WelcomeViewController.swift */,
@@ -353,6 +356,7 @@
 				DC2FF6F9238778B90046FAD6 /* DrawToolbarEphemeralButton.swift in Sources */,
 				49EE44AA2382AD9F00621659 /* IntroViewController.swift in Sources */,
 				49C8093623831D400061D4C1 /* User.swift in Sources */,
+				4902BBDB2394394400888752 /* SpinnerViewController.swift in Sources */,
 				49C8092C2382D2250061D4C1 /* RealmConfigViewController.swift in Sources */,
 				49E3600F2375854F00FC52B8 /* StoredImage.swift in Sources */,
 				49C80977238366CA0061D4C1 /* LineThicknessController.swift in Sources */,
@@ -514,6 +518,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = CV5PJSAH7N;
 				INFOPLIST_FILE = DrawPad/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -536,6 +541,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = CV5PJSAH7N;
 				INFOPLIST_FILE = DrawPad/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
