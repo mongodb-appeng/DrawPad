@@ -207,6 +207,7 @@ class WelcomeViewController: UIViewController {
   let usernameField = UITextField()
   let passwordField = UITextField()
   let s3Field = UISwitch()
+  let artistField = UISwitch()
   let signInButton = UIButton(type: .roundedRect)
   let signUpButton = UIButton(type: .roundedRect)
   let errorLabel = UILabel()
@@ -282,6 +283,14 @@ class WelcomeViewController: UIViewController {
       s3Field.setOn(true, animated: true)
       container.addArrangedSubview(s3Field)
       
+      let artistLabel = UILabel()
+      artistLabel.numberOfLines = 1
+      artistLabel.text="Is the user of this iPad acting as the artist?"
+      container.addArrangedSubview(artistLabel)
+      
+      artistField.setOn(Constants.ARTIST_MODE, animated: true)
+      container.addArrangedSubview(artistField)
+      
       // Configure the sign in and sign up buttons.
       signInButton.setTitle("Sign In", for: .normal)
       signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
@@ -308,6 +317,7 @@ class WelcomeViewController: UIViewController {
     // Log in with the username and password, optionally registering a user.
     func logIn(username: String, password: String, register: Bool) {
         AWS.uploadToS3 = s3Field.isOn
+        Constants.ARTIST_MODE = artistField.isOn
         print("Log in as user: \(username) with register: \(register)")
         setLoading(true)
         let creds = SyncCredentials.usernamePassword(username: username, password: password, register: register)
@@ -322,8 +332,14 @@ class WelcomeViewController: UIViewController {
             }
             print("Login succeeded!")
           User.userName = username
+          if Constants.ARTIST_MODE {
+            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawViewController") as? DrawViewController
+            self!.navigationController!.pushViewController(vc!, animated: true)
+          } else {
             let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "IntroViewController") as? IntroViewController
             self!.navigationController!.pushViewController(vc!, animated: true)
+          }
+
         })
     }
     

@@ -493,6 +493,14 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     }
   }
 
+  func clearDrawing() {
+    try! RealmConnection.realm!.write {
+      // Delete all of the Realm drawing objects
+      RealmConnection.realm!.delete(RealmConnection.realm!.objects(LinkedPoint.self))
+      RealmConnection.realm!.delete(RealmConnection.realm!.objects(Shape.self))
+    }
+  }
+  
   // MARK: - DELEGATES
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -693,48 +701,34 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
   @IBAction func finishButtonTapped(_ sender: UIButton) {
     print("Finish button tapped")
-    guard let image = extractImage() else {
-      print("Failed to extract image")
-      return
-    }
-    print("Drawing to be uploaded is \(image.count / 1000)kb")
-    let storedImage = StoredImage(image: image)
-    storedImage.userContact?.email = User.email
     
-    try! RealmConnection.realmAtlas!.write {
-      RealmConnection.realmAtlas!.add(storedImage)
-      User.imageToSend = storedImage
-    }
+    if Constants.ARTIST_MODE {
+      // TODO: Just clear the canvas and continue
+      let alert = UIAlertController(title: "Confirm you want to clear the drawing", message: "Please confirm if you want to clear the drawing", preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "Yes - clear the drawing", style: .default, handler: { action in
+         self.clearDrawing()
+             }))
+      alert.addAction(UIAlertAction(title: "No – continue drawing", style: .cancel, handler:nil))
+      self.present(alert, animated: true)
+    } else {
+      guard let image = extractImage() else {
+        print("Failed to extract image")
+        return
+      }
+      print("Drawing to be uploaded is \(image.count / 1000)kb")
+      let storedImage = StoredImage(image: image)
+      storedImage.userContact?.email = User.email
+      
+      try! RealmConnection.realmAtlas!.write {
+        RealmConnection.realmAtlas!.add(storedImage)
+        User.imageToSend = storedImage
+      }
 
-    let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
-    submitVC?.drawing = mainImageView.image?.whiteMask()
-    self.navigationController!.pushViewController(submitVC!, animated: true)
+      let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
+      submitVC?.drawing = mainImageView.image?.whiteMask()
+      self.navigationController!.pushViewController(submitVC!, animated: true)
+    }
   }
-//   @IBAction func finishButtonTapped(_ sender: UIButton) {
-//  print("Finish button tapped")
-//  guard let image = extractImage() else {
-//    print("Failed to extract image")
-//    return
-//  }
-//  let storedImage = StoredImage(image: image)
-//  storedImage.userContact?.email = User.email
-//  let imageURL = AWS.uploadImage(image: image, email: User.email)
-//  if imageURL != "" {
-//    storedImage.imageLink = imageURL
-//  } else {
-//          print("Failed to upload the image to S3")
-//  }
-//
-//  try! RealmConnection.realmAtlas!.write {
-//    RealmConnection.realmAtlas!.add(storedImage)
-//    User.imageToSend = storedImage
-//  }
-//
-//  let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
-//  submitVC?.drawing = UIImage(data: image)
-//  self.navigationController!.pushViewController(submitVC!, animated: true)
-//}
-  
   
   @IBAction func undoButtonTapped(_ sender: UIButton) {
     print("Undo button tapped")
