@@ -220,9 +220,9 @@ class AWS {
     // the stitch UI, and it is configured with a rule
     // that allows the PutObject action on the s3 API
     let aws = stitch.serviceClient(fromFactory: awsServiceClientFactory, withName: "AWS")
-    var url: String = ""
     
     guard let imageBSON = try? Binary(data: image, subtype: .generic) else {
+      ErrorReporter.raiseError("Failed to convert image to BSON")
       print("Failed to convert the image to BSON")
       completionHandler("")
       return
@@ -239,24 +239,27 @@ class AWS {
     ]
 
     guard  let request = try? AWSRequestBuilder()
-         .with(service: "s3")
-         .with(action: "PutObject")
-        .with(region: Constants.AWS_REGION) // this is optional
-         .with(arguments: args) // depending on the service and action, this may be optional as well
-      .build() else {
-        completionHandler("")
-        return
+      .with(service: "s3")
+      .with(action: "PutObject")
+      .with(region: Constants.AWS_REGION) // this is optional
+      .with(arguments: args) // depending on the service and action, this may be optional as well
+      .build() else
+    {
+      ErrorReporter.raiseError("Could not create S3 request")
+      completionHandler("")
+      return
     }
 
-      aws.execute(request: request) { (result: StitchResult<Document>) in
-        switch result {
-        case .success(let awsResult):
-          print("Executed AWS request \(awsResult)")
-          completionHandler("https://\(Constants.S3_BUCKET_NAME).s3.amazonaws.com/\(imageName)-\(tag)")
-         case .failure(let awsFailure):
-          print ("Failed to execute AWS request: \(awsFailure)")
-          completionHandler("")
-         }
-      }
+    aws.execute(request: request) { (result: StitchResult<Document>) in
+      switch result {
+      case .success(let awsResult):
+        print("Executed AWS request \(awsResult)")
+        completionHandler("https://\(Constants.S3_BUCKET_NAME).s3.amazonaws.com/\(imageName)-\(tag)")
+       case .failure(let awsFailure):
+        ErrorReporter.raiseError("Failed to execute AWS request: \(awsFailure)")
+        print ("Failed to execute AWS request: \(awsFailure)")
+        completionHandler("")
+       }
+    }
   }
 }

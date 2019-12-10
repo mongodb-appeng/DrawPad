@@ -207,12 +207,19 @@ class RealmConnection {
   static var realm: Realm? = nil  // Use this realm for objects that **don't** need to be synced to Atlas
   static var realmAtlas: Realm? = nil  // Use this realm for objects that **do** need to be synced to Atlas
   
-  static func connect() {
-    let config = SyncUser.current?.configuration(realmURL: URL(string: "\(Constants.REALM_URL)\(User.userName)"),
-       fullSynchronization: true)
-    realm = try! Realm(configuration: config!)
-    let configAtlas = SyncUser.current?.configuration(realmURL: URL(string: "\(Constants.REALM_URL_ATLAS)\(User.userName)"),
-       fullSynchronization: true)
-    realmAtlas = try! Realm(configuration: configAtlas!)
+  static func connect() -> Bool {
+    do {
+      let config = SyncUser.current?.configuration(realmURL: URL(string: "\(Constants.REALM_URL)\(User.userName)"),
+         fullSynchronization: true)
+      realm = try Realm(configuration: config!)
+      let configAtlas = SyncUser.current?.configuration(realmURL: URL(string: "\(Constants.REALM_URL_ATLAS)\(User.userName)"),
+         fullSynchronization: true)
+      realmAtlas = try Realm(configuration: configAtlas!)
+      return true
+    } catch {
+      print("Failed to connect Realm sync")
+      ErrorReporter.raiseError("Failed to connect Realm sync")
+      return false
+    }
   }
 }

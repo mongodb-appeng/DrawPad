@@ -214,7 +214,6 @@ class CurrentTool {
   
   static func setWidth (width: Float) {
     CurrentTool.brushWidth = CGFloat(width)
-//    CurrentTool.shapeType = .line
   }
   
   static func reset() {

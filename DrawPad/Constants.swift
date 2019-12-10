@@ -214,7 +214,6 @@ struct Constants {
   static let MY_INSTANCE_ADDRESS = "reinvent.us1.cloud.realm.io" // <- update this
   
   static let AUTH_URL  = URL(string: "https://\(MY_INSTANCE_ADDRESS)")!
-//  static let REALM_URL = URL(string: "realms://\(MY_INSTANCE_ADDRESS)/~/DrawPad")!
   static let REALM_URL_ATLAS = "realms://\(MY_INSTANCE_ADDRESS)/drawings/"
   static let REALM_URL = "realms://\(MY_INSTANCE_ADDRESS)/shapes/"
   static let STITCH_APP_ID = "drawpad-qawcs"
