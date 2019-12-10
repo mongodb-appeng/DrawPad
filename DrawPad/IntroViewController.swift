@@ -208,12 +208,12 @@ class IntroViewController: BaseViewController, UITextFieldDelegate {
   
     
     @IBOutlet weak var checkBoxTCPP: UIButton!
-    @IBOutlet weak var startDrawingButton: UIButton! // APPENG-72
+    @IBOutlet weak var startDrawingButton: UIButton!
     @IBOutlet weak var agreedToTermsButton: UIButton!
     @IBOutlet weak var emailField: UITextField!
 
     var agreedToTerms = false
-    var gotValidEmail = false  // APPENG-72
+    var gotValidEmail = false
     
    
     override func viewDidLoad() {
@@ -235,11 +235,11 @@ class IntroViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @IBAction func enteringEmailField(_ sender: UITextField) {
-        isValidEmail(emailStr: emailField.text ?? "")
+        let _ = isValidEmail(emailStr: emailField.text ?? "")
     }
     func configDrawingButton() {
         startDrawingButton.backgroundColor = (agreedToTerms && gotValidEmail)
-          ? UIColor(red: 19/255, green: 164/255, blue: 63/255, alpha: 1.0) : UIColor.lightGray// APPENG-72
+          ? UIColor(red: 19/255, green: 164/255, blue: 63/255, alpha: 1.0) : UIColor.lightGray
                startDrawingButton.isEnabled = (agreedToTerms && gotValidEmail) ? true : false
     }
     func isValidEmail(emailStr:String) -> Bool {
@@ -247,7 +247,7 @@ class IntroViewController: BaseViewController, UITextFieldDelegate {
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         gotValidEmail = emailPred.evaluate(with: emailStr)
       configDrawingButton()
-        return gotValidEmail  // APPENG-72
+        return gotValidEmail
     }
     @IBAction func agreeToTermsButton(_ sender: UIButton) {
        

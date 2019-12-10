@@ -204,7 +204,7 @@ import UIKit
 import RealmSwift
 
 class SubmitFormViewController: BaseViewController {
-  
+    
     @IBOutlet weak var shippingWarningLabel: UILabel!
     @IBOutlet weak var formContainerView: UIView!
     @IBOutlet weak var firstName: UITextField!
@@ -225,28 +225,28 @@ class SubmitFormViewController: BaseViewController {
             deleteSnapButton.isHidden = snapShotImage == nil
         }
     }
-
+    
     
     @IBOutlet weak var formContainerViewTopConstraint: NSLayoutConstraint!
-
+    
     func isValidInput(text: String!, minLength: Int!) -> Bool {
         return text.count >= minLength
     }
     
     func isSubmitAllowed() -> Bool {
         return isValidInput(text: firstName.text ?? "", minLength: 2) &&
-        isValidInput(text: lastName.text ?? "",  minLength: 2) &&
-        isValidInput(text: address1.text ?? "",  minLength: 2) &&
-        isValidInput(text: city.text ?? "",  minLength: 2) &&
-        isValidInput(text: state.text ?? "",  minLength: 2) &&
-        isValidInput(text: postalCode.text ?? "",  minLength: 2) &&
-        isValidInput(text: country.text ?? "",  minLength: 2)
+            isValidInput(text: lastName.text ?? "",  minLength: 2) &&
+            isValidInput(text: address1.text ?? "",  minLength: 2) &&
+            isValidInput(text: city.text ?? "",  minLength: 2) &&
+            isValidInput(text: state.text ?? "",  minLength: 2) &&
+            isValidInput(text: postalCode.text ?? "",  minLength: 2) &&
+            isValidInput(text: country.text ?? "",  minLength: 2)
     }
     
-  @IBAction func BackTapped(_ sender: Any) {
-    self.navigationController!.popViewController(animated: true)
-  }
-  @IBAction func cameraZoomChanged(_ sender: UISlider) {
+    @IBAction func BackTapped(_ sender: Any) {
+        self.navigationController!.popViewController(animated: true)
+    }
+    @IBAction func cameraZoomChanged(_ sender: UISlider) {
         photoCaptureOverlay.zoom = CGFloat(sender.value)
     }
     @IBAction func drawingSizeChanged(_ sender: UISlider) {
@@ -272,13 +272,13 @@ class SubmitFormViewController: BaseViewController {
     }
     
     func extractImage() -> Data? {
-      guard let image = self.snapShotImage?.pngData() else {
-        print("No snapshot image")
-        return nil
-      }
-      return image
+        guard let image = self.snapShotImage?.pngData() else {
+            print("No snapshot image")
+            return nil
+        }
+        return image
     }
-
+    
     private func createSpinnerView() -> SpinnerViewController {
         let child = SpinnerViewController()
         // add the spinner view controller
@@ -288,56 +288,70 @@ class SubmitFormViewController: BaseViewController {
         child.didMove(toParent: self)
         return child
     }
-
+    
     func addressIsConfirmed() {
+        guard let realmAtlas = RealmConnection.realmAtlas else {
+            ErrorReporter.raiseError("When submitting address, Atlas realm has not been set")
+            return
+        }
         view.endEditing(true)
         let child = createSpinnerView()
         if let image = extractImage() {
             AWS.uploadImage(image: image, email: User.email, tag: "snapshot") { imageURL in
                 DispatchQueue.main.sync {
-                    try! RealmConnection.realmAtlas!.write {
-                        User.imageToSend!.userContact!.setUser(
-                            firstName: self.firstName.text!,
-                            lastName: self.lastName.text!,
-                            email: User.email,
-                            street1: self.address1.text!,
-                            street2: self.address2.text!,
-                            city: self.city.text!,
-                            state: self.state.text!,
-                            postalCode: self.postalCode.text!,
-                            country: self.country.text!)
-                        User.imageToSend!.imageLink = imageURL
+                    do {
+                        try realmAtlas.write {
+                            User.imageToSend!.userContact!.setUser(
+                                firstName: self.firstName.text!,
+                                lastName: self.lastName.text!,
+                                email: User.email,
+                                street1: self.address1.text!,
+                                street2: self.address2.text!,
+                                city: self.city.text!,
+                                state: self.state.text!,
+                                postalCode: self.postalCode.text!,
+                                country: self.country.text!)
+                            User.imageToSend!.imageLink = imageURL
+                        }
+                        child.willMove(toParent: nil)
+                        child.view.removeFromSuperview()
+                        child.removeFromParent()
+                        self.clearAndGo()
                     }
-                    child.willMove(toParent: nil)
-                    child.view.removeFromSuperview()
-                    child.removeFromParent()
-                    self.clearAndGo()
+                    catch {
+                        ErrorReporter.raiseError("Failed to persist the shipping address; with snapshot")
+                    }
                 }
             }
         } else {
-            try! RealmConnection.realmAtlas!.write {
-                User.imageToSend!.userContact!.setUser(
-                    firstName: self.firstName.text!,
-                    lastName: self.lastName.text!,
-                    email: User.email,
-                    street1: self.address1.text!,
-                    street2: self.address2.text!,
-                    city: self.city.text!,
-                    state: self.state.text!,
-                    postalCode: self.postalCode.text!,
-                    country: self.country.text!)
+            do {
+                try realmAtlas.write {
+                    User.imageToSend!.userContact!.setUser(
+                        firstName: self.firstName.text!,
+                        lastName: self.lastName.text!,
+                        email: User.email,
+                        street1: self.address1.text!,
+                        street2: self.address2.text!,
+                        city: self.city.text!,
+                        state: self.state.text!,
+                        postalCode: self.postalCode.text!,
+                        country: self.country.text!)
+                }
+                child.willMove(toParent: nil)
+                child.view.removeFromSuperview()
+                child.removeFromParent()
+                clearAndGo()
             }
-            child.willMove(toParent: nil)
-            child.view.removeFromSuperview()
-            child.removeFromParent()
-            clearAndGo()
+            catch {
+                ErrorReporter.raiseError("Failed to store the shipping address; without snapshot")
+            }
         }
     }
     
     @IBAction func submitPressed(_ sender: Any) {
         if (isSubmitAllowed())
         {
-          view.endEditing(true)
+            view.endEditing(true)
             let fn = "First Name: " + String(firstName.text ?? "" )
             let ln = "\nLast Name: " + String(lastName.text ?? "" )
             let a1 = "\nAddress 1: " + String(address1.text ?? "" )
@@ -346,35 +360,43 @@ class SubmitFormViewController: BaseViewController {
             let pc = "\nPostal Code: " + String(postalCode.text ?? "" ) + "\nCountry: " + String(country.text ?? "" )
             let msg =  fn + ln +  a1 + a2 + cs + pc
             let alert = UIAlertController(title: "Confirm Shipping Address", message: msg, preferredStyle: .alert)
-
+            
             alert.addAction(UIAlertAction(title: "Looks Good!", style: .default, handler: { action in
-               self.addressIsConfirmed()
-                   }))
+                self.addressIsConfirmed()
+            }))
             alert.addAction(UIAlertAction(title: "Edit", style: .cancel, handler:nil))
             self.present(alert, animated: true)
             
         } else
         {
             let alert = UIAlertController(title: "Ooops!", message: "Please enter a valid mailing address", preferredStyle: UIAlertController.Style.alert)
-                     // add an action (button)
-                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                     // show the alert
-                     self.present(alert, animated: true, completion: nil)
-                return
+            // add an action (button)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+            return
         }
     }
     
     func skipConfirmed() {
+        guard let atlasRealm = RealmConnection.realmAtlas else {
+            ErrorReporter.raiseError("Unable to connect to the Atlas Realm when skipping delivery details")
+            return
+        }
         let child = createSpinnerView()
-
+        
         if let image = extractImage() {
             AWS.uploadImage(image: image, email: User.email, tag: "snapshot") { imageURL in
                 DispatchQueue.main.sync {
-                    try! RealmConnection.realmAtlas!.write {
-                        User.imageToSend!.userContact?.firstName = "Skippy"
-                        User.imageToSend!.imageLink = imageURL
+                    do {
+                        try atlasRealm.write {
+                            User.imageToSend!.userContact?.firstName = "Skippy"
+                            User.imageToSend!.imageLink = imageURL
+                        }
                     }
-
+                    catch {
+                        ErrorReporter.raiseError("Failed to persist image without shipping address")
+                    }
                     child.willMove(toParent: nil)
                     child.view.removeFromSuperview()
                     child.removeFromParent()
@@ -382,8 +404,13 @@ class SubmitFormViewController: BaseViewController {
                 }
             }
         } else {
-            try! RealmConnection.realmAtlas!.write {
-                User.imageToSend!.userContact?.firstName = "Skippy"
+            do {
+                try atlasRealm.write {
+                    User.imageToSend!.userContact?.firstName = "Skippy"
+                }
+            }
+            catch {
+                ErrorReporter.raiseError("Failed to persist image without shipping address or snapshot")
             }
             child.willMove(toParent: nil)
             child.view.removeFromSuperview()
@@ -395,27 +422,36 @@ class SubmitFormViewController: BaseViewController {
     @IBAction func skipPressed(_ sender: Any) {
         view.endEditing(true)
         let alert = UIAlertController(title: "Confirm Skip", message: "Are you sure you want to skip getting your tattoo mailed?", preferredStyle: .alert)
-
-                alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
-                   self.skipConfirmed()
-                }))
-                alert.addAction(UIAlertAction(title: "No!", style: .cancel, handler:nil))
-                self.present(alert, animated: true)
+        
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
+            self.skipConfirmed()
+        }))
+        alert.addAction(UIAlertAction(title: "No!", style: .cancel, handler:nil))
+        self.present(alert, animated: true)
     }
     
     func clearAndGo() {
-        try! RealmConnection.realm!.write {
-          CurrentTool.reset()
-          // Delete all of the Realm drawing objects
-          RealmConnection.realm!.delete(RealmConnection.realm!.objects(LinkedPoint.self))
-          RealmConnection.realm!.delete(RealmConnection.realm!.objects(Shape.self))
+        guard let myRealm = RealmConnection.realm else {
+            ErrorReporter.raiseError("When clearing drawing, failed to get realm")
+            return
+        }
+        do {
+            try myRealm.write {
+                CurrentTool.reset()
+                // Delete all of the Realm drawing objects
+                RealmConnection.realm!.delete(RealmConnection.realm!.objects(LinkedPoint.self))
+                RealmConnection.realm!.delete(RealmConnection.realm!.objects(Shape.self))
+            }
+        }
+        catch {
+            ErrorReporter.raiseError("Failed to clean up the drawing objects")
         }
         
         // Move to the Thank You view
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ThanksViewController") as? ThanksViewController
         self.navigationController!.pushViewController(vc!, animated: true)
     }
-
+    
     fileprivate func moveForm(y: CGFloat) {
         self.formContainerViewTopConstraint.constant = y
         UIView.animate(withDuration: 0.3) {
@@ -434,22 +470,22 @@ extension SubmitFormViewController: UITextFieldDelegate {
             moveForm(y: -50)
         }
     }
-
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         moveForm(y: 0)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-       if textField == firstName {
-          textField.resignFirstResponder()
-          lastName.becomeFirstResponder()
-       } else if textField == lastName {
-          lastName.resignFirstResponder()
-          address1.becomeFirstResponder()
-       } else if textField == address1 {
-          address1.resignFirstResponder()
-          address2.becomeFirstResponder()
-       } else if textField == address1 {
+        if textField == firstName {
+            textField.resignFirstResponder()
+            lastName.becomeFirstResponder()
+        } else if textField == lastName {
+            lastName.resignFirstResponder()
+            address1.becomeFirstResponder()
+        } else if textField == address1 {
+            address1.resignFirstResponder()
+            address2.becomeFirstResponder()
+        } else if textField == address1 {
             address1.resignFirstResponder()
             address2.becomeFirstResponder()
         } else if textField == address2 {
@@ -465,10 +501,10 @@ extension SubmitFormViewController: UITextFieldDelegate {
             postalCode.resignFirstResponder()
             country.becomeFirstResponder()
         } else if textField == country {
-          self.view.endEditing(true)
-          return false
+            self.view.endEditing(true)
+            return false
         }
-
+        
         return true
-     }
+    }
 }

@@ -227,5 +227,4 @@ class ThanksViewController: BaseViewController {
     let vc = self.navigationController!.viewControllers[1]
     self.navigationController!.popToViewController(vc, animated: true)
   }
-
 }

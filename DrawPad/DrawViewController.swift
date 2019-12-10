@@ -267,8 +267,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   let trianglePopoverToolbar = DrawToolbarStackView()
   var popoverParents: [UIView] = []
   
-  var shapes: Results<Shape>
-  let storedImages: Results<StoredImage>
+  var shapes: Results<Shape>?
+  let storedImages: Results<StoredImage>?
   var notificationToken: NotificationToken!
   var lastPoint = CGPoint.zero
   var swiped = false
@@ -276,9 +276,13 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   private var lineCount = 0
 
   required init?(coder aDecoder: NSCoder) {
-    RealmConnection.connect()
-    self.shapes = RealmConnection.realm!.objects(Shape.self)
-    self.storedImages = RealmConnection.realmAtlas!.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
+    if RealmConnection.connect() {
+      self.shapes = RealmConnection.realm!.objects(Shape.self)
+      self.storedImages = RealmConnection.realmAtlas!.objects(StoredImage.self).sorted(byKeyPath: "timestamp", ascending: true)
+    } else {
+      self.shapes = nil
+      self.storedImages = nil
+    }
     super.init(coder: aDecoder)
   }
   
@@ -286,42 +290,48 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     super.viewDidLoad()
     ErrorReporter.resetError()
     usernameLabel!.text = User.userName
-    popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent, rectanglePopoverParent, ovalPopoverParent, trianglePopoverParent]
-    pencilButton.select()
-    notificationToken = shapes.observe { [weak self] changes in
-      guard let strongSelf = self else {
-        return
-      }
-      self!.hiddenTextField.delegate = self
-      switch changes {
-      case .initial(let shapes):
-        strongSelf.draw { context in
-          shapes.forEach { $0.draw(context) }
+    if shapes == nil || storedImages == nil {
+      ErrorReporter.raiseError("viewDidLoad cannot complete as the Realm live queries haven't been set up. Try restarting the app.")
+    } else {
+      popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent, rectanglePopoverParent, ovalPopoverParent, trianglePopoverParent]
+      pencilButton.select()
+      notificationToken = shapes!.observe { [weak self] changes in
+        guard let strongSelf = self else {
+          ErrorReporter.raiseError("Cannot find self, try restarting the app")
+          return
         }
-        break
-      case .update(let shapes, let deletions, let insertions, let modifications):
-        
-        (insertions + modifications).forEach { index in
-          if shapes[index].deviceId != thisDevice {
-            strongSelf.draw { context in
-              let shape = shapes[index]
-              shape.draw(context)
+        self!.hiddenTextField.delegate = self
+        switch changes {
+        case .initial(let shapes):
+          strongSelf.draw { context in
+            shapes.forEach { $0.draw(context) }
+          }
+          break
+        case .update(let shapes, let deletions, let insertions, let modifications):
+          
+          (insertions + modifications).forEach { index in
+            if shapes[index].deviceId != thisDevice {
+              strongSelf.draw { context in
+                let shape = shapes[index]
+                shape.draw(context)
+              }
             }
           }
-        }
-        if deletions.count > 0 {
-          strongSelf.mainImageView.image = nil
-          strongSelf.shapes.forEach { shape in
-            strongSelf.draw { context in
-              shape.draw(context)
+          if deletions.count > 0 {
+            strongSelf.mainImageView.image = nil
+            strongSelf.shapes!.forEach { shape in
+              strongSelf.draw { context in
+                shape.draw(context)
+              }
             }
           }
+          
+          strongSelf.mergeViews()
+          break
+        case .error(let error):
+          ErrorReporter.raiseError("Unexpected Realm notification type: \(error.localizedDescription)")
+//          fatalError(error.localizedDescription)
         }
-        
-        strongSelf.mergeViews()
-        break
-      case .error(let error):
-        fatalError(error.localizedDescription)
       }
     }
   }
@@ -344,6 +354,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   private func draw(_ block: (CGContext) -> Void) {
     UIGraphicsBeginImageContext(self.tempImageView.frame.size)
     guard let context = UIGraphicsGetCurrentContext() else {
+      ErrorReporter.raiseError("Failed to get UIGraphicsGetCurrentContext")
       return
     }
     self.tempImageView.image?.draw(in: tempImageView.bounds)
@@ -355,17 +366,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   
   func extractImage() -> Data? {
-    
-    // The image must be extracted as a JPEG (not a PNG) or else erased conent will
-    // show as white on a transparent background
-//    guard let rawImage = mainImageView.image,
-//      let resizedImage = rawImage.resized(withPercentage: 0.5),
-//      let imageData = resizedImage.jpegData(compressionQuality: 1.0) else {
-//      print("Failed to get to the image")
-//      return nil
-//    }
     guard let image = mainImageView.image?.jpegData(compressionQuality: 1.0) else {
-      print("Failed to get to the image")
+      ErrorReporter.raiseError("Failed to get the main image view")
       return nil
     }
     return image
@@ -373,6 +375,11 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first else {
+      ErrorReporter.raiseError("Cannot find the first touch")
+      return
+    }
+    guard let myRealm = RealmConnection.realm else {
+      ErrorReporter.raiseError("Cannot access realm from RealmConnection")
       return
     }
    
@@ -385,22 +392,34 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     if CurrentTool.shapeType == ShapeType.stamp {
       currentShape!.stampFIle = CurrentTool.stampFile
     }
-
-    if CurrentTool.shapeType == .line {
-      try! RealmConnection.realm!.write {
-        RealmConnection.realm!.add(currentShape!)
+    do {
+      if CurrentTool.shapeType == .line {
+        try myRealm.write {
+          RealmConnection.realm!.add(currentShape!)
+        }
       }
     }
-
+    catch {
+      ErrorReporter.raiseError("Unable to add line segment")
+    }
     swiped = false
-    
-    try! RealmConnection.realm!.write {
-      currentShape!.append(point: LinkedPoint(touch.location(in: tempImageView)))
+    do {
+      try myRealm.write {
+        currentShape!.append(point: LinkedPoint(touch.location(in: tempImageView)))
+      }
+    }
+    catch {
+      ErrorReporter.raiseError("Unable to append the current point")
     }
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first else {
+      ErrorReporter.raiseError("Cannot find the first touch")
+      return
+    }
+    guard let myRealm = RealmConnection.realm else {
+      ErrorReporter.raiseError("Cannot access realm from RealmConnection")
       return
     }
     
@@ -410,8 +429,13 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       switch CurrentTool.shapeType {
         // if the shape is a line, simply append the current point to the head of the list
       case .line:
-        try! RealmConnection.realm!.write {
-          currentShape!.append(point: LinkedPoint(currentPoint))
+        do {
+          try myRealm.write {
+            currentShape!.append(point: LinkedPoint(currentPoint))
+          }
+        }
+        catch {
+          ErrorReporter.raiseError("Failed to append points on pen move")
         }
         // if the shape is a rect or an ellipse, replace the head of the list
         // with the dragged point. the LinkedPoint list should always contain
@@ -421,10 +445,15 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       case .straightLine:
         if swiped {
           self.mainImageView.image = nil
-          self.shapes.forEach { $0.draw(context) }
+          self.shapes!.forEach { $0.draw(context) }
         }
-        try! RealmConnection.realm!.write {
-          currentShape!.lastPoint!.nextPoint = LinkedPoint(currentPoint)
+        do {
+          try myRealm.write {
+            currentShape!.lastPoint!.nextPoint = LinkedPoint(currentPoint)
+          }
+        }
+        catch {
+          ErrorReporter.raiseError("Failed to move straight line")
         }
       case .rect, .ellipse, .stamp, .text:
         // if 'swiped' (a.k.a. not a single point), erase the current shape,
@@ -432,10 +461,15 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
         // state
         if swiped {
           self.mainImageView.image = nil
-          self.shapes.forEach { $0.draw(context) }
+          self.shapes!.forEach { $0.draw(context) }
         }
-        try! RealmConnection.realm!.write {
-          currentShape!.replaceHead(point: LinkedPoint(currentPoint))
+        do {
+          try myRealm.write {
+            currentShape!.replaceHead(point: LinkedPoint(currentPoint))
+          }
+        }
+        catch {
+          ErrorReporter.raiseError("Failed to move shape")
         }
         // if the shape is a triangle, have the original point be the tail
         // of the list, the 2nd point being where the current touch is,
@@ -446,19 +480,23 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
         // state
         if swiped {
           self.mainImageView.image = nil
-          self.shapes.forEach { $0.draw(context) }
+          self.shapes!.forEach { $0.draw(context) }
         }
-        try! RealmConnection.realm!.write {
-          let point2 = LinkedPoint(currentPoint)
-          currentShape!.lastPoint?.nextPoint = point2
+        do {
+          try RealmConnection.realm!.write {
+            let point2 = LinkedPoint(currentPoint)
+            currentShape!.lastPoint?.nextPoint = point2
 
-          let point3 = LinkedPoint()
-          point3.y = point2.y
-          point3.x = currentShape!.lastPoint!.x - (point2.x - currentShape!.lastPoint!.x)
-          point2.nextPoint = point3
+            let point3 = LinkedPoint()
+            point3.y = point2.y
+            point3.x = currentShape!.lastPoint!.x - (point2.x - currentShape!.lastPoint!.x)
+            point2.nextPoint = point3
+          }
+        }
+        catch {
+          ErrorReporter.raiseError("Failed to move a triangle")
         }
       }
-
       currentShape!.draw(context)
     }
 
@@ -469,6 +507,11 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let myRealm = RealmConnection.realm else {
+      ErrorReporter.raiseError("Cannot access realm from RealmConnection")
+      return
+    }
+    
     if !swiped {
       // draw a single point
       draw { context in
@@ -486,8 +529,13 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       // if the shape is not a line, it exists in a draft state.
       // add it to the realm now
       if CurrentTool.shapeType != .line {
-        try! RealmConnection.realm!.write {
-          RealmConnection.realm!.add(currentShape!)
+        do {
+          try myRealm.write {
+            RealmConnection.realm!.add(currentShape!)
+          }
+        }
+        catch {
+          ErrorReporter.raiseError("Touches ended but unable to add line")
         }
       }
       mergeViews()
@@ -495,10 +543,19 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   }
 
   func clearDrawing() {
-    try! RealmConnection.realm!.write {
-      // Delete all of the Realm drawing objects
-      RealmConnection.realm!.delete(RealmConnection.realm!.objects(LinkedPoint.self))
-      RealmConnection.realm!.delete(RealmConnection.realm!.objects(Shape.self))
+    guard let myRealm = RealmConnection.realm else {
+      ErrorReporter.raiseError("Cannot access realm from RealmConnection")
+      return
+    }
+    do {
+      try myRealm.write {
+        // Delete all of the Realm drawing objects
+        myRealm.delete(RealmConnection.realm!.objects(LinkedPoint.self))
+        myRealm.delete(RealmConnection.realm!.objects(Shape.self))
+      }
+    }
+    catch {
+      ErrorReporter.raiseError("Failed to clear drawing objects")
     }
   }
   
@@ -508,12 +565,17 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     if string == "\n" {
       hiddenTextField.text = ""
       hiddenTextField.resignFirstResponder()
-      try! RealmConnection.realm!.write {
-        RealmConnection.realm!.add(currentShape!)
+      do {
+        try RealmConnection.realm!.write {
+          RealmConnection.realm!.add(currentShape!)
+        }
+      }
+      catch {
+        ErrorReporter.raiseError("Failed to store updated text")
       }
       mergeViews()
       draw { context in
-        shapes.forEach { $0.draw(context) }
+        shapes!.forEach { $0.draw(context) }
       }
       return false
     }
@@ -521,7 +583,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     newText += string
     self.draw { context in
       mainImageView.image = nil
-      shapes.forEach { $0.draw(context) }
+      shapes!.forEach { $0.draw(context) }
       currentShape!.text = newText
       currentShape!.draw(context)
     }
@@ -713,16 +775,21 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       self.present(alert, animated: true)
     } else {
       guard let image = extractImage() else {
-        print("Failed to extract image")
+        ErrorReporter.raiseError("Failed to extract image")
         return
       }
       print("Drawing to be uploaded is \(image.count / 1000)kb")
       let storedImage = StoredImage(image: image)
       storedImage.userContact?.email = User.email
       
-      try! RealmConnection.realmAtlas!.write {
-        RealmConnection.realmAtlas!.add(storedImage)
-        User.imageToSend = storedImage
+      do {
+        try RealmConnection.realmAtlas!.write {
+          RealmConnection.realmAtlas!.add(storedImage)
+          User.imageToSend = storedImage
+        }
+      }
+      catch {
+        ErrorReporter.raiseError("Failed to persist the finished image")
       }
 
       let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
@@ -733,17 +800,22 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   
   @IBAction func undoButtonTapped(_ sender: UIButton) {
     print("Undo button tapped")
-    guard shapes.count > 0 else {
+    guard shapes!.count > 0 else {
         return
     }
     draw { context in
       // find the last non-erased shape associated with this device Id.
       // then erase it, mark it as erased, and redraw the history of the drawing
-      guard let shape = shapes.last(where: { $0.deviceId == thisDevice }) else {
+      guard let shape = shapes!.last(where: { $0.deviceId == thisDevice }) else {
         return
       }
-      try! RealmConnection.realm!.write { RealmConnection.realm!.delete(shape) }
-      shapes.forEach { $0.draw(context) }
+      do {
+          try RealmConnection.realm!.write { RealmConnection.realm!.delete(shape) }
+      }
+      catch {
+        ErrorReporter.raiseError("Unable to delete a shape")
+      }
+      shapes!.forEach { $0.draw(context) }
     }
     currentShape = nil
   }
@@ -756,8 +828,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       CurrentTool.erasing = false
     }
     CurrentTool.shapeType = .line
-    // Cannot just reset the color back to black as a different color might have been selected
-//    CurrentTool.color = .black
   }
 
   @IBAction func scribbleButtonTapped(_ sender: UIButton) {
@@ -820,9 +890,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   @IBAction func eraserButtonTapped(_ sender: UIButton) {
     print("Eraser button tapped")
     
-    // TODO - remove
-    ErrorReporter.raiseError("Erase button has been tapped")
-    
     clearSecondaryPopovers(except: nil)
     print("previous color: \(CurrentTool.previousColor)")
     if !CurrentTool.erasing {
@@ -872,29 +939,24 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
     let sansSerifNormalImage = UIImage(named: "helveticaFont.pdf")
     let sansSerifNormalButton = DrawToolbarPersistedButton(image: sansSerifNormalImage!)
-//    let sansSerifNormalButton = DrawToolbarPersistedButton(label: "Helvetica")
     sansSerifNormalButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     sansSerifNormalButton.addTarget(self, action: #selector(sansSerifNormalTapped(sender:)), for: .touchUpInside)
     sansSerifNormalButton.tintColor = .white
 
     let sansSerifSerifImage = UIImage(named: "fontBradley.pdf")
     let sansSerifSerifButton = DrawToolbarPersistedButton(image: sansSerifSerifImage!)
-//    let sansSerifSerifButton = DrawToolbarPersistedButton(label: "Din")
     sansSerifSerifButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     sansSerifSerifButton.addTarget(self, action: #selector(sansSerifSerifTapped(sender:)), for: .touchUpInside)
     sansSerifSerifButton.tintColor = .white
 
     let sansSerifHandImage = UIImage(named: "fontDin.pdf")
     let sansSeriHandfButton = DrawToolbarPersistedButton(image: sansSerifHandImage!)
-//    let sansSerifHandfButton = DrawToolbarPersistedButton(label: "Hand")
     sansSeriHandfButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     sansSeriHandfButton.addTarget(self, action: #selector(sansSerifHandTapped(sender:)), for: .touchUpInside)
     sansSeriHandfButton.tintColor = .white
 
-    
     let sansSerifMonoImage = UIImage(named: "fontMarker.podf")
     let sansSerifMonoButton = DrawToolbarPersistedButton(image: sansSerifMonoImage!)
-//    let sansSerifMonoButton = DrawToolbarPersistedButton(label: "Marker")
     sansSerifMonoButton.addTarget(self, action: #selector(secondaryToolbarButtonTapped(sender:)), for: .touchUpInside)
     sansSerifMonoButton.addTarget(self, action: #selector(sansSerifMonoTapped(sender:)), for: .touchUpInside)
     sansSerifMonoButton.tintColor = .white
@@ -921,7 +983,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     sansSerifPopoverToolbar.savedSelection = 0
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .normal
-//    sansSerifButton.setTitle("Sans Serif", for: .normal)
     clearSecondaryPopovers(except: nil)
   }
 
@@ -930,7 +991,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     sansSerifPopoverToolbar.savedSelection = 1
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .serif
-//    sansSerifButton.setTitle("Serif", for: .normal)
     clearSecondaryPopovers(except: nil)
   }
 
@@ -939,7 +999,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       sansSerifPopoverToolbar.savedSelection = 2
       sansSerifPopoverToolbar.clearCurrentButtonSelection()
       CurrentTool.fontStyle = .hand
-  //    sansSerifButton.setTitle("Serif", for: .normal)
       clearSecondaryPopovers(except: nil)
     }
   
@@ -948,7 +1007,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     sansSerifPopoverToolbar.savedSelection = 3
     sansSerifPopoverToolbar.clearCurrentButtonSelection()
     CurrentTool.fontStyle = .monospace
-//    sansSerifButton.setTitle("Monospace", for: .normal)
     clearSecondaryPopovers(except: nil)
   }
   
@@ -1473,7 +1531,4 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       }
     }
   }
-
-
-
 }

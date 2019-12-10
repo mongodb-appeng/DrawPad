@@ -246,7 +246,7 @@ class ErrorReporter {
   }
   
   static func raiseError (_ errorText: String) {
-    
+    print("Error \(errorText)")
     if errorCount < maxErrors {
       errorCount += 1
       if errorsEnabled {
