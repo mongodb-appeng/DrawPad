@@ -208,8 +208,11 @@ class WelcomeViewController: UIViewController {
   let passwordField = UITextField()
   let s3Field = UISwitch()
   let artistField = UISwitch()
+  let displayErrorsField = UISwitch()
+  let emailErrorsField = UISwitch()
   let signInButton = UIButton(type: .roundedRect)
 //  let signUpButton = UIButton(type: .roundedRect)
+//  let displayErrorsButton = UIButton(type: .roundedRect)
   let errorLabel = UILabel()
   let activityIndicator = UIActivityIndicatorView(style: .medium)
 
@@ -227,6 +230,7 @@ class WelcomeViewController: UIViewController {
 
     override func viewDidLoad() {
       super.viewDidLoad()
+      ErrorReporter.resetError()
       navigationController?.setNavigationBarHidden(true, animated: false)
       self.view.backgroundColor = UIColor.white
       if SyncUser.current != nil && User.userName != "" {
@@ -275,13 +279,9 @@ class WelcomeViewController: UIViewController {
       passwordField.borderStyle = .roundedRect
       container.addArrangedSubview(passwordField)
       
-      let s3Label = UILabel()
-      s3Label.numberOfLines = 1
-      s3Label.text="Upload images to S3 from client app?"
-      container.addArrangedSubview(s3Label)
-      
-      s3Field.setOn(true, animated: true)
-      container.addArrangedSubview(s3Field)
+      signInButton.setTitle("Sign In", for: .normal)
+      signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
+      container.addArrangedSubview(signInButton)
       
       let artistLabel = UILabel()
       artistLabel.numberOfLines = 1
@@ -291,11 +291,30 @@ class WelcomeViewController: UIViewController {
       artistField.setOn(Constants.ARTIST_MODE, animated: true)
       container.addArrangedSubview(artistField)
       
-      // Configure the sign in and sign up buttons.
-      signInButton.setTitle("Sign In", for: .normal)
-      signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
-      container.addArrangedSubview(signInButton)
+      let s3Label = UILabel()
+      s3Label.numberOfLines = 1
+      s3Label.text="Upload images to S3 from client app?"
+      container.addArrangedSubview(s3Label)
+      
+      s3Field.setOn(true, animated: true)
+      container.addArrangedSubview(s3Field)
 
+      let displayErrorsLabel = UILabel()
+      displayErrorsLabel.numberOfLines = 1
+      displayErrorsLabel.text="Should the app display internal errors?"
+      container.addArrangedSubview(displayErrorsLabel)
+      
+      displayErrorsField.setOn(ErrorReporter.errorsEnabled, animated: true)
+      container.addArrangedSubview(displayErrorsField)
+      
+      let emailErrorsLabel = UILabel()
+      emailErrorsLabel.numberOfLines = 1
+      emailErrorsLabel.text="Should the app send internal errors to the admin?"
+      container.addArrangedSubview(emailErrorsLabel)
+      
+      emailErrorsField.setOn(ErrorReporter.emailErrors, animated: true)
+      container.addArrangedSubview(emailErrorsField)
+      
 //      signUpButton.setTitle("Sign Up", for: .normal)
 //      signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
 //      container.addArrangedSubview(signUpButton)
@@ -318,6 +337,8 @@ class WelcomeViewController: UIViewController {
   func logIn(username: String, password: String, register: Bool) {
     AWS.uploadToS3 = s3Field.isOn
     Constants.ARTIST_MODE = artistField.isOn
+    ErrorReporter.errorsEnabled = displayErrorsField.isOn
+    ErrorReporter.emailErrors = emailErrorsField.isOn
     print("Log in as user: \(username) with register: \(register)")
     setLoading(true)
     

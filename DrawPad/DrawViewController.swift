@@ -284,6 +284,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    ErrorReporter.resetError()
     usernameLabel!.text = User.userName
     popoverParents = [scribblePopoverParent, sansSerifPopoverParent, stampsPopoverParent, opacityPopoverParent, rectanglePopoverParent, ovalPopoverParent, trianglePopoverParent]
     pencilButton.select()
@@ -818,6 +819,10 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
 
   @IBAction func eraserButtonTapped(_ sender: UIButton) {
     print("Eraser button tapped")
+    
+    // TODO - remove
+    ErrorReporter.raiseError("Erase button has been tapped")
+    
     clearSecondaryPopovers(except: nil)
     print("previous color: \(CurrentTool.previousColor)")
     if !CurrentTool.erasing {

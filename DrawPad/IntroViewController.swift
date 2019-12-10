@@ -218,6 +218,7 @@ class IntroViewController: BaseViewController, UITextFieldDelegate {
    
     override func viewDidLoad() {
        super.viewDidLoad()
+        ErrorReporter.resetError()
         print("IntroViewController.viewDidLoad")
         self.hideKeyboardWhenTappedAround()
         gotValidEmail = false

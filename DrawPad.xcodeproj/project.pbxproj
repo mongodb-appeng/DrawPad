@@ -14,10 +14,10 @@
 		49394E1A2371AAF4006136B3 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E192371AAF4006136B3 /* Shape.swift */; };
 		49394E1C2371AB12006136B3 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49394E1B2371AB12006136B3 /* WelcomeViewController.swift */; };
 		494F624923742E9B00F0C7F6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494F624823742E9B00F0C7F6 /* AWS.swift */; };
+		49905105239FDC8300C34BF0 /* ErrorReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49905104239FDC8300C34BF0 /* ErrorReporter.swift */; };
 		49C8092C2382D2250061D4C1 /* RealmConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C8092B2382D2240061D4C1 /* RealmConfigViewController.swift */; };
 		49C809302382F63A0061D4C1 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C8092F2382F63A0061D4C1 /* UIViewExtension.swift */; };
 		49C809322382FC9D0061D4C1 /* SubmitFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C809312382FC9D0061D4C1 /* SubmitFormViewController.swift */; };
-		49C809342382FE630061D4C1 /* DrawMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C809332382FE630061D4C1 /* DrawMenuViewController.swift */; };
 		49C8093623831D400061D4C1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C8093523831D400061D4C1 /* User.swift */; };
 		49C809382383276E0061D4C1 /* ThanksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C809372383276E0061D4C1 /* ThanksViewController.swift */; };
 		49C8093A238335BB0061D4C1 /* RealmConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C80939238335BB0061D4C1 /* RealmConnection.swift */; };
@@ -36,11 +36,9 @@
 		DC2FF6FB2387793B0046FAD6 /* DrawToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF6FA2387793B0046FAD6 /* DrawToolbarButton.swift */; };
 		DC2FF70223879A0F0046FAD6 /* UIStackView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2FF70123879A0F0046FAD6 /* UIStackView+Utils.swift */; };
 		E1941C5720B53CB4004A2217 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C5620B53CB4004A2217 /* AppDelegate.swift */; };
-		E1941C5920B53CB4004A2217 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C5820B53CB4004A2217 /* ViewController.swift */; };
 		E1941C5C20B53CB4004A2217 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1941C5A20B53CB4004A2217 /* Main.storyboard */; };
 		E1941C5E20B53CB5004A2217 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1941C5D20B53CB5004A2217 /* Assets.xcassets */; };
 		E1941C6120B53CB5004A2217 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1941C5F20B53CB5004A2217 /* LaunchScreen.storyboard */; };
-		E1941C6920B544E8004A2217 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C6820B544E8004A2217 /* SettingsViewController.swift */; };
 		E1941C6B20B54914004A2217 /* Pencil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1941C6A20B54914004A2217 /* Pencil.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,10 +51,10 @@
 		49394E192371AAF4006136B3 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		49394E1B2371AB12006136B3 /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		494F624823742E9B00F0C7F6 /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
+		49905104239FDC8300C34BF0 /* ErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporter.swift; sourceTree = "<group>"; };
 		49C8092B2382D2240061D4C1 /* RealmConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfigViewController.swift; sourceTree = "<group>"; };
 		49C8092F2382F63A0061D4C1 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		49C809312382FC9D0061D4C1 /* SubmitFormViewController.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = SubmitFormViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
-		49C809332382FE630061D4C1 /* DrawMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawMenuViewController.swift; sourceTree = "<group>"; };
 		49C8093523831D400061D4C1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		49C809372383276E0061D4C1 /* ThanksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewController.swift; sourceTree = "<group>"; };
 		49C80939238335BB0061D4C1 /* RealmConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConnection.swift; sourceTree = "<group>"; };
@@ -76,12 +74,10 @@
 		DC2FF70123879A0F0046FAD6 /* UIStackView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Utils.swift"; sourceTree = "<group>"; };
 		E1941C5320B53CB4004A2217 /* DrawPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1941C5620B53CB4004A2217 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E1941C5820B53CB4004A2217 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E1941C5B20B53CB4004A2217 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E1941C5D20B53CB5004A2217 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E1941C6020B53CB5004A2217 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E1941C6220B53CB5004A2217 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E1941C6820B544E8004A2217 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E1941C6A20B54914004A2217 /* Pencil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pencil.swift; sourceTree = "<group>"; };
 		E486881A6BC26993AD446835 /* Pods-DrawPad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DrawPad.debug.xcconfig"; path = "Target Support Files/Pods-DrawPad/Pods-DrawPad.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,16 +106,13 @@
 			isa = PBXGroup;
 			children = (
 				DC2FF6EC2387189B0046FAD6 /* BaseViewController.swift */,
-				49C809332382FE630061D4C1 /* DrawMenuViewController.swift */,
 				DC2FF6EA238707E50046FAD6 /* DrawViewController.swift */,
 				49EE44A92382AD9F00621659 /* IntroViewController.swift */,
 				49C80976238366CA0061D4C1 /* LineThicknessController.swift */,
 				49C8092B2382D2240061D4C1 /* RealmConfigViewController.swift */,
-				E1941C6820B544E8004A2217 /* SettingsViewController.swift */,
 				49C809312382FC9D0061D4C1 /* SubmitFormViewController.swift */,
 				4902BBDA2394394400888752 /* SpinnerViewController.swift */,
 				49C809372383276E0061D4C1 /* ThanksViewController.swift */,
-				E1941C5820B53CB4004A2217 /* ViewController.swift */,
 				49394E1B2371AB12006136B3 /* WelcomeViewController.swift */,
 				49C8097A2383FAF80061D4C1 /* ShapeSelectorViewController.swift */,
 				03BDA68B238CC7CB009D182B /* TermConditionsPrivacyPolicyViewController.swift */,
@@ -147,6 +140,7 @@
 				49C8093523831D400061D4C1 /* User.swift */,
 				49C8092F2382F63A0061D4C1 /* UIViewExtension.swift */,
 				3FB4918E2388A23300A1D95E /* PhotoCaptureOverlayView.swift */,
+				49905104239FDC8300C34BF0 /* ErrorReporter.swift */,
 			);
 			name = "Helpers & State";
 			sourceTree = "<group>";
@@ -344,14 +338,13 @@
 				DC2FF6F0238728460046FAD6 /* DrawToolbarPopoverButton.swift in Sources */,
 				49C8093A238335BB0061D4C1 /* RealmConnection.swift in Sources */,
 				49394E182371A668006136B3 /* Constants.swift in Sources */,
-				49C809342382FE630061D4C1 /* DrawMenuViewController.swift in Sources */,
-				E1941C5920B53CB4004A2217 /* ViewController.swift in Sources */,
 				49C809322382FC9D0061D4C1 /* SubmitFormViewController.swift in Sources */,
 				DC2FF6F4238767D00046FAD6 /* DrawToolbarStackView.swift in Sources */,
 				E1941C5720B53CB4004A2217 /* AppDelegate.swift in Sources */,
 				3FB4918F2388A23300A1D95E /* PhotoCaptureOverlayView.swift in Sources */,
 				E1941C6B20B54914004A2217 /* Pencil.swift in Sources */,
 				49394E1A2371AAF4006136B3 /* Shape.swift in Sources */,
+				49905105239FDC8300C34BF0 /* ErrorReporter.swift in Sources */,
 				03BDA68C238CC7CB009D182B /* TermConditionsPrivacyPolicyViewController.swift in Sources */,
 				DC2FF6F9238778B90046FAD6 /* DrawToolbarEphemeralButton.swift in Sources */,
 				49EE44AA2382AD9F00621659 /* IntroViewController.swift in Sources */,
@@ -363,7 +356,6 @@
 				DC2FF6F2238765A20046FAD6 /* DrawToolbarPersistedButton.swift in Sources */,
 				DC2FF6ED2387189B0046FAD6 /* BaseViewController.swift in Sources */,
 				49C809302382F63A0061D4C1 /* UIViewExtension.swift in Sources */,
-				E1941C6920B544E8004A2217 /* SettingsViewController.swift in Sources */,
 				49C8097B2383FAF80061D4C1 /* ShapeSelectorViewController.swift in Sources */,
 				DC2FF70223879A0F0046FAD6 /* UIStackView+Utils.swift in Sources */,
 				49C809382383276E0061D4C1 /* ThanksViewController.swift in Sources */,

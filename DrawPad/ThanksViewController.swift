@@ -207,6 +207,7 @@ class ThanksViewController: BaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    ErrorReporter.resetError()
     setUpTextView()
   }
 

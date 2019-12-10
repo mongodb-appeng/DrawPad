@@ -203,7 +203,7 @@
 import UIKit
 import StitchCore
 
-let stitch = try! Stitch.initializeAppClient(withClientAppID: Constants.STITCH_APP_ID)
+let stitch = try! Stitch.initializeDefaultAppClient(withClientAppID: Constants.STITCH_APP_ID)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

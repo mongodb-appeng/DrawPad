@@ -264,6 +264,7 @@ class SubmitFormViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        ErrorReporter.resetError()
         print("SubmitFormViewController.viewDidLoad")
         photoCaptureOverlay.startCameraPreview(with: drawing)
         self.country.delegate = self
