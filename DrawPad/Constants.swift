@@ -226,6 +226,8 @@ struct Constants {
   static let DRAW_PEN_WIDTH_THIN: Float = 5.0
   static let DRAW_PEN_WIDTH_MEDIUM: Float = 10.0
   static let DRAW_PEN_WIDTH_WIDE: Float = 20.0
+  static let MAX_ERROR_MESSAGES = 5
+  static let EMAIL_ERRORS: Bool = true
   static var ARTIST_MODE: Bool = false
 }
 

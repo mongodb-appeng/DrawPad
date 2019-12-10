@@ -207,9 +207,10 @@ class RealmConfigViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var pinTextField: UITextField!
     override func viewDidLoad() {
-        super.viewDidLoad()
-        pinTextField.smartInsertDeleteType = UITextSmartInsertDeleteType.no
-        pinTextField.delegate = self
+      super.viewDidLoad()
+      ErrorReporter.resetError()
+      pinTextField.smartInsertDeleteType = UITextSmartInsertDeleteType.no
+      pinTextField.delegate = self
     }
     
     // Use this if you have a UITextField
