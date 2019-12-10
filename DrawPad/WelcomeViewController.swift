@@ -209,7 +209,7 @@ class WelcomeViewController: UIViewController {
   let s3Field = UISwitch()
   let artistField = UISwitch()
   let signInButton = UIButton(type: .roundedRect)
-  let signUpButton = UIButton(type: .roundedRect)
+//  let signUpButton = UIButton(type: .roundedRect)
   let errorLabel = UILabel()
   let activityIndicator = UIActivityIndicatorView(style: .medium)
 
@@ -296,9 +296,9 @@ class WelcomeViewController: UIViewController {
       signInButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
       container.addArrangedSubview(signInButton)
 
-      signUpButton.setTitle("Sign Up", for: .normal)
-      signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
-      container.addArrangedSubview(signUpButton)
+//      signUpButton.setTitle("Sign Up", for: .normal)
+//      signUpButton.addTarget(self, action: #selector(signUp), for: .touchUpInside)
+//      container.addArrangedSubview(signUpButton)
 
       // Error messages will be set on the errorLabel.
       errorLabel.numberOfLines = 0
@@ -310,50 +310,56 @@ class WelcomeViewController: UIViewController {
       logIn(username: username!, password: password!, register: false)
   }
 
-  @objc func signUp() {
-      logIn(username: username!, password: password!, register: true)
-  }
+//  @objc func signUp() {
+//      logIn(username: username!, password: password!, register: true)
+//  }
 
-    // Log in with the username and password, optionally registering a user.
-    func logIn(username: String, password: String, register: Bool) {
-        AWS.uploadToS3 = s3Field.isOn
-        Constants.ARTIST_MODE = artistField.isOn
-        print("Log in as user: \(username) with register: \(register)")
-        setLoading(true)
-        let creds = SyncCredentials.usernamePassword(username: username, password: password, register: register)
-
-        SyncUser.logIn(with: creds, server: Constants.AUTH_URL, onCompletion: { [weak self](user, err) in
-            self!.setLoading(false)
-            if let error = err {
-                // Auth error: user already exists? Try logging in as that user.
-                print("Login failed: \(error)")
-                self!.errorLabel.text = "Login failed: \(error.localizedDescription)"
-                return
-            }
-            print("Login succeeded!")
-          User.userName = username
-          if Constants.ARTIST_MODE {
-            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawViewController") as? DrawViewController
-            self!.navigationController!.pushViewController(vc!, animated: true)
-          } else {
-            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "IntroViewController") as? IntroViewController
-            self!.navigationController!.pushViewController(vc!, animated: true)
-          }
-
-        })
-    }
+  // Log in with the username and password, optionally registering a user.
+  func logIn(username: String, password: String, register: Bool) {
+    AWS.uploadToS3 = s3Field.isOn
+    Constants.ARTIST_MODE = artistField.isOn
+    print("Log in as user: \(username) with register: \(register)")
+    setLoading(true)
     
-    // Turn on or off the activity indicator.
-    func setLoading(_ loading: Bool) {
-        if loading {
-            activityIndicator.startAnimating()
-            errorLabel.text = ""
-        } else {
-            activityIndicator.stopAnimating()
-        }
-        usernameField.isEnabled = !loading
-        passwordField.isEnabled = !loading
-        signInButton.isEnabled = !loading
-        signUpButton.isEnabled = !loading
+    // If a Realm sync user is already logged in then sign them out as we only
+    // want a single user to be logged in (for this device) at any time.
+    if SyncUser.current != nil {
+      SyncUser.current?.logOut()
     }
+  
+    let creds = SyncCredentials.usernamePassword(username: username, password: password, register: register)
+    SyncUser.logIn(with: creds, server: Constants.AUTH_URL, onCompletion: { [weak self](user, err) in
+        self!.setLoading(false)
+        if let error = err {
+            // Auth error: user already exists? Try logging in as that user.
+            print("Login failed: \(error)")
+            self!.errorLabel.text = "Login failed: \(error.localizedDescription)"
+            return
+        }
+        print("Login succeeded!")
+      User.userName = username
+      if Constants.ARTIST_MODE {
+        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DrawViewController") as? DrawViewController
+        self!.navigationController!.pushViewController(vc!, animated: true)
+      } else {
+        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "IntroViewController") as? IntroViewController
+        self!.navigationController!.pushViewController(vc!, animated: true)
+      }
+
+    })
+  }
+  
+  // Turn on or off the activity indicator.
+  func setLoading(_ loading: Bool) {
+      if loading {
+          activityIndicator.startAnimating()
+          errorLabel.text = ""
+      } else {
+          activityIndicator.stopAnimating()
+      }
+      usernameField.isEnabled = !loading
+      passwordField.isEnabled = !loading
+      signInButton.isEnabled = !loading
+//      signUpButton.isEnabled = !loading
+  }
 }
