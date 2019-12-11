@@ -289,6 +289,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     ErrorReporter.resetError()
+    tempImageView.isUserInteractionEnabled = true
+    mainImageView.isUserInteractionEnabled = true
     usernameLabel!.text = User.userName
     if shapes == nil || storedImages == nil {
       ErrorReporter.raiseError("viewDidLoad cannot complete as the Realm live queries haven't been set up. Try restarting the app.")
@@ -357,8 +359,8 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       ErrorReporter.raiseError("Failed to get UIGraphicsGetCurrentContext")
       return
     }
+    // Render tempImageView in the current context (context)
     self.tempImageView.image?.draw(in: tempImageView.bounds)
-
     block(context)
 
     self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
@@ -423,6 +425,14 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       return
     }
     
+    // For any shape other than a freehand line, don't want the tempView
+    // to also contain previous versions of the shape (as they replace
+    // the in-progress shape rather than extending them)
+    
+    if CurrentTool.shapeType != .line {
+      self.tempImageView.image = nil
+    }
+    
     let currentPoint = touch.location(in: tempImageView)
 
     draw { context in
@@ -443,10 +453,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
         // of the rect
       
       case .straightLine:
-        if swiped {
-          self.mainImageView.image = nil
-          self.shapes!.forEach { $0.draw(context) }
-        }
         do {
           try myRealm.write {
             currentShape!.lastPoint!.nextPoint = LinkedPoint(currentPoint)
@@ -456,13 +462,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
           ErrorReporter.raiseError("Failed to move straight line")
         }
       case .rect, .ellipse, .stamp, .text:
-        // if 'swiped' (a.k.a. not a single point), erase the current shape,
-        // which is effectively acting as a draft. then redraw the current
-        // state
-        if swiped {
-          self.mainImageView.image = nil
-          self.shapes!.forEach { $0.draw(context) }
-        }
         do {
           try myRealm.write {
             currentShape!.replaceHead(point: LinkedPoint(currentPoint))
@@ -475,13 +474,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
         // of the list, the 2nd point being where the current touch is,
         // and the 3rd point (x₁ - (x₂ - x₁), y₂)
       case .triangle:
-        // if 'swiped' (a.k.a. not a single point), erase the current shape,
-        // which is effectively acting as a draft. then redraw the current
-        // state
-        if swiped {
-          self.mainImageView.image = nil
-          self.shapes!.forEach { $0.draw(context) }
-        }
         do {
           try RealmConnection.realm!.write {
             let point2 = LinkedPoint(currentPoint)
@@ -499,9 +491,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       }
       currentShape!.draw(context)
     }
-
-    mergeViews()
-
     swiped = true
     lastPoint = currentPoint
   }
@@ -557,12 +546,15 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     catch {
       ErrorReporter.raiseError("Failed to clear drawing objects")
     }
+    tempImageView.image = nil
+    mainImageView.image = nil
   }
   
   // MARK: - DELEGATES
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     if string == "\n" {
+      // Finished typing so store the new text shape
       hiddenTextField.text = ""
       hiddenTextField.resignFirstResponder()
       do {
@@ -574,20 +566,19 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
         ErrorReporter.raiseError("Failed to store updated text")
       }
       mergeViews()
-      draw { context in
-        shapes!.forEach { $0.draw(context) }
-      }
       return false
+    } else {
+      tempImageView.image = nil
+      var newText = textField.text ?? ""
+      newText += string
+      self.draw { context in
+        mainImageView.image = nil
+        shapes!.forEach { $0.draw(context) }
+        currentShape!.text = newText
+        currentShape!.draw(context)
+      }
+      return true
     }
-    var newText = textField.text ?? ""
-    newText += string
-    self.draw { context in
-      mainImageView.image = nil
-      shapes!.forEach { $0.draw(context) }
-      currentShape!.text = newText
-      currentShape!.draw(context)
-    }
-    return true
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -766,7 +757,6 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     print("Finish button tapped")
     
     if Constants.ARTIST_MODE {
-      // TODO: Just clear the canvas and continue
       let alert = UIAlertController(title: "Confirm you want to clear the drawing", message: "Please confirm if you want to clear the drawing", preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Yes - clear the drawing", style: .default, handler: { action in
          self.clearDrawing()
@@ -791,7 +781,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       catch {
         ErrorReporter.raiseError("Failed to persist the finished image")
       }
-
+      
       let submitVC = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SubmitFormViewController") as? SubmitFormViewController
       submitVC?.drawing = mainImageView.image?.whiteMask()
       self.navigationController!.pushViewController(submitVC!, animated: true)
