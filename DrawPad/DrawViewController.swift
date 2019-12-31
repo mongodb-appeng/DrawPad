@@ -764,7 +764,14 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       let alert = UIAlertController(title: "Confirm you want to clear the drawing", message: "Please confirm if you want to clear the drawing", preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Yes - clear the drawing", style: .default, handler: { action in
          self.clearDrawing()
-             }))
+       }))
+      alert.addAction(UIAlertAction(title: "Clear drawing and log out", style: .default, handler: { action in
+        self.clearDrawing()
+        if let user = SyncUser.current {
+          user.logOut()
+        }
+        let _ = self.navigationController?.popToRootViewController(animated: true)
+        }))
       alert.addAction(UIAlertAction(title: "No – continue drawing", style: .cancel, handler:nil))
       self.present(alert, animated: true)
     } else {
