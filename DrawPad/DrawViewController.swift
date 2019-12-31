@@ -291,7 +291,11 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
     ErrorReporter.resetError()
     tempImageView.isUserInteractionEnabled = true
     mainImageView.isUserInteractionEnabled = true
-    usernameLabel!.text = User.userName
+    if Constants.ARTIST_MODE {
+      usernameLabel!.text = "\(User.userName) - artist"
+    } else {
+      usernameLabel!.text = User.userName
+    }
     if shapes == nil || storedImages == nil {
       ErrorReporter.raiseError("viewDidLoad cannot complete as the Realm live queries haven't been set up. Try restarting the app.")
     } else {
