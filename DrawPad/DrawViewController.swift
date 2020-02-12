@@ -428,6 +428,10 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       ErrorReporter.raiseError("Cannot access realm from RealmConnection")
       return
     }
+
+    guard let currentShape = currentShape, !currentShape.isInvalidated else {
+        return
+    }
     
     // For any shape other than a freehand line, don't want the tempView
     // to also contain previous versions of the shape (as they replace
@@ -445,7 +449,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       case .line:
         do {
           try myRealm.write {
-            currentShape!.append(point: LinkedPoint(currentPoint))
+            currentShape.append(point: LinkedPoint(currentPoint))
           }
         }
         catch {
@@ -459,7 +463,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       case .straightLine:
         do {
           try myRealm.write {
-            currentShape!.lastPoint!.nextPoint = LinkedPoint(currentPoint)
+            currentShape.lastPoint!.nextPoint = LinkedPoint(currentPoint)
           }
         }
         catch {
@@ -468,7 +472,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
       case .rect, .ellipse, .stamp, .text:
         do {
           try myRealm.write {
-            currentShape!.replaceHead(point: LinkedPoint(currentPoint))
+            currentShape.replaceHead(point: LinkedPoint(currentPoint))
           }
         }
         catch {
@@ -481,11 +485,11 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
         do {
           try RealmConnection.realm!.write {
             let point2 = LinkedPoint(currentPoint)
-            currentShape!.lastPoint?.nextPoint = point2
+            currentShape.lastPoint?.nextPoint = point2
 
             let point3 = LinkedPoint()
             point3.y = point2.y
-            point3.x = currentShape!.lastPoint!.x - (point2.x - currentShape!.lastPoint!.x)
+            point3.x = currentShape.lastPoint!.x - (point2.x - currentShape.lastPoint!.x)
             point2.nextPoint = point3
           }
         }
@@ -493,7 +497,7 @@ class DrawViewController: BaseViewController, UITextFieldDelegate {
           ErrorReporter.raiseError("Failed to move a triangle")
         }
       }
-      currentShape!.draw(context)
+      currentShape.draw(context)
     }
     swiped = true
     lastPoint = currentPoint
