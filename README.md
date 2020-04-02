@@ -2,7 +2,7 @@
 ## Work in progress
 ## Installation
 
-Assumes that you have XCode and `pod` installed.
+Assumes that you have XCode and Cocoapods installed.
 
 ```
 git clone https://github.com/mongodb-appeng/DrawPad.git
